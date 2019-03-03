@@ -18,6 +18,8 @@ You will also receive some CV and LinkedIn training to get ready for the Belgian
 
 This project will test your skill & knowledge on everything you've learned so far. It includes `React`, `Node` and `MongoDB`.
 
+### Structure
+
 The application has the following structure:
 
 `client`  
@@ -46,3 +48,47 @@ Folder for everything back-end related. Houses a decoupled, Node API
 `server/src/model`  
 `server/src/route`  
 Each of these folders have one file per resource.
+
+### Setup
+
+#### Client-side
+
+Install client dependencies.
+From the root directory navigate to the client directory.
+We are going to use [yarn](https://yarnpkg.com/lang/en/) (a node js package manager) to install the node depedencies. These include but are not limited to React, Babel, ... .
+```
+$ cd client
+$ yarn install
+```
+The development server can be started by running
+```
+$ npm run start
+```
+You can take a look at the other possibilities in the [package.json](https://github.com/HackYourFutureBEHomework/class2-project-bementor/blob/master/server/package.json) file under `scripts`.
+
+#### Server-side
+
+Install server side dependencies.
+```
+$ cd server
+$ yarn install
+```
+The development server can be started by running
+```
+$ npm run start
+```
+
+But before you do that you need to configure a `MONGODB_URL`. 
+This is where our application will try and connect to a mongo server.
+From the root directory create and environment file.
+```
+$ touch .env
+```
+
+Open the `.env` in your editor and add a connection url.
+```
+MONGODB_URL=mongodb://localhost:27017/bementor
+```
+The connection url can also be a remote host.
+
+After configuring the mongo url the app should start without errors.
