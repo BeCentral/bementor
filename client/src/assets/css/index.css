@@ -13,6 +13,7 @@ body {
   font-size: 1.6rem;
   margin: 0;
   padding: 0;
+  font-family: 'Poppins', Helvetica, sans-serif;
 }
 
 p {
@@ -21,7 +22,6 @@ p {
 
 h1 {
   font-size: 3.2rem;
-  font-family: 'Poppins', Helvetica, sans-serif;
 }
 
 h2 {
