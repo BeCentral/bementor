@@ -24,17 +24,20 @@
 
 .app-footer__logos {
   display: flex;
+  align-content: center;
+}
+
+.app-footer__logos a {
+  display: block;
+  width: 7rem;
+  align-self: center;
+  margin-left: 4rem;
+}
+
+.app-footer__logos a:first-child {
+  width: 10rem;
 }
 
 .app-footer__logos img {
-  width: 8rem;
-}
-
-.app-footer__logos img:first-child {
-  width: 9rem;
-  margin-right: 3rem;
-}
-
-.app-footer__logos img:last-child {
-  padding-top: .8rem;
+  width: 100%;
 }
