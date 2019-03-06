@@ -1,12 +1,13 @@
-.app-header {
+.app-header__top {
   height: 18rem;
   background-image: url('../images/pattern.gif');
   background-repeat: repeat;
   display: flex;
   justify-content: center;
+  flex-direction: column;
 }
 
-.app-header h1 {
+.app-header__top h1 {
   margin: 0;
   color: #00b265;
   display: inline-block;
@@ -14,4 +15,18 @@
   font-weight: bold;
   font-size: 4.6rem;
   align-self: center;
+}
+
+.app-header__navigation {
+  width: 100%;
+}
+
+.app-header__navigation ul {
+  display: flex;
+  width: 100%;
+  margin: 0;
+}
+
+.app-header__navigation li {
+  list-style-type: none;
 }
