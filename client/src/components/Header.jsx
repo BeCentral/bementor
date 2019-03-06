@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import '../assets/css/header.css';
+
 const Header = props => {
   return (
-    <div>
-
-    </div>
+    <header className="app-header">
+      <h1>BeMentor.</h1>
+    </header>
   );
 };
 

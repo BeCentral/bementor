@@ -1,0 +1,9 @@
+.app-header {
+  height: 20rem;
+  background-image: url('../images/pattern.gif');
+  background-repeat: repeat;
+}
+
+.app-header h1 {
+  margin-top: 0;
+}
