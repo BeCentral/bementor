@@ -11,9 +11,9 @@ const Footer = () => {
   return (
     <footer className="app-footer">
       <div className="app-footer__socials">
-        <FontAwesomeIcon icon={faTwitter} />
-        <FontAwesomeIcon icon={faGithub} />
-        <FontAwesomeIcon icon={faLinkedin} />
+        <i><FontAwesomeIcon icon={faTwitter} /></i>
+        <i><FontAwesomeIcon icon={faGithub} /></i>
+        <i><FontAwesomeIcon icon={faLinkedin} /></i>
       </div>
       <div className="app-footer__logos">
         <img src={okbeLogo} alt="Open Knowledge Belgium logo" />

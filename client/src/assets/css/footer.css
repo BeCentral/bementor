@@ -7,11 +7,19 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  padding: 0 5rem;
 }
 
 .app-footer__socials {
   color: #fff;
   font-size: 3rem;
+  display: flex;
+  align-content: center;
+}
+
+.app-footer__socials i {
+  align-self: center;
+  margin-right: 2rem;
 }
 
 .app-footer__logos {
