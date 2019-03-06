@@ -6,3 +6,8 @@
   left: 0;
   width: 100%;
 }
+
+.app-footer__socials {
+  color: #fff;
+  font-size: 3rem;
+}
