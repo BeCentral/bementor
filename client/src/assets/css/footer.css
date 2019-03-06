@@ -1,0 +1,8 @@
+.app-footer {
+  height: 10rem;
+  position: absolute;
+  background: #00b265;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}

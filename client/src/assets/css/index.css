@@ -3,6 +3,11 @@
 html {
   box-sizing: border-box;
   font-size: 62.5%;
+  height: 100%;
+}
+
+html, body {
+  height: 100%;
 }
 
 *, *:before, *:after {
@@ -14,6 +19,12 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', Helvetica, sans-serif;
+}
+
+#root {
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 10rem;
 }
 
 p {
