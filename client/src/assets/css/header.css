@@ -1,0 +1,48 @@
+.app-header__top {
+  height: 18rem;
+  background-image: url('../images/pattern.gif');
+  background-repeat: repeat;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.app-header__top h1 {
+  margin: 0;
+  color: #00b265;
+  display: inline-block;
+  background: #fff;
+  font-weight: bold;
+  font-size: 4.6rem;
+  align-self: center;
+}
+
+.app-header__navigation {
+  width: 100%;
+  box-shadow: 0 2px 1px -1px gray;
+}
+
+.app-header__navigation ul {
+  display: flex;
+  width: 100%;
+  margin: 0;
+  height: 5rem;
+  background: #00b265;
+  justify-content: flex-end;
+  align-content: center;
+}
+
+.app-header__navigation li {
+  list-style-type: none;
+  color: #fff;
+  margin-right: 5rem;
+  align-self: center;
+  text-transform: uppercase;
+}
+
+.app-header__navigation a,
+.app-header__navigation a:visited,
+.app-header__navigation a:active {
+  color: #fff;
+  text-decoration: none;
+}

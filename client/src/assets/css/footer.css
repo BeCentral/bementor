@@ -1,0 +1,43 @@
+.app-footer {
+  height: 11rem;
+  position: absolute;
+  background: #00b265;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5rem;
+}
+
+.app-footer__socials {
+  color: #fff;
+  font-size: 3rem;
+  display: flex;
+  align-content: center;
+}
+
+.app-footer__socials i {
+  align-self: center;
+  margin-right: 2rem;
+}
+
+.app-footer__logos {
+  display: flex;
+  align-content: center;
+}
+
+.app-footer__logos a {
+  display: block;
+  width: 7rem;
+  align-self: center;
+  margin-left: 4rem;
+}
+
+.app-footer__logos a:first-child {
+  width: 10rem;
+}
+
+.app-footer__logos img {
+  width: 100%;
+}
