@@ -1,26 +1,22 @@
 const mongoose = require('mongoose');
 
-const MentorSchema = mongoose.Schema(
+const mentorSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
       required: true,
-      text: true
     },
     lastName: {
       type: String,
       required: true,
-      text: true
     },
     about: {
       type: String,
       required: true,
-      text: true
     },
     interests: {
       type: [String],
       required: false,
-      text: true
     }
   },
   {
@@ -28,4 +24,6 @@ const MentorSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('Mentor', MentorSchema);
+mentorSchema.index({firstName: "text", lastName: "text", about: "text", interests: "text"});
+
+module.exports = mongoose.model('Mentor', mentorSchema);
