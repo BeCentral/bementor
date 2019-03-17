@@ -3,7 +3,7 @@ import Header from './Header';
 import Footer from './Footer';
 import Container from './Container';
 import SearchBar from './SearchBar';
-import {findMentors} from "../api/mentors";
+import {getMentors, findMentors} from "../api/mentors";
 import MiniMentor from "./MiniMentor";
 import Wrapper from "./Wrapper";
 
@@ -16,8 +16,12 @@ class Mentors extends Component {
     }
   }
 
-  componentDidMount() {
-    this.search('neural')
+  async componentDidMount() {
+    const mentors = await getMentors();
+
+    this.setState({
+      mentors: mentors
+    })
   }
 
   search = async (query) => {
