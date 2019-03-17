@@ -1,0 +1,13 @@
+.app-mentor_mini {
+
+}
+
+.app-mentor_mini img {
+  border: #00b265 1em solid;
+  border-radius: 100%;
+  width: 15em;
+}
+
+.app-mentor_mini p {
+  text-align: center;
+}
