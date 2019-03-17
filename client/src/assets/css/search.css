@@ -1,0 +1,20 @@
+.app-search {
+  display: flex;
+  align-content: center;
+  max-width: 800px;
+  margin: 1em auto;
+}
+
+.app-search input {
+  height: 3em;
+}
+
+.app-search input[type="text"] {
+  flex: 3;
+}
+
+.app-search input[type="submit"] {
+  flex: 1;
+  background-color: #00b265;
+  color: white;
+}
