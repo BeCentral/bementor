@@ -1,8 +1,8 @@
-const Mentor = require('../model/mentor.model');
+const User = require('../model/user.model');
 
 exports.findAll = (req, res) => {
-  Mentor.find()
-    .then((mentors) => { res.send(mentors); })
+  User.find()
+    .then((users) => { res.send(users); })
     .catch((err) => {
       res.status(500).send({
         message: err.message
@@ -13,11 +13,11 @@ exports.findAll = (req, res) => {
 exports.search = (req, res) => {
   const query = req.query.text;
 
-  Mentor.find({
+  User.find({
     $text: {$search: query}
   })
-    .then((mentors) => {
-      res.send(mentors);
+    .then((users) => {
+      res.send(users);
     })
     .catch((err) => {
       res.status(500).send({
