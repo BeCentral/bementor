@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 
-import "../assets/css/mentor.css";
+import "../assets/css/user.css";
 
-class MiniMentor extends Component {
+class MiniUser extends Component {
   render() {
 
     const interests = this.props.interests.join(' ');
     const color = Math.floor(Math.random() * 16777215).toString(16);
 
     return (
-      <section className="app-mentor_mini">
+      <section className="app-user_mini">
         <img alt="avatar" src={"https://api.adorable.io/avatars/" + this.props._id}/>
         <p>
           {this.props.firstName} {this.props.lastName}
@@ -25,4 +25,4 @@ class MiniMentor extends Component {
   }
 }
 
-export default MiniMentor
+export default MiniUser;

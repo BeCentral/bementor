@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from './components/Home';
-import Mentors from './components/Mentors';
+import Users from './components/Users';
 
 class App extends Component {
 
@@ -10,7 +10,7 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route path="/:path(|index|home|start)" component={Home} />
-          <Route path="/mentors" component={Mentors} />
+          <Route path="/users" component={Users} />
           <Route render={() => <p>Page not found</p>} />
         </Switch>
       </BrowserRouter>

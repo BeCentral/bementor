@@ -3,38 +3,38 @@ import Header from './Header';
 import Footer from './Footer';
 import Container from './Container';
 import SearchBar from './SearchBar';
-import {getMentors, findMentors} from "../api/mentors";
-import MiniMentor from "./MiniMentor";
+import {getUsers, findUsers} from "../api/users";
+import MiniUser from "./MiniUser";
 import Wrapper from "./Wrapper";
 
-class Mentors extends Component {
+class Users extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      mentors: []
+      users: []
     }
   }
 
   async componentDidMount() {
-    const mentors = await getMentors();
+    const users = await getUsers();
 
     this.setState({
-      mentors: mentors
+      users: users
     })
   }
 
   search = async (query) => {
-    const mentors = await findMentors(query);
+    const users = await findUsers(query);
     this.setState({
-      mentors: mentors
+      users: users
     })
   };
 
   render() {
 
-    const mentors = this.state.mentors.map((mentor, index) => {
-      return <MiniMentor key={mentor._id} {...mentor} />
+    const $users = this.state.users.map((user, index) => {
+      return <MiniUser key={user._id} {...user} />
     });
 
     return (
@@ -45,7 +45,7 @@ class Mentors extends Component {
 
           <SearchBar onSearch={this.search}/>
           <Wrapper>
-            {mentors}
+            {$users}
           </Wrapper>
         </Container>
         <Footer/>
@@ -54,4 +54,4 @@ class Mentors extends Component {
   }
 }
 
-export default Mentors;
+export default Users;
