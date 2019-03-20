@@ -9,3 +9,19 @@ exports.findAll = (req, res) => {
       });
     });
 };
+
+exports.search = (req, res) => {
+  const query = req.query.text;
+
+  Mentor.find({
+    $text: {$search: query}
+  })
+    .then((mentors) => {
+      res.send(mentors);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message
+      });
+    });
+};

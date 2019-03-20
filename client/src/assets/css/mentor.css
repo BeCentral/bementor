@@ -1,0 +1,32 @@
+.app-mentor_mini {
+  flex: 1 1;
+  margin: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-mentor_mini img {
+  border: #00b265 0.8em solid;
+  border-radius: 100%;
+  width: 300px;
+  height: 300px;
+}
+
+.app-mentor_mini:hover img {
+    transform: rotate(25deg);
+}
+
+.app-mentor_mini p {
+  text-align: center;
+  margin: 0.2em 0;
+  padding: 0.5em;
+}
+
+.app-mentor_mini p:first-of-type {
+  background-color: #00b265;
+  margin-top: 1em;
+  padding: 0.5em;
+  color: white;
+}
