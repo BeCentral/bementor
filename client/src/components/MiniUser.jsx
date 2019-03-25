@@ -2,18 +2,18 @@ import React from 'react';
 
 import '../assets/css/user.css';
 
-const MiniUser = () => {
-  const interests = this.props.interests.join(' ');
+const MiniUser = (props) => {
+  const interests = props.interests.join(' ');
   const color = Math.floor(Math.random() * 16777215).toString(16);
 
   return (
     <section className="app-user_mini">
-      <img alt="avatar" src={`https://api.adorable.io/avatars/${this.props._id}`} />
+      <img alt="avatar" src={`https://api.adorable.io/avatars/${props._id}`} />
       <p>
-        {this.props.firstName} {this.props.lastName}
+        {props.firstName} {props.lastName}
       </p>
       <p style={{ backgroundColor: `'#${color}`, color: 'white' }}>
-        {this.props.about}
+        {props.about}
       </p>
       <p>
         {interests}

@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import Header from './Header';
-import Footer from './Footer';
-import Container from './Container';
+import Header from './Common/Header';
+import Footer from './Common/Footer';
+import Container from './Containers/Container';
 import SearchBar from './SearchBar';
 import { getUsers, findUsers } from '../api/users';
 import MiniUser from './MiniUser';
-import Wrapper from './Wrapper';
+import Wrapper from './Containers/Wrapper';
 
 class Users extends Component {
   constructor(props) {

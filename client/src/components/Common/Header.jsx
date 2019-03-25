@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import '../assets/css/header.css';
+import '../../assets/css/header.css';
 
 const Header = () => (
   <header className="app-header">
