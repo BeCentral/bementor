@@ -1,0 +1,33 @@
+.profile__subject {
+  display: flex;
+  margin-top: 2rem;
+}
+
+.profile__subject__avatar-wrapper {
+  width: 16rem;
+}
+
+.profile__subject__avatar-wrapper img {
+  border-radius: 50%;
+  width: 100%;
+  border: .6rem solid #00b265;
+}
+
+.profile__subject__title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: #fff;
+  margin-left: 2rem;
+}
+
+.profile__subject__title h2 {
+  background: #00b265;
+  margin: 1rem 0 0;
+  padding: .6rem;
+}
+
+.profile__subject__title h3 {
+  background: #d8a928;
+  padding: .4rem;
+}
