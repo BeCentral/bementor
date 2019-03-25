@@ -12,7 +12,7 @@ const Header = props => {
       </div>
       <nav className="app-header__navigation">
         <ul>
-          <li><Link to="#">Connect</Link></li>
+          <li><Link to="/connect">Connect</Link></li>
           <li><Link to="#">Contact</Link></li>
           <li><Link to="#">Inbox</Link></li>
         </ul>
