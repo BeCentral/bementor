@@ -1,13 +1,10 @@
-import React, { Fragment } from 'react';
-import Header from './Common/Header';
-import Footer from './Common/Footer';
+import React from 'react';
+import AppContainer from './Containers/AppContainer';
 
 const Home = () => (
-  <Fragment>
-    <Header />
+  <AppContainer>
     This is the home page
-    <Footer />
-  </Fragment>
+  </AppContainer>
 );
 
 export default Home;

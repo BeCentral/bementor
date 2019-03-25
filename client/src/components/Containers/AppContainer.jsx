@@ -1,16 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Header from '../Common/Header';
+import Footer from '../Common/Footer';
 
 import '../../assets/css/container.css';
 
-const Container = props => (
+const AppContainer = props => (
   <div className="app-container">
+    <Header />
     {props.children}
+    <Footer />
   </div>
 );
 
-Container.propTypes = {
+AppContainer.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-export default Container;
+export default AppContainer;

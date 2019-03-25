@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from 'react';
-import Header from './Common/Header';
-import Footer from './Common/Footer';
-import Container from './Containers/Container';
+import React, { Component } from 'react';
+import AppContainer from './Containers/AppContainer';
+import PageContainer from './Containers/PageContainer';
 import SearchBar from './SearchBar';
 import { getUsers, findUsers } from '../api/users';
 import MiniUser from './MiniUser';
@@ -34,18 +33,15 @@ class Users extends Component {
     const $users = this.state.users.map(user => <MiniUser key={user._id} {...user} />);
 
     return (
-      <Fragment>
-        <Header />
-        <Container>
+      <AppContainer>
+        <PageContainer>
           <h2>Find your Guru</h2>
-
           <SearchBar onSearch={this.search} />
           <Wrapper>
             {$users}
           </Wrapper>
-        </Container>
-        <Footer />
-      </Fragment>
+        </PageContainer>
+      </AppContainer>
     );
   }
 }
