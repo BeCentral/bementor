@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import AppContainer from './Containers/AppContainer';
-import PageContainer from './Containers/PageContainer';
+import AppContainer from '../../Containers/AppContainer';
+import PageContainer from '../../Containers/PageContainer';
 import SearchBar from './SearchBar';
-import { getUsers, findUsers } from '../api/users';
+import { getUsers, findUsers } from '../../../api/users';
 import MiniUser from './MiniUser';
-import Wrapper from './Containers/Wrapper';
+import Wrapper from '../../Containers/Wrapper';
 
 class Users extends Component {
   constructor(props) {

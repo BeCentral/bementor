@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../assets/css/user.css';
+import '../../../assets/css/user.css';
 
 const MiniUser = (props) => {
   const interests = props.interests.join(' ');
