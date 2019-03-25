@@ -1,10 +1,16 @@
 import React from 'react';
 import AppContainer from '../../Containers/AppContainer';
+import PageContainer from '../../Containers/PageContainer';
+
+import '../../../assets/css/profile.css';
 
 const Profile = () => (
   <AppContainer>
-    This is a profile page
+    <PageContainer className="profile">
+
+    </PageContainer>
   </AppContainer>
 );
+
 
 export default Profile;
