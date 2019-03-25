@@ -17,6 +17,13 @@
   align-self: center;
 }
 
+.app-header__top a,
+.app-header__top a:visited,
+.app-header__top a:active {
+  color: inherit;
+  text-decoration: none;
+}
+
 .app-header__navigation {
   width: 100%;
   box-shadow: 0 2px 1px -1px gray;

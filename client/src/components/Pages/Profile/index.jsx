@@ -3,7 +3,7 @@ import AppContainer from '../../Containers/AppContainer';
 
 const Profile = () => (
   <AppContainer>
-    This is the home page
+    This is a profile page
   </AppContainer>
 );
 

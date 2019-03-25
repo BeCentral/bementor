@@ -6,7 +6,7 @@ import '../../assets/css/header.css';
 const Header = () => (
   <header className="app-header">
     <div className="app-header__top">
-      <h1>BeMentor.</h1>
+      <h1><Link to="/">BeMentor.</Link></h1>
     </div>
     <nav className="app-header__navigation">
       <ul>
