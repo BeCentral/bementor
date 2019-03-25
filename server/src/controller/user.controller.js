@@ -14,7 +14,7 @@ exports.search = (req, res) => {
   const query = req.query.text;
 
   User.find({
-    $text: {$search: query}
+    $text: { $search: query }
   })
     .then((users) => {
       res.send(users);
