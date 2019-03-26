@@ -9,7 +9,6 @@
 
 .app-header__top h1 {
   margin: 0;
-  color: #00b265!important;
   display: inline-block;
   background: #fff;
   font-weight: bold;
@@ -20,7 +19,7 @@
 .app-header__top a,
 .app-header__top a:visited,
 .app-header__top a:active {
-  color: #fff;
+  color: #00b265;
 }
 
 .app-header__navigation {
@@ -50,5 +49,4 @@
 .app-header__navigation a:visited,
 .app-header__navigation a:active {
   color: #fff;
-  text-decoration: none;
 }
