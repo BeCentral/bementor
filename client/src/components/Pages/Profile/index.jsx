@@ -42,6 +42,12 @@ const Profile = ({ user }) => (
             </li>
           </ul>
         </div>
+        <article className="profile__interests">
+          <h2>Interests</h2>
+          <ul>
+            {user.interests.map(interest => <li key={interest}>{interest}</li>)}
+          </ul>
+        </article>
       </section>
 
     </PageContainer>
