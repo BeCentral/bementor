@@ -17,7 +17,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  color: #fff;
   margin-left: 2rem;
 }
 
@@ -25,9 +24,16 @@
   background: #00b265;
   margin: 1rem 0 0;
   padding: .6rem;
+  color: #fff;
 }
 
 .profile__subject__title h3 {
   background: #d8a928;
   padding: .4rem;
+  color: #fff;
+  margin-bottom: 0;
+}
+
+.profile__subject__title h4 {
+  padding: .2rem;
 }
