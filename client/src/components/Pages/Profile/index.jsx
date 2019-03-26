@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { ExternalLink } from '../../UI';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
 import User from '../../../models/User';
@@ -22,24 +23,26 @@ const Profile = ({ user }) => (
           <h4><FontAwesomeIcon icon={faMapMarkerAlt} /> {user.location}</h4>
         </div>
       </div>
-      <div className="profile__about">
-        <article className="profile__bio">
-          <h2>About {user.firstName}</h2>
-          <p>{user.bio}</p>
-        </article>
-        <ul className="profile__socials">
-          <li>
-            <a href={`https://twitter.com/${user.twitter}`}>
-              <FontAwesomeIcon icon={faTwitter} />{user.twitter}
-            </a>
-          </li>
-          <li>
-            <a href={`https://twitter.com/${user.github}`}>
-              <FontAwesomeIcon icon={faGithub} />{user.github}
-            </a>
-          </li>
-        </ul>
-      </div>
+      <section>
+        <h2 className="profile__about__title">About {user.firstName}</h2>
+        <div className="profile__about">
+          <p className="profile__about__bio">{user.bio}</p>
+          <ul className="profile__about__socials">
+            <li>
+              <ExternalLink href={`https://twitter.com/${user.twitter}`} className="twitter">
+                <i><FontAwesomeIcon icon={faTwitter} /></i>
+                {user.twitter}
+              </ExternalLink>
+            </li>
+            <li>
+              <ExternalLink href={`https://github.com/${user.github}`} className="github">
+                <i><FontAwesomeIcon icon={faGithub} /></i>
+                {user.github}
+              </ExternalLink>
+            </li>
+          </ul>
+        </div>
+      </section>
 
     </PageContainer>
   </AppContainer>

@@ -49,3 +49,15 @@ a:active {
   color: #d8a928;
   text-decoration: none;
 }
+
+a:hover {
+  text-decoration: underline;
+}
+
+a.twitter {
+  color: #08a0e9;
+}
+
+a.github {
+  color: #333;
+}

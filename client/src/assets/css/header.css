@@ -9,7 +9,7 @@
 
 .app-header__top h1 {
   margin: 0;
-  color: #00b265;
+  color: #00b265!important;
   display: inline-block;
   background: #fff;
   font-weight: bold;
