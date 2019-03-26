@@ -42,3 +42,10 @@ h2 {
 h3 {
   font-size: 1.9rem;
 }
+
+a,
+a:visited,
+a:active {
+  color: #d8a928;
+  text-decoration: none;
+}

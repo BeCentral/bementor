@@ -20,8 +20,7 @@
 .app-header__top a,
 .app-header__top a:visited,
 .app-header__top a:active {
-  color: inherit;
-  text-decoration: none;
+  color: #fff;
 }
 
 .app-header__navigation {
