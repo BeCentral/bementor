@@ -11,20 +11,22 @@ const User = new mongoose.Schema(
       required: true
     },
     bio: {
-      type: String,
-      required: true
+      type: String
     },
     tagline: {
-      type: String,
-      required: true
+      type: String
     },
-    campus: {
-      type: String,
-      required: true
+    location: {
+      type: String
+    },
+    twitter: {
+      type: String
+    },
+    github: {
+      type: String
     },
     interests: {
-      type: [String],
-      required: false
+      type: [String]
     }
   },
   {
