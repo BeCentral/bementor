@@ -1,3 +1,9 @@
+.profile__edit {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .profile__subject {
   display: flex;
   margin-top: 2rem;

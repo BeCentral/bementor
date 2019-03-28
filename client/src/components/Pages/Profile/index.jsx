@@ -13,6 +13,7 @@ import '../../../assets/css/profile.css';
 const Profile = ({ user }) => (
   <AppContainer>
     <PageContainer className="profile">
+      <button type="button" className="profile__edit">Edit your profile</button>
       <div className="profile__subject">
         <div className="profile__subject__avatar-wrapper">
           <img src={user.picture} alt={`Avatar of ${user.firstName}`} />
