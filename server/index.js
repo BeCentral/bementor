@@ -20,11 +20,10 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-  res.json({ message: 'API ready' });
-});
+const router = express.Router();
+app.use('/api', router);
 
-require('./src/route/user.route')(app);
+require('./src/route/user.route')(router);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
