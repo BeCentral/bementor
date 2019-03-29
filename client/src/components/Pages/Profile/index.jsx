@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
-import { Button } from 'evergreen-ui';
+import { Button, Icon } from 'evergreen-ui';
 import { ExternalLink } from '../../UI';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
@@ -22,7 +21,7 @@ const Profile = ({ user }) => (
         <div className="profile__subject__title">
           <h2>{user.firstName} {user.lastName}</h2>
           <h3>{user.tagline}</h3>
-          <h4><FontAwesomeIcon icon={faMapMarkerAlt} /> {user.location}</h4>
+          <h4><Icon icon="map-marker" /> {user.location}</h4>
         </div>
       </div>
       <section>
@@ -51,7 +50,6 @@ const Profile = ({ user }) => (
           </ul>
         </article>
       </section>
-
     </PageContainer>
   </AppContainer>
 );
