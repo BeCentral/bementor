@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { Button } from 'evergreen-ui';
 import { ExternalLink } from '../../UI';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
@@ -13,7 +14,7 @@ import '../../../assets/css/profile.css';
 const Profile = ({ user }) => (
   <AppContainer>
     <PageContainer className="profile">
-      <button type="button" className="profile__edit">Edit your profile</button>
+      <Button iconBefore="edit" intent="default" className="profile__edit">Edit your profile</Button>
       <div className="profile__subject">
         <div className="profile__subject__avatar-wrapper">
           <img src={user.picture} alt={`Avatar of ${user.firstName}`} />
