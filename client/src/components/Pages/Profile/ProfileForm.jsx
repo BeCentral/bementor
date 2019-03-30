@@ -14,6 +14,13 @@ class ProfileEditor extends Component {
     fields: {}
   };
 
+  componentDidMount() {
+    const { user } = this.props;
+    Object.keys(user).forEach((prop) => {
+      this.setFieldValue(prop, user[prop]);
+    });
+  }
+
   toMethodName = name => name.charAt(0).toUpperCase() + name.slice(1)
 
   submitEdits = (e) => {
@@ -23,10 +30,9 @@ class ProfileEditor extends Component {
     let passed = true;
     Object.keys(fields).forEach((field) => {
       const error = this.validate(field, fields[field]);
-      if (error) {
-        passed = false;
-        fields[field].validationMessage = error;
-      }
+      if (!error) return;
+      passed = false;
+      fields[field].validationMessage = error;
     });
 
     if (passed) {
@@ -35,14 +41,19 @@ class ProfileEditor extends Component {
   }
 
   handleFieldChanged = (e) => {
-    this.setState({
+    this.setFieldValue(e.currentTarget.name, e.currentTarget.value);
+  }
+
+  setFieldValue = (fieldName, fieldValue) => {
+    this.setState(prevState => ({
       fields: {
-        [e.currentTarget.name]: {
-          value: e.currentTarget.value,
+        ...prevState.fields,
+        [fieldName]: {
+          value: fieldValue,
           validationMessage: null
         }
       }
-    });
+    }));
   }
 
   getFieldValue = (field) => {
