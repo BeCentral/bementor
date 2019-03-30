@@ -10,6 +10,8 @@ class UserAPI extends API {
     params.append('text', query);
     return fetch(`${this.ENDPOINT}/search?${params.toString()}`).then(response => response.json());
   }
+
+  update = user => fetch(this.ENDPOINT, this.getOptions('patch', user)).then(this.handleResponse);
 }
 
 export default UserAPI;

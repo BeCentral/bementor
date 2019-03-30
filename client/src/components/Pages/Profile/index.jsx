@@ -8,6 +8,7 @@ import { ExternalLink } from '../../UI';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
 import ProfileForm from './ProfileForm';
+import { API } from '../../../constants';
 import User from '../../../models/User';
 
 import '../../../assets/css/profile.css';
@@ -23,6 +24,10 @@ class Profile extends Component {
     this.setState(prevState => ({ editingProfile: !prevState.editingProfile }));
   }
 
+  saveUpdates = (user) => {
+    API.user.update(user);
+  }
+
   render() {
     const { editingProfile } = this.state;
     const { user } = this.props;
@@ -30,7 +35,8 @@ class Profile extends Component {
       <AppContainer>
         <PageContainer className="profile">
           <Modal isOpen={editingProfile} onRequestClose={this.toggleEditor} contentLabel="Edit profile">
-            <ProfileForm user={user} />
+            <h2>Update your profile</h2>
+            <ProfileForm user={user} saveUpdates={this.saveUpdates} />
           </Modal>
           <Button iconBefore="edit" className="profile__edit" onClick={this.toggleEditor}>
             Edit your profile
