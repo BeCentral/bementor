@@ -7,7 +7,11 @@ require('dotenv').config();
 
 mongoose.Promise = global.Promise;
 mongoose
-  .connect(process.env.MONGODB_URL, { useCreateIndex: true, useNewUrlParser: true })
+  .connect(process.env.MONGODB_URL, {
+    useFindAndModify: false,
+    useCreateIndex: true,
+    useNewUrlParser: true
+  })
   .then(() => { console.log('Database connection established'); })
   .catch((err) => {
     console.error(`Database error, exiting. Stack trace:\n${err}`);
