@@ -8,7 +8,6 @@ import { ExternalLink } from '../../UI';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
 import ProfileForm from './ProfileForm';
-import { API } from '../../../constants';
 import User from '../../../models/User';
 
 import '../../../assets/css/profile.css';
@@ -24,8 +23,8 @@ class Profile extends Component {
     this.setState(prevState => ({ editingProfile: !prevState.editingProfile }));
   }
 
-  saveUpdates = (user) => {
-    API.user.update(user);
+  updateUser = (user) => {
+    this.setState({ user });
   }
 
   render() {
@@ -36,7 +35,7 @@ class Profile extends Component {
         <PageContainer className="profile">
           <Modal overlayClassName="modal-overlay" className="modal" isOpen={editingProfile} onRequestClose={this.toggleEditor} contentLabel="Edit profile">
             <h2 className="modal__title">Update your profile</h2>
-            <ProfileForm user={user} saveUpdates={this.saveUpdates} />
+            <ProfileForm user={user} handleUserUpdated={this.updateUser} />
           </Modal>
           <Button iconBefore="edit" className="profile__edit" onClick={this.toggleEditor}>
             Edit your profile

@@ -7,11 +7,19 @@ import {
   TextInputField,
   Button
 } from 'evergreen-ui';
+import {
+  API,
+  IS_LOADING,
+  INACTIVE,
+  HAS_ERRORED
+} from '../../../constants';
 import User from '../../../models/User';
 
 class ProfileEditor extends Component {
   state = {
-    fields: {}
+    fields: {},
+    updateUserRequestStatus: INACTIVE,
+    updateRequestError: null
   };
 
   componentDidMount() {
@@ -35,11 +43,24 @@ class ProfileEditor extends Component {
       fields[field].validationMessage = error;
     });
 
-    if (passed) {
-      // submit to server
-    } else {
-      this.setState({ fields });
-    }
+    if (!passed) return this.setState({ fields });
+
+    const { user, handleUserUpdated } = this.props;
+    Object.keys(fields).forEach((key) => {
+      user[key] = fields[key].value;
+    });
+
+    this.setState({ updateUserRequestStatus: IS_LOADING });
+    API.user.update(user)
+      .then((updatedUser) => {
+        this.setState({ updateUserRequestStatus: INACTIVE });
+        handleUserUpdated(new User(updatedUser));
+      })
+      .catch((reason) => {
+        // TODO show reason
+        console.log(reason);
+        this.setState({ updateUserRequestStatus: HAS_ERRORED });
+      });
   }
 
   handleFieldChanged = (e) => {
@@ -182,7 +203,8 @@ class ProfileEditor extends Component {
 }
 
 ProfileEditor.propTypes = {
-  user: PropTypes.instanceOf(User).isRequired
+  user: PropTypes.instanceOf(User).isRequired,
+  handleUserUpdated: PropTypes.func.isRequired
 };
 
 export default ProfileEditor;

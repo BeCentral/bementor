@@ -11,7 +11,7 @@ class UserAPI extends API {
     return fetch(`${this.ENDPOINT}/search?${params.toString()}`).then(response => response.json());
   }
 
-  update = user => fetch(this.ENDPOINT, this.getOptions('patch', user)).then(this.handleResponse);
+  update = user => fetch(`${this.ENDPOINT}/${user._id}`, this.getOptions('patch', user)).then(this.handleResponse);
 }
 
 export default UserAPI;
