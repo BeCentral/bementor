@@ -13,8 +13,12 @@ const AppContainer = props => (
   </div>
 );
 
+AppContainer.defaultProps = {
+  children: <p />
+};
+
 AppContainer.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node
 };
 
 export default AppContainer;
