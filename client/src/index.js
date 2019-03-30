@@ -4,6 +4,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import 'normalize.css';
+import './assets/css/nprogress.css';
 import './assets/css/index.css';
 
 // eslint-disable-next-line react/jsx-filename-extension

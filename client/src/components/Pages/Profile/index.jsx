@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
+import NProgress from 'nprogress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { Button, Icon } from 'evergreen-ui';
@@ -27,6 +28,11 @@ class Profile extends Component {
     getUserRequestState: IS_LOADING
   };
 
+  constructor(props) {
+    super(props);
+    NProgress.start();
+  }
+
   componentDidMount() {
     const { userId } = this.props.match.params;
     API.user.getOne(userId)
@@ -35,7 +41,8 @@ class Profile extends Component {
         document.title = `${user.firstName} ${user.lastName} | BeMentor`;
         this.setState({ user, getUserRequestState: INACTIVE });
       })
-      .catch(() => this.setState({ getUserRequestState: HAS_ERRORED }));
+      .catch(() => this.setState({ getUserRequestState: HAS_ERRORED }))
+      .finally(() => NProgress.done());
   }
 
   toggleEditor = () => {
@@ -48,7 +55,8 @@ class Profile extends Component {
 
   render() {
     const { editingProfile, user, getUserRequestState } = this.state;
-    if (getUserRequestState === IS_LOADING) return <p />;
+    if (getUserRequestState === IS_LOADING) return <AppContainer />;
+
     return (
       <AppContainer>
         <PageContainer className="profile">
