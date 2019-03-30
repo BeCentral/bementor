@@ -135,6 +135,15 @@ class ProfileEditor extends Component {
           onChange={this.handleFieldChanged}
         />
 
+        <TextInputField
+          label="Location"
+          name="location"
+          value={this.getFieldValue('location')}
+          isInvalid={this.isInvalid('location')}
+          validationMessage={this.getValidationMessage('location')}
+          onChange={this.handleFieldChanged}
+        />
+
         <Pane className="modal__form-field">
           <Label className="modal__label" htmlFor="field--bio">About {user.firstName}</Label>
           <Textarea
