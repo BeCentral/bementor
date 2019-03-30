@@ -78,6 +78,28 @@ class ProfileEditor extends Component {
     return this[methodName](value);
   }
 
+  validateTagline = (value) => {
+    if (value.length > 60) return 'Your tagline exceeds the maximum length of 60 characters.';
+    return null;
+  }
+
+  validateTwitter = (value) => {
+    if (value.length === 0) return null;
+    if (value.length > 15) return 'Your Twitter handle exceeds the maximum length of 15 characters.';
+
+    const regex = RegExp(/(\w){1,15}$/);
+    if (!regex.test(value)) return 'Your Twitter handle is invalid';
+    return null;
+  }
+
+  validateGithub = (value) => {
+    if (value.length === 0) return null;
+
+    const regex = RegExp(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i);
+    if (!regex.test(value)) return 'Your GitHub username is invalid';
+    return null;
+  }
+
   render() {
     const { user } = this.props;
 
