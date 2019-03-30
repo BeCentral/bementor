@@ -69,7 +69,7 @@ class ProfileEditor extends Component {
   }
 
   handleInterestsChanged = (values) => {
-    this.setFieldValue('interests', values);
+    this.setFieldValue('interests', values.map(v => v.toUpperCase()));
   }
 
   setFieldValue = (fieldName, fieldValue) => {
