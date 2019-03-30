@@ -121,49 +121,28 @@ class ProfileEditor extends Component {
     return null;
   }
 
+  renderTextField = (label, fieldName, isRequired = false, description = null) => (
+    <TextInputField
+      label={label}
+      name={fieldName}
+      value={this.getFieldValue(fieldName)}
+      isInvalid={this.isInvalid(fieldName)}
+      validationMessage={this.getValidationMessage(fieldName)}
+      onChange={this.handleFieldChanged}
+      required={isRequired}
+      description={description}
+    />
+  )
+
   render() {
     const { user } = this.props;
 
     return (
       <form onSubmit={this.submitEdits}>
-        <TextInputField
-          label="First name"
-          name="firstName"
-          value={this.getFieldValue('firstName')}
-          isInvalid={this.isInvalid('firstName')}
-          validationMessage={this.getValidationMessage('firstName')}
-          onChange={this.handleFieldChanged}
-          required
-        />
-
-        <TextInputField
-          label="Last name"
-          name="lastName"
-          value={this.getFieldValue('lastName')}
-          isInvalid={this.isInvalid('lastName')}
-          validationMessage={this.getValidationMessage('lastName')}
-          onChange={this.handleFieldChanged}
-          required
-        />
-
-        <TextInputField
-          label="Tagline"
-          name="tagline"
-          description="A short description about yourself that will be displayed on the connect page"
-          value={this.getFieldValue('tagline')}
-          isInvalid={this.isInvalid('tagline')}
-          validationMessage={this.getValidationMessage('tagline')}
-          onChange={this.handleFieldChanged}
-        />
-
-        <TextInputField
-          label="Location"
-          name="location"
-          value={this.getFieldValue('location')}
-          isInvalid={this.isInvalid('location')}
-          validationMessage={this.getValidationMessage('location')}
-          onChange={this.handleFieldChanged}
-        />
+        {this.renderTextField('First name', 'firstName', true)}
+        {this.renderTextField('Last name', 'lastName', true)}
+        {this.renderTextField('Tagline', 'tagline', false, 'A short description about yourself that will be displayed on the connect page')}
+        {this.renderTextField('Location', 'location')}
 
         <Pane className="modal__form-field">
           <Label className="modal__label" htmlFor="field--bio">About {user.firstName}</Label>
@@ -176,23 +155,8 @@ class ProfileEditor extends Component {
           />
         </Pane>
 
-        <TextInputField
-          label="Twitter handle"
-          name="twitter"
-          value={this.getFieldValue('twitter')}
-          isInvalid={this.isInvalid('twitter')}
-          validationMessage={this.getValidationMessage('twitter')}
-          onChange={this.handleFieldChanged}
-        />
-
-        <TextInputField
-          label="GitHub username"
-          name="github"
-          value={this.getFieldValue('github')}
-          isInvalid={this.isInvalid('github')}
-          validationMessage={this.getValidationMessage('github')}
-          onChange={this.handleFieldChanged}
-        />
+        {this.renderTextField('Twitter handle', 'twitter')}
+        {this.renderTextField('GitHub username', 'github')}
 
         <div className="modal__actions">
           <Button type="submit" appearance="primary" intent="success">Save profile updates</Button>
