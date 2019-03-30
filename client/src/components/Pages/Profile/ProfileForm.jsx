@@ -14,9 +14,24 @@ class ProfileEditor extends Component {
     fields: {}
   };
 
+  toMethodName = name => name.charAt(0).toUpperCase() + name.slice(1)
+
   submitEdits = (e) => {
     e.preventDefault();
-    console.log('submitted');
+
+    const { fields } = this.state;
+    let passed = true;
+    Object.keys(fields).forEach((field) => {
+      const error = this.validate(field, fields[field]);
+      if (error) {
+        passed = false;
+        fields[field].validationMessage = error;
+      }
+    });
+
+    if (passed) {
+      // submit to server
+    }
   }
 
   handleFieldChanged = (e) => {
@@ -30,6 +45,12 @@ class ProfileEditor extends Component {
     });
   }
 
+  getFieldValue = (field) => {
+    const { fields } = this.state;
+    if (!fields[field]) return '';
+    return fields[field].value;
+  }
+
   getValidationMessage = (field) => {
     const { fields } = this.state;
     if (!fields[field]) return null;
@@ -38,17 +59,26 @@ class ProfileEditor extends Component {
 
   isInvalid = field => !!this.getValidationMessage(field);
 
+  validate = (fieldName, value) => {
+    const methodName = `validate${this.toMethodName(fieldName)}`;
+    if (!this[methodName]) return null;
+    return this[methodName](value);
+  }
+
+  validateFirstName = (value) => {
+    if (!value) return 'First name is required';
+    return null;
+  }
+
   render() {
     const { user } = this.props;
-    const { fields } = this.state;
 
     return (
       <form onSubmit={this.submitEdits}>
         <TextInputField
           label="First name"
           name="firstName"
-          defaultValue={user.firstName}
-          value={fields.firstName}
+          value={this.getFieldValue('firstName')}
           isInvalid={this.isInvalid('firstName')}
           validationMessage={this.getValidationMessage('firstName')}
           onChange={this.handleFieldChanged}
@@ -58,8 +88,7 @@ class ProfileEditor extends Component {
         <TextInputField
           label="Last name"
           name="lastName"
-          defaultValue={user.lastName}
-          value={fields.lastName}
+          value={this.getFieldValue('lastName')}
           isInvalid={this.isInvalid('lastName')}
           validationMessage={this.getValidationMessage('lastName')}
           onChange={this.handleFieldChanged}
@@ -70,8 +99,7 @@ class ProfileEditor extends Component {
           label="Tagline"
           name="tagline"
           description="A short description about yourself that will be displayed on the connect page"
-          defaultValue={user.tagline}
-          value={fields.tagline}
+          value={this.getFieldValue('tagline')}
           isInvalid={this.isInvalid('tagline')}
           validationMessage={this.getValidationMessage('tagline')}
           onChange={this.handleFieldChanged}
@@ -82,17 +110,16 @@ class ProfileEditor extends Component {
           <Textarea
             id="field--bio"
             name="bio"
-            defaultValue={user.bio}
-            value={fields.bio}
+            value={this.getFieldValue('bio')}
             isInvalid={this.isInvalid('bio')}
+            onChange={this.handleFieldChanged}
           />
         </Pane>
 
         <TextInputField
           label="Twitter handle"
           name="twitter"
-          defaultValue={user.twitter}
-          value={fields.twitter}
+          value={this.getFieldValue('twitter')}
           isInvalid={this.isInvalid('twitter')}
           validationMessage={this.getValidationMessage('twitter')}
           onChange={this.handleFieldChanged}
@@ -101,8 +128,7 @@ class ProfileEditor extends Component {
         <TextInputField
           label="GitHub username"
           name="github"
-          defaultValue={user.github}
-          value={fields.github}
+          value={this.getFieldValue('github')}
           isInvalid={this.isInvalid('github')}
           validationMessage={this.getValidationMessage('github')}
           onChange={this.handleFieldChanged}
