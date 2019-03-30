@@ -43,7 +43,7 @@ class Profile extends Component {
   }
 
   updateUser = (user) => {
-    this.setState({ user });
+    this.setState({ user, editingProfile: false });
   }
 
   render() {
