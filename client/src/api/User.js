@@ -5,6 +5,8 @@ class UserAPI extends API {
 
   get = () => fetch(this.ENDPOINT, this.getOptions('get')).then(this.handleResponse);
 
+  getOne = id => fetch(`${this.ENDPOINT}/${id}`, this.getOptions('get')).then(this.handleResponse);
+
   find = (query) => {
     const params = new URLSearchParams();
     params.append('text', query);

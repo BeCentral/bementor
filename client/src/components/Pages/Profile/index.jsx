@@ -5,6 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { Button, Icon } from 'evergreen-ui';
 import { ExternalLink } from '../../UI';
+import {
+  API,
+  IS_LOADING,
+  INACTIVE,
+  HAS_ERRORED
+} from '../../../constants';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
 import ProfileForm from './ProfileForm';
@@ -16,8 +22,21 @@ Modal.setAppElement('#root');
 
 class Profile extends Component {
   state = {
-    editingProfile: false
+    user: null,
+    editingProfile: false,
+    getUserRequestState: IS_LOADING
   };
+
+  componentDidMount() {
+    const { userId } = this.props.match.params;
+    API.user.getOne(userId)
+      .then((rawUser) => {
+        const user = new User(rawUser);
+        document.title = `${user.firstName} ${user.lastName} | BeMentor`;
+        this.setState({ user, getUserRequestState: INACTIVE });
+      })
+      .catch(() => this.setState({ getUserRequestState: HAS_ERRORED }));
+  }
 
   toggleEditor = () => {
     this.setState(prevState => ({ editingProfile: !prevState.editingProfile }));
@@ -28,8 +47,8 @@ class Profile extends Component {
   }
 
   render() {
-    const { editingProfile } = this.state;
-    const { user } = this.props;
+    const { editingProfile, user, getUserRequestState } = this.state;
+    if (getUserRequestState === IS_LOADING) return <p />;
     return (
       <AppContainer>
         <PageContainer className="profile">
@@ -83,7 +102,8 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
-  user: PropTypes.instanceOf(User).isRequired
+  // eslint-disable-next-line
+  match: PropTypes.object.isRequired
 };
 
 export default Profile;
