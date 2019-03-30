@@ -34,8 +34,8 @@ class Profile extends Component {
     return (
       <AppContainer>
         <PageContainer className="profile">
-          <Modal isOpen={editingProfile} onRequestClose={this.toggleEditor} contentLabel="Edit profile">
-            <h2>Update your profile</h2>
+          <Modal overlayClassName="modal-overlay" className="modal" isOpen={editingProfile} onRequestClose={this.toggleEditor} contentLabel="Edit profile">
+            <h2 className="modal__title">Update your profile</h2>
             <ProfileForm user={user} saveUpdates={this.saveUpdates} />
           </Modal>
           <Button iconBefore="edit" className="profile__edit" onClick={this.toggleEditor}>

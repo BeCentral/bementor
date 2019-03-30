@@ -4,7 +4,8 @@ import {
   Pane,
   Label,
   Textarea,
-  TextInputField
+  TextInputField,
+  Button
 } from 'evergreen-ui';
 import User from '../../../models/User';
 
@@ -15,6 +16,7 @@ class ProfileEditor extends Component {
 
   submitEdits = (e) => {
     e.preventDefault();
+    console.log('submitted');
   }
 
   handleFieldChanged = (e) => {
@@ -75,7 +77,7 @@ class ProfileEditor extends Component {
           onChange={this.handleFieldChanged}
         />
 
-        <Pane>
+        <Pane className="modal__form-field">
           <Label className="modal__label" htmlFor="field--bio">About {user.firstName}</Label>
           <Textarea
             id="field--bio"
@@ -105,7 +107,10 @@ class ProfileEditor extends Component {
           validationMessage={this.getValidationMessage('github')}
           onChange={this.handleFieldChanged}
         />
-        <input type="submit" />
+
+        <div className="modal__actions">
+          <Button type="submit" appearance="primary" intent="success">Save profile updates</Button>
+        </div>
       </form>
     );
   }
