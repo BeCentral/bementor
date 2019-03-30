@@ -29,7 +29,7 @@ class ProfileEditor extends Component {
     const { fields } = this.state;
     let passed = true;
     Object.keys(fields).forEach((field) => {
-      const error = this.validate(field, fields[field]);
+      const error = this.validate(field, fields[field].value);
       if (!error) return;
       passed = false;
       fields[field].validationMessage = error;
@@ -37,6 +37,8 @@ class ProfileEditor extends Component {
 
     if (passed) {
       // submit to server
+    } else {
+      this.setState({ fields });
     }
   }
 
@@ -74,11 +76,6 @@ class ProfileEditor extends Component {
     const methodName = `validate${this.toMethodName(fieldName)}`;
     if (!this[methodName]) return null;
     return this[methodName](value);
-  }
-
-  validateFirstName = (value) => {
-    if (!value) return 'First name is required';
-    return null;
   }
 
   render() {
