@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import NProgress from 'nprogress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
-import { Button, Icon } from 'evergreen-ui';
+import { Button, Icon, Badge } from 'evergreen-ui';
 import { ExternalLink } from '../../UI';
 import {
   API,
@@ -53,10 +53,17 @@ class Profile extends Component {
     this.setState({ user, editingProfile: false });
   }
 
+  renderInterest = interest => (
+    <li key={interest}>
+      <Badge color="neutral">{interest}</Badge>
+    </li>
+  );
+
   render() {
     const { editingProfile, user, getUserRequestState } = this.state;
     if (getUserRequestState === IS_LOADING) return <AppContainer />;
 
+    const $interests = user.interests.map(this.renderInterest);
     return (
       <AppContainer>
         <PageContainer className="profile">
@@ -99,7 +106,7 @@ class Profile extends Component {
             <article className="profile__interests">
               <h2>Interests</h2>
               <ul>
-                {user.interests.map(interest => <li key={interest}>{interest}</li>)}
+                {$interests}
               </ul>
             </article>
           </section>

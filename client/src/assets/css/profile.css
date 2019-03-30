@@ -81,3 +81,13 @@
 .profile__about__socials i {
   margin-right: 1rem;
 }
+
+.profile__interests ul {
+  display: flex;
+  padding-left: 0;
+}
+
+.profile__interests ul li {
+  list-style-type: none;
+  margin-right: 1rem;
+}
