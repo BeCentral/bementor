@@ -135,7 +135,10 @@ class ProfileEditor extends Component {
   )
 
   render() {
+    const { updateUserRequestStatus } = this.state;
     const { user } = this.props;
+
+    const isLoading = updateUserRequestStatus === IS_LOADING;
 
     return (
       <form onSubmit={this.submitEdits}>
@@ -159,7 +162,9 @@ class ProfileEditor extends Component {
         {this.renderTextField('GitHub username', 'github')}
 
         <div className="modal__actions">
-          <Button type="submit" appearance="primary" intent="success">Save profile updates</Button>
+          <Button type="submit" appearance="primary" intent="success" isLoading={isLoading}>
+            Save profile updates
+          </Button>
         </div>
       </form>
     );
