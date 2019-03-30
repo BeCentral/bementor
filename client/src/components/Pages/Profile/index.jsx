@@ -32,7 +32,7 @@ class Profile extends Component {
           <Modal isOpen={editingProfile} onRequestClose={this.toggleEditor} contentLabel="Edit profile">
             <ProfileForm user={user} />
           </Modal>
-          <Button iconBefore="edit" intent="default" className="profile__edit" onClick={this.toggleEditor}>
+          <Button iconBefore="edit" className="profile__edit" onClick={this.toggleEditor}>
             Edit your profile
           </Button>
           <div className="profile__subject">

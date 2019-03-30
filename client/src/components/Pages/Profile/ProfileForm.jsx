@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInputField } from 'evergreen-ui';
+import {
+  Pane,
+  Label,
+  Textarea,
+  TextInputField
+} from 'evergreen-ui';
 import User from '../../../models/User';
 
 class ProfileEditor extends Component {
@@ -25,7 +30,7 @@ class ProfileEditor extends Component {
 
   getValidationMessage = (field) => {
     const { fields } = this.state;
-    if (!fields[field]) return '';
+    if (!fields[field]) return null;
     return fields[field].validationMessage;
   }
 
@@ -42,10 +47,63 @@ class ProfileEditor extends Component {
           name="firstName"
           defaultValue={user.firstName}
           value={fields.firstName}
-          isInvalid={!!this.isInvalid('firstName')}
-          validationMessage={!!this.getValidationMessage('firstName')}
+          isInvalid={this.isInvalid('firstName')}
+          validationMessage={this.getValidationMessage('firstName')}
           onChange={this.handleFieldChanged}
           required
+        />
+
+        <TextInputField
+          label="Last name"
+          name="lastName"
+          defaultValue={user.lastName}
+          value={fields.lastName}
+          isInvalid={this.isInvalid('lastName')}
+          validationMessage={this.getValidationMessage('lastName')}
+          onChange={this.handleFieldChanged}
+          required
+        />
+
+        <TextInputField
+          label="Tagline"
+          name="tagline"
+          description="A short description about yourself that will be displayed on the connect page"
+          defaultValue={user.tagline}
+          value={fields.tagline}
+          isInvalid={this.isInvalid('tagline')}
+          validationMessage={this.getValidationMessage('tagline')}
+          onChange={this.handleFieldChanged}
+        />
+
+        <Pane>
+          <Label className="modal__label" htmlFor="field--bio">About {user.firstName}</Label>
+          <Textarea
+            id="field--bio"
+            name="bio"
+            defaultValue={user.bio}
+            value={fields.bio}
+            isInvalid={this.isInvalid('bio')}
+          />
+        </Pane>
+
+        <TextInputField
+          label="Twitter handle"
+          name="twitter"
+          defaultValue={user.twitter}
+          value={fields.twitter}
+          isInvalid={this.isInvalid('twitter')}
+          validationMessage={this.getValidationMessage('twitter')}
+          onChange={this.handleFieldChanged}
+        />
+
+        <TextInputField
+          label="GitHub username"
+          name="github"
+          defaultValue={user.github}
+          value={fields.github}
+          isInvalid={this.isInvalid('github')}
+          validationMessage={this.getValidationMessage('github')}
+          onChange={this.handleFieldChanged}
         />
         <input type="submit" />
       </form>
