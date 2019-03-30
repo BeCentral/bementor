@@ -27,6 +27,9 @@ const User = new mongoose.Schema(
     },
     interests: {
       type: [String]
+    },
+    role: {
+      type: String
     }
   },
   {
