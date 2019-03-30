@@ -5,7 +5,8 @@ import {
   Label,
   Textarea,
   TextInputField,
-  Button
+  Button,
+  TagInput
 } from 'evergreen-ui';
 import {
   API,
@@ -67,6 +68,10 @@ class ProfileEditor extends Component {
     this.setFieldValue(e.currentTarget.name, e.currentTarget.value);
   }
 
+  handleInterestsChanged = (values) => {
+    this.setFieldValue('interests', values);
+  }
+
   setFieldValue = (fieldName, fieldValue) => {
     this.setState(prevState => ({
       fields: {
@@ -81,7 +86,10 @@ class ProfileEditor extends Component {
 
   getFieldValue = (field) => {
     const { fields } = this.state;
-    if (!fields[field]) return '';
+    if (!fields[field]) {
+      if (field === 'interests') return [];
+      return '';
+    }
     return fields[field].value;
   }
 
@@ -161,9 +169,22 @@ class ProfileEditor extends Component {
         {this.renderTextField('Twitter handle', 'twitter')}
         {this.renderTextField('GitHub username', 'github')}
 
+
+        <Pane className="modal__form-field">
+          <Label className="modal__label" htmlFor="field--interests">Interests</Label>
+          <TagInput
+            id="field--interests"
+            name="interests"
+            inputProps={{ placeholder: 'Add interests...' }}
+            values={this.getFieldValue('interests')}
+            width="100%"
+            onChange={this.handleInterestsChanged}
+          />
+        </Pane>
+
         <div className="modal__actions">
           <Button type="submit" appearance="primary" intent="success" isLoading={isLoading}>
-            Save profile updates
+            Save profile
           </Button>
         </div>
       </form>
