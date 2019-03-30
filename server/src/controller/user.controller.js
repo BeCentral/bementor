@@ -10,6 +10,15 @@ exports.findAll = (req, res) => {
     });
 };
 
+exports.findOne = (req, res) => {
+  const { id } = req.params;
+  User.findById(id)
+    .then((user) => { res.send(user); })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
 exports.search = (req, res) => {
   const query = req.query.text;
 
