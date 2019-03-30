@@ -51,7 +51,7 @@ class ProfileEditor extends Component {
     });
 
     this.setState({ updateUserRequestStatus: IS_LOADING });
-    API.user.update(user)
+    return API.user.update(user)
       .then((updatedUser) => {
         this.setState({ updateUserRequestStatus: INACTIVE });
         handleUserUpdated(new User(updatedUser));
