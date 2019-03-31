@@ -6,10 +6,8 @@ ReactModal.setAppElement('#root');
 
 const Modal = ({ children, title, ...rest }) => (
   <ReactModal overlayClassName="modal-overlay" className="modal" {...rest}>
-    <div className="modal__content">
-      <h2 className="modal__title">{title}</h2>
-      {children}
-    </div>
+    <h2 className="modal__title">{title}</h2>
+    {children}
   </ReactModal>
 );
 
