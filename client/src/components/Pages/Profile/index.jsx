@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'react-modal';
 import NProgress from 'nprogress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { Button, Icon, Badge } from 'evergreen-ui';
-import { ExternalLink } from '../../UI';
+import { ExternalLink, Modal } from '../../UI';
 import {
   API,
   IS_LOADING,
@@ -18,8 +17,6 @@ import ProfileForm from './ProfileForm';
 import User from '../../../models/User';
 
 import '../../../assets/css/profile.css';
-
-Modal.setAppElement('#root');
 
 class Profile extends Component {
   state = {
@@ -67,8 +64,7 @@ class Profile extends Component {
     return (
       <AppContainer>
         <PageContainer className="profile">
-          <Modal overlayClassName="modal-overlay" className="modal" isOpen={editingProfile} onRequestClose={this.toggleEditor} contentLabel="Edit profile">
-            <h2 className="modal__title">Update your profile</h2>
+          <Modal title="Update your profile" isOpen={editingProfile} onRequestClose={this.toggleEditor} contentLabel="Edit profile">
             <ProfileForm user={user} handleUserUpdated={this.updateUser} />
           </Modal>
           <Button iconBefore="edit" className="profile__edit" onClick={this.toggleEditor}>

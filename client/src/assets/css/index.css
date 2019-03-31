@@ -83,6 +83,12 @@ a.github {
   border-radius: .5rem;
 }
 
+.modal__content {
+  width: 100%;
+  min-height: 100%;
+  overflow-y: scroll;
+}
+
 .modal__form-field {
   margin-bottom: 2.4rem;
 }
