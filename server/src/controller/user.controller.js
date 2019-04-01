@@ -13,8 +13,6 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const { id } = req.params;
   User.findById(id)
-    .select('-password')
-    .select('-passwordResetToken')
     .then((user) => { res.send(user); })
     .catch((err) => {
       res.status(500).send({ message: err.message });
@@ -40,8 +38,6 @@ exports.search = (req, res) => {
 exports.update = (req, res) => {
   const { id } = req.params;
   User.findOneAndUpdate({ _id: id }, req.body, { new: true })
-    .select('-password')
-    .select('-passwordResetToken')
     .then(user => res.send(user))
     .catch(err => res.status(500).send({ message: err.message }));
 };
