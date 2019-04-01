@@ -1,5 +1,5 @@
 class RequestState {
-  constructor(initialize = true) {
+  constructor(initialize = false) {
     this.isLoading = initialize;
     this.hasErrored = false;
   }
