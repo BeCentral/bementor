@@ -6,13 +6,14 @@ import '../../assets/css/header.css';
 const Header = () => (
   <header className="app-header">
     <div className="app-header__top">
-      <h1>BeMentor.</h1>
+      <h1><Link to="/">BeMentor.</Link></h1>
     </div>
     <nav className="app-header__navigation">
       <ul>
         <li><Link to="/connect">Connect</Link></li>
         <li><Link to="#">Contact</Link></li>
         <li><Link to="#">Inbox</Link></li>
+        <li><Link to="/profile/5c851da63fc52b74c942680d">Profile</Link></li>
       </ul>
     </nav>
   </header>

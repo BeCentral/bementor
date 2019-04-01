@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import AppContainer from './Containers/AppContainer';
-import PageContainer from './Containers/PageContainer';
+import AppContainer from '../../Containers/AppContainer';
+import PageContainer from '../../Containers/PageContainer';
 import SearchBar from './SearchBar';
-import { getUsers, findUsers } from '../api/users';
 import MiniUser from './MiniUser';
-import Wrapper from './Containers/Wrapper';
+import Wrapper from '../../Containers/Wrapper';
+import { API } from '../../../constants';
 
 class Users extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class Users extends Component {
   }
 
   async componentDidMount() {
-    const users = await getUsers();
+    const users = await API.user.get();
 
     this.setState({
       users
@@ -23,7 +23,7 @@ class Users extends Component {
   }
 
   search = async (query) => {
-    const users = await findUsers(query);
+    const users = await API.user.search(query);
     this.setState({
       users
     });

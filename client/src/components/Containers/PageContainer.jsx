@@ -3,14 +3,22 @@ import PropTypes from 'prop-types';
 
 import '../../assets/css/page-container.css';
 
-const PageContainer = props => (
-  <div className="page-container">
-    {props.children}
-  </div>
-);
+const PageContainer = (props) => {
+  const classes = props.className;
+  return (
+    <div className={`page-container ${classes}`}>
+      {props.children}
+    </div>
+  );
+};
+
+PageContainer.defaultProps = {
+  className: ''
+};
 
 PageContainer.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string
 };
 
 export default PageContainer;

@@ -7,7 +7,11 @@ require('dotenv').config();
 
 mongoose.Promise = global.Promise;
 mongoose
-  .connect(process.env.MONGODB_URL, { useNewUrlParser: true })
+  .connect(process.env.MONGODB_URL, {
+    useFindAndModify: false,
+    useCreateIndex: true,
+    useNewUrlParser: true
+  })
   .then(() => { console.log('Database connection established'); })
   .catch((err) => {
     console.error(`Database error, exiting. Stack trace:\n${err}`);
@@ -20,11 +24,10 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-  res.json({ message: 'API ready' });
-});
+const router = express.Router();
+app.use('/api', router);
 
-require('./src/route/user.route')(app);
+require('./src/route/user.route')(router);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {

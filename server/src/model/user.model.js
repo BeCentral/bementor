@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema(
+const User = new mongoose.Schema(
   {
     firstName: {
       type: String,
@@ -10,13 +10,29 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    about: {
-      type: String,
-      required: true
+    bio: {
+      type: String
+    },
+    tagline: {
+      type: String
+    },
+    location: {
+      type: String
+    },
+    twitter: {
+      type: String
+    },
+    github: {
+      type: String
     },
     interests: {
-      type: [String],
-      required: false
+      type: [String]
+    },
+    role: {
+      type: String
+    },
+    picture: {
+      type: String
     }
   },
   {
@@ -24,8 +40,8 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.index({
-  firstName: 'text', lastName: 'text', about: 'text', interests: 'text'
+User.index({
+  firstName: 'text', lastName: 'text', bio: 'text', interests: 'text'
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', User);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import '../assets/css/search.css';
+
+import '../../../assets/css/search.css';
 
 class SearchBar extends Component {
   handleSubmit = (event) => {

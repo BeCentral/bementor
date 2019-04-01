@@ -10,6 +10,15 @@ exports.findAll = (req, res) => {
     });
 };
 
+exports.findOne = (req, res) => {
+  const { id } = req.params;
+  User.findById(id)
+    .then((user) => { res.send(user); })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
 exports.search = (req, res) => {
   const query = req.query.text;
 
@@ -24,4 +33,11 @@ exports.search = (req, res) => {
         message: err.message
       });
     });
+};
+
+exports.update = (req, res) => {
+  const { id } = req.params;
+  User.findOneAndUpdate({ _id: id }, req.body, { new: true })
+    .then(user => res.send(user))
+    .catch(err => res.status(500).send({ message: err.message }));
 };
