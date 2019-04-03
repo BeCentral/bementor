@@ -8,19 +8,14 @@ import {
   Button,
   TagInput
 } from 'evergreen-ui';
-import {
-  API,
-  IS_LOADING,
-  INACTIVE,
-  HAS_ERRORED
-} from '../../../constants';
+import { API } from '../../../constants';
 import User from '../../../models/User';
+import RequestState from '../../../models/RequestState';
 
 class ProfileEditor extends Component {
   state = {
     fields: {},
-    updateUserRequestStatus: INACTIVE,
-    updateRequestError: null
+    updateUserRequest: new RequestState()
   };
 
   componentDidMount() {
@@ -51,16 +46,16 @@ class ProfileEditor extends Component {
       user[key] = fields[key].value;
     });
 
-    this.setState({ updateUserRequestStatus: IS_LOADING });
+    const { updateUserRequest } = this.state;
+    this.setState({ updateUserRequest: updateUserRequest.start() });
     return API.user.update(user)
       .then((updatedUser) => {
-        this.setState({ updateUserRequestStatus: INACTIVE });
+        this.setState({ updateUserRequest: updateUserRequest.finish() });
         handleUserUpdated(new User(updatedUser));
       })
       .catch((reason) => {
         // TODO show reason
-        console.log(reason);
-        this.setState({ updateUserRequestStatus: HAS_ERRORED });
+        this.setState({ updateUserRequest: updateUserRequest.error(reason) });
       });
   }
 
@@ -143,10 +138,8 @@ class ProfileEditor extends Component {
   )
 
   render() {
-    const { updateUserRequestStatus } = this.state;
+    const { updateUserRequest: { isLoading } } = this.state;
     const { user } = this.props;
-
-    const isLoading = updateUserRequestStatus === IS_LOADING;
 
     return (
       <form onSubmit={this.submitEdits}>

@@ -5,16 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { Button, Icon, Badge } from 'evergreen-ui';
 import { ExternalLink, Modal } from '../../UI';
-import {
-  API,
-  IS_LOADING,
-  INACTIVE,
-  HAS_ERRORED
-} from '../../../constants';
+import { API } from '../../../constants';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
 import ProfileForm from './ProfileForm';
 import User from '../../../models/User';
+import RequestState from '../../../models/RequestState';
 
 import '../../../assets/css/profile.css';
 
@@ -22,7 +18,7 @@ class Profile extends Component {
   state = {
     user: null,
     editingProfile: false,
-    getUserRequestState: IS_LOADING
+    getUserRequest: new RequestState(true)
   };
 
   constructor(props) {
@@ -32,13 +28,17 @@ class Profile extends Component {
 
   componentDidMount() {
     const { userId } = this.props.match.params;
+    const { getUserRequest } = this.state;
+
     API.user.getOne(userId)
       .then((rawUser) => {
         const user = new User(rawUser);
         document.title = `${user.firstName} ${user.lastName} | BeMentor`;
-        this.setState({ user, getUserRequestState: INACTIVE });
+        this.setState({ user, getUserRequest: getUserRequest.finish() });
       })
-      .catch(() => this.setState({ getUserRequestState: HAS_ERRORED }))
+      .catch((reason) => {
+        this.setState({ getUserRequest: getUserRequest.error(reason) });
+      })
       .finally(() => NProgress.done());
   }
 
@@ -57,8 +57,8 @@ class Profile extends Component {
   );
 
   render() {
-    const { editingProfile, user, getUserRequestState } = this.state;
-    if (getUserRequestState === IS_LOADING) return <AppContainer />;
+    const { editingProfile, user, getUserRequest } = this.state;
+    if (getUserRequest.isLoading) return <AppContainer />;
 
     const $interests = user.interests.map(this.renderInterest);
     return (
