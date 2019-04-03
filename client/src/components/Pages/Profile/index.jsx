@@ -44,11 +44,9 @@ class Profile extends Component {
 
   openEditor = () => this.setState({ editingProfile: true });
 
-  closeEditor = () => this.setState({ editingProfile: false });
+  cancelProfileUpdate = () => this.setState({ editingProfile: false });
 
-  updateUser = (user) => {
-    this.setState({ user, editingProfile: false });
-  }
+  updateUser = user => this.setState({ user, editingProfile: false });
 
   renderInterest = interest => (
     <li key={interest}>
@@ -66,9 +64,9 @@ class Profile extends Component {
         <PageContainer className="profile">
           <ProfileForm
             isShown={editingProfile}
-            closeEditor={this.closeEditor}
             user={user}
             handleUserUpdated={this.updateUser}
+            cancelProfileUpdate={this.cancelProfileUpdate}
           />
           <Button iconBefore="edit" className="profile__edit" onClick={this.openEditor}>
             Edit your profile

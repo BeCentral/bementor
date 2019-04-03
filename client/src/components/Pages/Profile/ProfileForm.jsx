@@ -27,11 +27,14 @@ class ProfileEditor extends Component {
 
   toMethodName = name => name.charAt(0).toUpperCase() + name.slice(1);
 
-  stopLoading = () => this.setState(prevState => ({
-    updateUserRequest: prevState.updateUserRequest.finish()
-  }));
+  cancelProfileUpdate = () => {
+    const { updateUserRequest } = this.state;
+    const { cancelProfileUpdate } = this.props;
+    this.setState({ updateUserRequest: updateUserRequest.finish() });
+    cancelProfileUpdate();
+  }
 
-  submitEdits = () => {
+  submitEdits = (closeEditor) => {
     const { fields } = this.state;
     let passed = true;
     Object.keys(fields).forEach((field) => {
@@ -43,7 +46,7 @@ class ProfileEditor extends Component {
 
     if (!passed) return this.setState({ fields });
 
-    const { user, handleUserUpdated, closeEditor } = this.props;
+    const { user, handleUserUpdated } = this.props;
     Object.keys(fields).forEach((key) => {
       user[key] = fields[key].value;
     });
@@ -141,16 +144,16 @@ class ProfileEditor extends Component {
 
   render() {
     const { updateUserRequest: { isLoading } } = this.state;
-    const { user } = this.props;
+    const { user, isShown } = this.props;
 
     return (
       <Dialog
         title="Update your profile"
         confirmLabel="Save profile"
+        isShown={isShown}
         onConfirm={this.submitEdits}
         isConfirmLoading={isLoading}
-        onCloseComplete={this.stopLoading}
-        {...this.props}
+        onCloseComplete={this.cancelProfileUpdate}
       >
         <form onSubmit={this.submitEdits}>
           {this.renderTextField('First name', 'firstName', true)}
@@ -193,7 +196,7 @@ class ProfileEditor extends Component {
 ProfileEditor.propTypes = {
   user: PropTypes.instanceOf(User).isRequired,
   handleUserUpdated: PropTypes.func.isRequired,
-  closeEditor: PropTypes.func.isRequired
+  isShown: PropTypes.bool.isRequired
 };
 
 export default ProfileEditor;
