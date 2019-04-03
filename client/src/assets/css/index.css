@@ -61,12 +61,3 @@ a.twitter {
 a.github {
   color: #333;
 }
-
-.modal__form-field {
-  margin-bottom: 2.4rem;
-}
-
-.modal__label {
-  display: block;
-  margin-bottom: .4rem;
-}

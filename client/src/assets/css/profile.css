@@ -91,3 +91,12 @@
   list-style-type: none;
   margin-right: 1rem;
 }
+
+.profile-form__label {
+  display: block;
+  margin-bottom: .4rem;
+}
+
+.profile-form__field {
+  margin-bottom: 2.4rem;
+}

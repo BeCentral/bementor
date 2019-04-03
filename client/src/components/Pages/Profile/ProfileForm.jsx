@@ -161,8 +161,8 @@ class ProfileEditor extends Component {
           {this.renderTextField('Tagline', 'tagline', false, 'A short description about yourself that will be displayed on the connect page')}
           {this.renderTextField('Location', 'location')}
 
-          <Pane className="modal__form-field">
-            <Label className="modal__label" htmlFor="field--bio">About {user.firstName}</Label>
+          <Pane className="profile-form__field">
+            <Label className="profile-form__label" htmlFor="field--bio">About {user.firstName}</Label>
             <Textarea
               id="field--bio"
               name="bio"
@@ -176,8 +176,8 @@ class ProfileEditor extends Component {
           {this.renderTextField('GitHub username', 'github')}
 
 
-          <Pane className="modal__form-field">
-            <Label className="modal__label" htmlFor="field--interests">Interests</Label>
+          <Pane className="profile-form__field">
+            <Label className="profile-form__label" htmlFor="field--interests">Interests</Label>
             <TagInput
               id="field--interests"
               name="interests"
