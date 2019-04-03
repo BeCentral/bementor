@@ -14,8 +14,8 @@ const Header = () => (
         {/* <li><Link to="#">Inbox</Link></li>--> */}
         {/* <li><Link to="/profile/5c851da63fc52b74c942680d">Profile</Link></li> */}
         <li>|</li>
-        <li><Link to="/login">Login</Link></li>
-        <li><Link to="/register">Register</Link></li>
+        <li><button type="button" className="button--link">Log in</button></li>
+        <li><button type="button" className="button--link">Register</button></li>
       </ul>
     </nav>
   </header>

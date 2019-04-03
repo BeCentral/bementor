@@ -52,6 +52,7 @@ a:active {
 
 a:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 a.twitter {
@@ -60,4 +61,17 @@ a.twitter {
 
 a.github {
   color: #333;
+}
+
+.button--link {
+  color: #fff;
+  background: inherit;
+  border: none;
+  text-transform: uppercase;
+  outline: 0;
+}
+
+.button--link:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
