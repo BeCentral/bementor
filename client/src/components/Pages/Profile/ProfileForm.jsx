@@ -47,18 +47,15 @@ class ProfileEditor extends Component {
     });
 
     const { updateUserRequest } = this.state;
-    updateUserRequest.start();
-    this.setState({ updateUserRequest });
+    this.setState({ updateUserRequest: updateUserRequest.start() });
     return API.user.update(user)
       .then((updatedUser) => {
-        updateUserRequest.finish();
-        this.setState({ updateUserRequest });
+        this.setState({ updateUserRequest: updateUserRequest.finish() });
         handleUserUpdated(new User(updatedUser));
       })
       .catch((reason) => {
         // TODO show reason
-        updateUserRequest.error(reason);
-        this.setState({ updateUserRequest });
+        this.setState({ updateUserRequest: updateUserRequest.error(reason) });
       });
   }
 

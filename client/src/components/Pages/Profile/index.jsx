@@ -34,12 +34,10 @@ class Profile extends Component {
       .then((rawUser) => {
         const user = new User(rawUser);
         document.title = `${user.firstName} ${user.lastName} | BeMentor`;
-        getUserRequest.finish();
-        this.setState({ user });
+        this.setState({ user, getUserRequest: getUserRequest.finish() });
       })
       .catch((reason) => {
-        getUserRequest.error(reason);
-        this.setState({ getUserRequest });
+        this.setState({ getUserRequest: getUserRequest.error(reason) });
       })
       .finally(() => NProgress.done());
   }
