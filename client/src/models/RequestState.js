@@ -6,16 +6,19 @@ class RequestState {
 
   start() {
     this.isLoading = true;
+    return this;
   }
 
   finish(reason) {
     this.isLoading = false;
     this.message = reason;
+    return this;
   }
 
   error(reason) {
     this.hasErrored = true;
     this.message = reason;
+    return this;
   }
 }
 
