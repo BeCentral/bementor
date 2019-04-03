@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {
   Pane,
   Label,
+  Dialog,
   Textarea,
   TextInputField,
-  Button,
   TagInput
 } from 'evergreen-ui';
 import { API } from '../../../constants';
@@ -25,11 +25,13 @@ class ProfileEditor extends Component {
     });
   }
 
-  toMethodName = name => name.charAt(0).toUpperCase() + name.slice(1)
+  toMethodName = name => name.charAt(0).toUpperCase() + name.slice(1);
 
-  submitEdits = (e) => {
-    e.preventDefault();
+  stopLoading = () => this.setState(prevState => ({
+    updateUserRequest: prevState.updateUserRequest.finish()
+  }));
 
+  submitEdits = () => {
     const { fields } = this.state;
     let passed = true;
     Object.keys(fields).forEach((field) => {
@@ -41,7 +43,7 @@ class ProfileEditor extends Component {
 
     if (!passed) return this.setState({ fields });
 
-    const { user, handleUserUpdated } = this.props;
+    const { user, handleUserUpdated, closeEditor } = this.props;
     Object.keys(fields).forEach((key) => {
       user[key] = fields[key].value;
     });
@@ -50,8 +52,8 @@ class ProfileEditor extends Component {
     this.setState({ updateUserRequest: updateUserRequest.start() });
     return API.user.update(user)
       .then((updatedUser) => {
-        this.setState({ updateUserRequest: updateUserRequest.finish() });
         handleUserUpdated(new User(updatedUser));
+        closeEditor();
       })
       .catch((reason) => {
         // TODO show reason
@@ -142,52 +144,56 @@ class ProfileEditor extends Component {
     const { user } = this.props;
 
     return (
-      <form onSubmit={this.submitEdits}>
-        {this.renderTextField('First name', 'firstName', true)}
-        {this.renderTextField('Last name', 'lastName', true)}
-        {this.renderTextField('Tagline', 'tagline', false, 'A short description about yourself that will be displayed on the connect page')}
-        {this.renderTextField('Location', 'location')}
+      <Dialog
+        title="Update your profile"
+        confirmLabel="Save profile"
+        onConfirm={this.submitEdits}
+        isConfirmLoading={isLoading}
+        onCloseComplete={this.stopLoading}
+        {...this.props}
+      >
+        <form onSubmit={this.submitEdits}>
+          {this.renderTextField('First name', 'firstName', true)}
+          {this.renderTextField('Last name', 'lastName', true)}
+          {this.renderTextField('Tagline', 'tagline', false, 'A short description about yourself that will be displayed on the connect page')}
+          {this.renderTextField('Location', 'location')}
 
-        <Pane className="modal__form-field">
-          <Label className="modal__label" htmlFor="field--bio">About {user.firstName}</Label>
-          <Textarea
-            id="field--bio"
-            name="bio"
-            value={this.getFieldValue('bio')}
-            isInvalid={this.isInvalid('bio')}
-            onChange={this.handleFieldChanged}
-          />
-        </Pane>
+          <Pane className="modal__form-field">
+            <Label className="modal__label" htmlFor="field--bio">About {user.firstName}</Label>
+            <Textarea
+              id="field--bio"
+              name="bio"
+              value={this.getFieldValue('bio')}
+              isInvalid={this.isInvalid('bio')}
+              onChange={this.handleFieldChanged}
+            />
+          </Pane>
 
-        {this.renderTextField('Twitter handle', 'twitter')}
-        {this.renderTextField('GitHub username', 'github')}
+          {this.renderTextField('Twitter handle', 'twitter')}
+          {this.renderTextField('GitHub username', 'github')}
 
 
-        <Pane className="modal__form-field">
-          <Label className="modal__label" htmlFor="field--interests">Interests</Label>
-          <TagInput
-            id="field--interests"
-            name="interests"
-            inputProps={{ placeholder: 'Add interests...' }}
-            values={this.getFieldValue('interests')}
-            width="100%"
-            onChange={this.handleInterestsChanged}
-          />
-        </Pane>
-
-        <div className="modal__actions">
-          <Button type="submit" appearance="primary" intent="success" isLoading={isLoading}>
-            Save profile
-          </Button>
-        </div>
-      </form>
+          <Pane className="modal__form-field">
+            <Label className="modal__label" htmlFor="field--interests">Interests</Label>
+            <TagInput
+              id="field--interests"
+              name="interests"
+              inputProps={{ placeholder: 'Add interests...' }}
+              values={this.getFieldValue('interests')}
+              width="100%"
+              onChange={this.handleInterestsChanged}
+            />
+          </Pane>
+        </form>
+      </Dialog>
     );
   }
 }
 
 ProfileEditor.propTypes = {
   user: PropTypes.instanceOf(User).isRequired,
-  handleUserUpdated: PropTypes.func.isRequired
+  handleUserUpdated: PropTypes.func.isRequired,
+  closeEditor: PropTypes.func.isRequired
 };
 
 export default ProfileEditor;

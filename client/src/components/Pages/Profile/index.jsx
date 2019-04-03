@@ -4,7 +4,7 @@ import NProgress from 'nprogress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { Button, Icon, Badge } from 'evergreen-ui';
-import { ExternalLink, Modal } from '../../UI';
+import { ExternalLink } from '../../UI';
 import { API } from '../../../constants';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
@@ -42,9 +42,9 @@ class Profile extends Component {
       .finally(() => NProgress.done());
   }
 
-  toggleEditor = () => {
-    this.setState(prevState => ({ editingProfile: !prevState.editingProfile }));
-  }
+  openEditor = () => this.setState({ editingProfile: true });
+
+  closeEditor = () => this.setState({ editingProfile: false });
 
   updateUser = (user) => {
     this.setState({ user, editingProfile: false });
@@ -64,10 +64,13 @@ class Profile extends Component {
     return (
       <AppContainer>
         <PageContainer className="profile">
-          <Modal title="Update your profile" isOpen={editingProfile} onRequestClose={this.toggleEditor} contentLabel="Edit profile">
-            <ProfileForm user={user} handleUserUpdated={this.updateUser} />
-          </Modal>
-          <Button iconBefore="edit" className="profile__edit" onClick={this.toggleEditor}>
+          <ProfileForm
+            isShown={editingProfile}
+            closeEditor={this.closeEditor}
+            user={user}
+            handleUserUpdated={this.updateUser}
+          />
+          <Button iconBefore="edit" className="profile__edit" onClick={this.openEditor}>
             Edit your profile
           </Button>
           <div className="profile__subject">
