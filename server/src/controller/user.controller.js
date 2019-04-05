@@ -1,4 +1,3 @@
-const passport = require('passport');
 const User = require('../model/user.model');
 const { hash, compareHash } = require('../lib/util');
 const { createToken } = require('../lib/auth');
