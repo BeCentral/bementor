@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, TextInputField } from 'evergreen-ui';
-import { API } from '../../../constants';
+import { API, cookies } from '../../../constants';
 import User from '../../../models/User';
 import RequestState from '../../../models/RequestState';
 
@@ -18,6 +18,10 @@ class RegistrationForm extends Component {
       .then((response) => {
         const { token } = response;
         delete response.token;
+        cookies.set('auth', token, {
+          secure: true,
+          httpOnly: true
+        });
         const user = new User(response);
         this.props.finish();
       });
