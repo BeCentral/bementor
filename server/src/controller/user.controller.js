@@ -2,6 +2,8 @@ const User = require('../model/user.model');
 const { hash, compareHash } = require('../lib/util');
 const { createToken } = require('../lib/auth');
 
+const cookieIsSecure = process.env.ENVIRONMENT === 'production';
+
 exports.findAll = (req, res) => {
   User.find()
     .then((users) => { res.send(users); })
@@ -53,7 +55,10 @@ exports.login = (req, res) => {
       const user = foundUser.toObject();
       delete user.password;
       const token = createToken(user);
-      return res.status(200).send({ ...user, token });
+      return res
+        .status(200)
+        .cookie('jwt', token, { httpOnly: true, secure: cookieIsSecure })
+        .send(user);
     })
     .catch(err => res.status(500).send({ message: err.message }));
 };

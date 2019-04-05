@@ -3,19 +3,18 @@ const passportJWT = require('passport-jwt');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user.model');
 
-const { ExtractJwt } = passportJWT;
 const JwtStrategy = passportJWT.Strategy;
 
 const { JWT_SECRET } = process.env;
 
 const authOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: req => ((req && req.cookies) ? req.cookies.jwt : null),
   secretOrKey: JWT_SECRET
 };
 
 const jwtAuth = new JwtStrategy(authOptions, (payload, done) => {
   User.findById(payload.sub)
-    .then(user => done(null, user.toObject()))
+    .then(user => done(null, user))
     .catch(err => done(err, null));
 });
 

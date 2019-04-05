@@ -24,11 +24,8 @@ const app = express();
 const whitelist = [process.env.CLIENT_URL, 'https://bementor.be'];
 const corsOptions = {
   origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
+    if (whitelist.indexOf(origin) !== -1) callback(null, true);
+    else callback(new Error('Not allowed by CORS'));
   },
   credentials: true
 };
