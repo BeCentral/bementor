@@ -11,12 +11,14 @@ class RegistrationForm extends Component {
     loginRequest: new RequestState()
   }
 
-  login = () => {
+  login = (closeForm) => {
     const email = this.emailNode.value;
     const password = this.passwordNode.value;
+    const { loginRequest } = this.state;
 
+    this.setState({ loginRequest: loginRequest.start() });
     API.user.login({ email, password })
-      .then((response) => {
+      .then(async (response) => {
         const { token } = response;
         delete response.token;
         cookies.set('auth', token, {
@@ -25,9 +27,19 @@ class RegistrationForm extends Component {
         });
         const user = new User(response);
         this.context.setAuthenticatedUser(user);
-        this.props.finish();
+        closeForm();
+      })
+      .catch((err) => {
+        // TODO show reason
+        this.setState({ loginRequest: loginRequest.error(err) });
       });
   };
+
+  exitForm = () => {
+    const { loginRequest } = this.state;
+    this.setState({ loginRequest: loginRequest.finish() });
+    this.props.finish();
+  }
 
   render() {
     const { isLoading } = this.state.loginRequest;
@@ -39,7 +51,7 @@ class RegistrationForm extends Component {
         isShown
         onConfirm={this.login}
         isConfirmLoading={isLoading}
-        onCloseComplete={this.props.cancel}
+        onCloseComplete={this.exitForm}
       >
         <form>
           <TextInputField
@@ -65,7 +77,6 @@ class RegistrationForm extends Component {
 RegistrationForm.contextType = AuthContext;
 
 RegistrationForm.propTypes = {
-  cancel: PropTypes.func.isRequired,
   finish: PropTypes.func.isRequired
 };
 

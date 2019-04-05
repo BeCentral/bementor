@@ -35,7 +35,7 @@ class Header extends Component {
           <RegistrationForm cancel={this.stopRegistration} finish={this.stopRegistration} />
         )}
         {isLoggingIn && (
-          <LoginForm cancel={this.stopLogin} finish={this.stopLogin} />
+          <LoginForm finish={this.stopLogin} />
         )}
         <header className="app-header">
           <div className="app-header__top">
