@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import LoginForm from '../Pages/Auth/LoginForm';
 import RegistrationForm from '../Pages/Auth/RegistrationForm';
 
 import '../../assets/css/header.css';
@@ -18,7 +19,7 @@ class Header extends Component {
     this.setState({ isRegistering: true });
   }
 
-  cancelLogin = () => {
+  stopLogin = () => {
     this.setState({ isLoggingIn: false });
   }
 
@@ -32,6 +33,9 @@ class Header extends Component {
       <>
         {isRegistering && (
           <RegistrationForm cancel={this.stopRegistration} finish={this.stopRegistration} />
+        )}
+        {isLoggingIn && (
+          <LoginForm cancel={this.stopLogin} finish={this.stopLogin} />
         )}
         <header className="app-header">
           <div className="app-header__top">
