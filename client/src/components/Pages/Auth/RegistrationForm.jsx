@@ -3,13 +3,37 @@ import PropTypes from 'prop-types';
 import { Dialog, TextInputField } from 'evergreen-ui';
 
 class RegistrationForm extends Component {
-  constructor(props) {
-    super(props);
-    const fields = ['email', 'firstName', 'lastName', 'password', 'passwordConfirmation'];
-    this.state = fields.reduce((state, fieldName) => {
-      state.fields[fieldName] = { value: '', validationMessage: null };
-      return state;
-    }, { fields: {} });
+  state = {
+    fields: {
+      email: {
+        label: 'Email',
+        name: 'email',
+        required: true,
+        description: 'This is purely for account recovery purposes. You will not receive any promotional emails.'
+      },
+      firstName: {
+        label: 'First name',
+        name: 'firstName',
+        required: true
+      },
+      lastName: {
+        label: 'Last name',
+        name: 'lastName',
+        required: true
+      },
+      password: {
+        label: 'Password',
+        name: 'password',
+        required: true,
+        type: 'password'
+      },
+      passwordConfirmation: {
+        label: 'Confirm password',
+        name: 'passwordConfirmation',
+        required: true,
+        type: 'password'
+      }
+    }
   }
 
   register = () => {
@@ -57,25 +81,28 @@ class RegistrationForm extends Component {
     return '';
   }
 
-  renderField = (label, fieldName, isRequired = false, type = 'text', description = null) => {
+  renderField = (fieldName) => {
     const field = this.state.fields[fieldName];
     return (
       <TextInputField
-        label={label}
+        key={fieldName}
+        label={field.label}
         name={fieldName}
-        value={field.value}
+        value={field.value || ''}
         isInvalid={!!field.validationMessage}
-        validationMessage={field.validationMessage}
+        validationMessage={field.validationMessage || null}
         onChange={this.handleFieldChanged}
-        required={isRequired}
-        type={type}
-        description={description}
+        required={field.required || false}
+        type={field.type || 'text'}
+        description={field.description || null}
       />
     );
   }
 
   render() {
     const isLoading = false;
+    const $fields = Object.keys(this.state.fields).map(this.renderField);
+
     return (
       <Dialog
         title="Register for BeMentor"
@@ -84,16 +111,8 @@ class RegistrationForm extends Component {
         onConfirm={this.validateFields}
         isConfirmLoading={isLoading}
         onCloseComplete={this.props.cancel}
-        isInvalid={!!this.validateEmail()}
-        validationMessage={this.validateEmail()}
       >
-        <form>
-          {this.renderField('Email', 'email', true, 'This is purely for account recovery purposes. You will not receive any promotional emails.')}
-          {this.renderField('First name', 'firstName', true)}
-          {this.renderField('Last name', 'lastName', true)}
-          {this.renderField('Password', 'password', true, 'password')}
-          {this.renderField('Confirm password', 'passwordConfirmation', true, 'password')}
-        </form>
+        <form>{$fields}</form>
       </Dialog>
     );
   }
