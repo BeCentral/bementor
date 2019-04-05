@@ -22,7 +22,7 @@ class Header extends Component {
     this.setState({ isLoggingIn: false });
   }
 
-  cancelRegistration = () => {
+  stopRegistration = () => {
     this.setState({ isRegistering: false });
   }
 
@@ -30,7 +30,9 @@ class Header extends Component {
     const { isRegistering, isLoggingIn } = this.state;
     return (
       <>
-        {isRegistering && <RegistrationForm cancel={this.cancelRegistration} />}
+        {isRegistering && (
+          <RegistrationForm cancel={this.stopRegistration} finish={this.stopRegistration} />
+        )}
         <header className="app-header">
           <div className="app-header__top">
             <h1><Link to="/">BeMentor.</Link></h1>

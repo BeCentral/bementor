@@ -14,6 +14,8 @@ class UserAPI extends API {
   }
 
   update = user => fetch(`${this.ENDPOINT}/${user._id}`, this.getOptions('patch', user)).then(this.handleResponse);
+
+  register = user => fetch(`${this.ENDPOINT}/register`, this.getOptions('post', user)).then(this.handleResponse);
 }
 
 export default UserAPI;

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, TextInputField } from 'evergreen-ui';
+import { API } from '../../../constants';
+import RequestState from '../../../models/RequestState';
 
 class RegistrationForm extends Component {
   state = {
@@ -33,11 +35,29 @@ class RegistrationForm extends Component {
         required: true,
         type: 'password'
       }
-    }
+    },
+    createUserRequest: new RequestState()
   }
 
   register = () => {
+    const { fields, createUserRequest } = this.state;
 
+    const user = {};
+    Object.keys(fields).forEach((key) => {
+      user[key] = fields[key].value;
+    });
+
+    this.setState({ createUserRequest: createUserRequest.start() });
+    API.user.register(user)
+      .then((user) => {
+        // TODO show success
+        this.setState({ createUserRequest: createUserRequest.finish('Account registered successfully! You may now log in') });
+        this.props.finish();
+      })
+      .catch((reason) => {
+        // TODO show error
+        this.setState({ createUserRequest: createUserRequest.error(reason) });
+      });
   };
 
   capitalizeFirst = s => s.charAt(0).toUpperCase() + s.slice(1);
@@ -51,6 +71,7 @@ class RegistrationForm extends Component {
       fields: {
         ...prevState.fields,
         [fieldName]: {
+          ...prevState.fields[fieldName],
           value: fieldValue,
           validationMessage: null
         }
@@ -100,7 +121,7 @@ class RegistrationForm extends Component {
   }
 
   render() {
-    const isLoading = false;
+    const { isLoading } = this.state.createUserRequest;
     const $fields = Object.keys(this.state.fields).map(this.renderField);
 
     return (
@@ -119,7 +140,8 @@ class RegistrationForm extends Component {
 }
 
 RegistrationForm.propTypes = {
-  cancel: PropTypes.func.isRequired
+  cancel: PropTypes.func.isRequired,
+  finish: PropTypes.func.isRequired
 };
 
 export default RegistrationForm;
