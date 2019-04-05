@@ -11,7 +11,8 @@ class RegistrationForm extends Component {
         label: 'Email',
         name: 'email',
         required: true,
-        description: 'This is purely for account recovery purposes. You will not receive any promotional emails.'
+        description: 'This is purely for account recovery purposes. You will not receive any promotional emails.',
+        type: 'email'
       },
       firstName: {
         label: 'First name',
