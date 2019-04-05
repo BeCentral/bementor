@@ -33,6 +33,19 @@ const User = new mongoose.Schema(
     },
     picture: {
       type: String
+    },
+    password: {
+      type: String,
+      select: false
+    },
+    passwordResetToken: {
+      type: String,
+      select: false
+    },
+    email: {
+      required: true,
+      type: String,
+      unique: true
     }
   },
   {
