@@ -40,6 +40,8 @@ exports.create = async (req, res) => {
     });
 };
 
+exports.authenticate = (req, res) => res.status(200).send(req.user);
+
 exports.login = (req, res) => {
   const { email, password } = req.body;
   let foundUser = null;

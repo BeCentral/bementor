@@ -3,6 +3,8 @@ import API from './API';
 class UserAPI extends API {
   ENDPOINT = `${this.BASE_URL}/user`
 
+  authenticate = () => fetch(`${this.ENDPOINT}/me`, this.getOptions('get')).then(this.handleResponse);
+
   get = () => fetch(this.ENDPOINT, this.getOptions('get')).then(this.handleResponse);
 
   getOne = id => fetch(`${this.ENDPOINT}/${id}`, this.getOptions('get')).then(this.handleResponse);

@@ -4,13 +4,21 @@ import AuthContext from './context/auth-context';
 import Home from './components/Pages/Home';
 import Connect from './components/Pages/Connect';
 import Profile from './components/Pages/Profile';
+import User from './models/User';
+import { API } from './constants';
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      user: null
-    };
+  state = { user: null }
+
+  componentDidMount() {
+    API.user.authenticate()
+      .then((user) => {
+        this.setAuthenticatedUser(new User(user));
+      })
+      .catch((err) => {
+        // TODO show err
+        this.setAuthenticatedUser(null);
+      });
   }
 
   setAuthenticatedUser = user => this.setState({ user });

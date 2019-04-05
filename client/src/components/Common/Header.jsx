@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import AuthContext from '../../context/auth-context';
 import LoginForm from '../Pages/Auth/LoginForm';
 import RegistrationForm from '../Pages/Auth/RegistrationForm';
 
@@ -29,6 +30,9 @@ class Header extends Component {
 
   render() {
     const { isRegistering, isLoggingIn } = this.state;
+    const currentUser = this.context.user;
+    const isAuthenticated = !!currentUser;
+
     return (
       <>
         {isRegistering && (
@@ -46,9 +50,13 @@ class Header extends Component {
               <li><Link to="/connect">Connect</Link></li>
               {/* <li><Link to="#">Inbox</Link></li>--> */}
               {/* <li><Link to="/profile/5c851da63fc52b74c942680d">Profile</Link></li> */}
-              <li>|</li>
-              <li><button onClick={this.startLogin} type="button" className="button--link">Log in</button></li>
-              <li><button onClick={this.startRegistration} type="button" className="button--link">Register</button></li>
+              { !isAuthenticated && (
+                <>
+                  <li>|</li>
+                  <li><button onClick={this.startLogin} type="button" className="button--link">Log in</button></li>
+                  <li><button onClick={this.startRegistration} type="button" className="button--link">Register</button></li>
+                </>
+              )}
             </ul>
           </nav>
         </header>
@@ -56,5 +64,7 @@ class Header extends Component {
     );
   }
 }
+
+Header.contextType = AuthContext;
 
 export default Header;
