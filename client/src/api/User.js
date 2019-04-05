@@ -5,6 +5,8 @@ class UserAPI extends API {
 
   authenticate = () => fetch(`${this.ENDPOINT}/me`, this.getOptions('get')).then(this.handleResponse);
 
+  logout = () => fetch(`${this.ENDPOINT}/logout`, this.getOptions('get')).then(this.handleResponse);
+
   get = () => fetch(this.ENDPOINT, this.getOptions('get')).then(this.handleResponse);
 
   getOne = id => fetch(`${this.ENDPOINT}/${id}`, this.getOptions('get')).then(this.handleResponse);

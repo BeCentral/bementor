@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
+import { API } from '../../constants';
 import AuthContext from '../../context/auth-context';
 import LoginForm from '../Pages/Auth/LoginForm';
 import RegistrationForm from '../Pages/Auth/RegistrationForm';
@@ -10,6 +12,14 @@ class Header extends Component {
   state = {
     isRegistering: false,
     isLoggingIn: false
+  }
+
+  doLogout = async () => {
+    // TODO show logout state
+    await API.user.logout();
+    this.context.setAuthenticatedUser(null);
+    // TODO show logout success
+    this.props.history.push('/');
   }
 
   startLogin = () => {
@@ -50,9 +60,12 @@ class Header extends Component {
               <li><Link to="/connect">Connect</Link></li>
               {/* <li><Link to="#">Inbox</Link></li>--> */}
               {/* <li><Link to="/profile/5c851da63fc52b74c942680d">Profile</Link></li> */}
+              <li>|</li>
+              { isAuthenticated && (
+                <li><button onClick={this.doLogout} type="button" className="button--link">Log out</button></li>
+              )}
               { !isAuthenticated && (
                 <>
-                  <li>|</li>
                   <li><button onClick={this.startLogin} type="button" className="button--link">Log in</button></li>
                   <li><button onClick={this.startRegistration} type="button" className="button--link">Register</button></li>
                 </>
@@ -65,6 +78,12 @@ class Header extends Component {
   }
 }
 
-Header.contextType = AuthContext;
+Header.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  history: PropTypes.object.isRequired
+};
 
-export default Header;
+export default withRouter(Header);
+
+// including under export because https://stackoverflow.com/questions/53240058/use-hoist-non-react-statics-with-withrouter
+Header.contextType = AuthContext;
