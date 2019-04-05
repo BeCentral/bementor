@@ -1,4 +1,5 @@
 const User = require('../model/user.model');
+const { hash, compareHash } = require('../lib/util');
 
 exports.findAll = (req, res) => {
   User.find()
@@ -14,6 +15,23 @@ exports.findOne = (req, res) => {
   const { id } = req.params;
   User.findById(id)
     .then((user) => { res.send(user); })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+exports.create = async (req, res) => {
+  const user = new User({
+    ...req.body,
+    password: await hash(req.body.password)
+  });
+
+  User.create(user)
+    .then((result) => {
+      const newUser = result.toObject();
+      delete newUser.password;
+      res.send(newUser);
+    })
     .catch((err) => {
       res.status(500).send({ message: err.message });
     });

@@ -45,6 +45,11 @@
   text-transform: uppercase;
 }
 
+.app-header__navigation__link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .app-header__navigation a,
 .app-header__navigation a:visited,
 .app-header__navigation a:active {
