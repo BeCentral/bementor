@@ -19,6 +19,10 @@ exports.findOne = (req, res) => {
     });
 };
 
+exports.create = (req, res) => {
+
+};
+
 exports.search = (req, res) => {
   const query = req.query.text;
 
