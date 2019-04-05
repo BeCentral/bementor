@@ -14,13 +14,13 @@ const authOptions = {
 };
 
 const jwtAuth = new JwtStrategy(authOptions, (payload, done) => {
-  User.findById(payload._id)
+  User.findById(payload.sub)
     .then(user => done(null, user.toObject()))
     .catch(err => done(err, null));
 });
 
 passport.use(jwtAuth);
 
-exports.createToken = user => jwt.sign({ _id: user._id }, JWT_SECRET);
+exports.createToken = user => jwt.sign({ sub: user._id }, JWT_SECRET);
 
 exports.requireAuth = passport.authenticate('jwt', { session: false });
