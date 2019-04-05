@@ -41,6 +41,7 @@ exports.create = async (req, res) => {
 };
 
 exports.authenticate = (req, res) => res.status(200).send(req.user);
+exports.logout = (req, res) => res.status(204).clearCookie('jwt').send();
 
 exports.login = (req, res) => {
   const { email, password } = req.body;
