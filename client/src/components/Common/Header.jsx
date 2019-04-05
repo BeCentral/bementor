@@ -58,14 +58,17 @@ class Header extends Component {
           <nav className="app-header__navigation">
             <ul>
               <li><Link to="/connect">Connect</Link></li>
-              {/* <li><Link to="#">Inbox</Link></li>--> */}
-              {/* <li><Link to="/profile/5c851da63fc52b74c942680d">Profile</Link></li> */}
-              <li>|</li>
               { isAuthenticated && (
-                <li><button onClick={this.doLogout} type="button" className="button--link">Log out</button></li>
+                <>
+                  <li><Link to="#">Inbox</Link></li>
+                  <li><Link to="/profile/5c851da63fc52b74c942680d">Profile</Link></li>
+                  <li>|</li>
+                  <li><button onClick={this.doLogout} type="button" className="button--link">Log out</button></li>
+                </>
               )}
               { !isAuthenticated && (
                 <>
+                  <li>|</li>
                   <li><button onClick={this.startLogin} type="button" className="button--link">Log in</button></li>
                   <li><button onClick={this.startRegistration} type="button" className="button--link">Register</button></li>
                 </>
