@@ -27,6 +27,7 @@ app.use(bodyParser.json());
 const router = express.Router();
 app.use('/api', router);
 
+require('./src/lib/auth');
 require('./src/route/user.route')(router);
 
 const port = process.env.PORT || 4000;
