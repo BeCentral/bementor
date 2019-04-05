@@ -4,7 +4,6 @@ import AuthContext from './context/auth-context';
 import Home from './components/Pages/Home';
 import Connect from './components/Pages/Connect';
 import Profile from './components/Pages/Profile';
-import { cookies } from './constants';
 
 class App extends Component {
   constructor() {
@@ -12,16 +11,6 @@ class App extends Component {
     this.state = {
       user: null
     };
-    cookies.addChangeListener(this.authStateChanged);
-  }
-
-  authStateChanged = (cookie) => {
-    if (!cookie) return;
-    if (cookie.name !== 'auth') return;
-    // user logged out
-    if (!cookie.value) {
-      this.setState({ user: null });
-    }
   }
 
   setAuthenticatedUser = user => this.setState({ user });
