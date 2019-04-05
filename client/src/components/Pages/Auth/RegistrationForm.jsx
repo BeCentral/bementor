@@ -27,7 +27,8 @@ class RegistrationForm extends Component {
         label: 'Password',
         name: 'password',
         required: true,
-        type: 'password'
+        type: 'password',
+        description: 'Your password must be at least 8 characters long. Ideally you include numbers, symbols and capital letters. '
       },
       passwordConfirmation: {
         label: 'Confirm password',
@@ -99,7 +100,32 @@ class RegistrationForm extends Component {
 
   validateEmail = (email) => {
     if (!email) return 'Email is required';
-    return '';
+
+    const regex = new RegExp(/\S+@\S+\.\S+/);
+    if (!regex.test(email)) return 'Not a valid email address';
+    return null;
+  }
+
+  validateFirstName = (name) => {
+    if (!name) return 'First name is required';
+    return null;
+  }
+
+  validateLastName = (name) => {
+    if (!name) return 'Last name is required';
+    return null;
+  }
+
+  validatePassword = (password) => {
+    if (!password || password.length < 8) return 'Your password should be at least 8 characters long';
+    return null;
+  }
+
+  validatePasswordConfirmation = (password) => {
+    const passwordToMatch = this.state.fields.password.value;
+    console.log(passwordToMatch);
+    if (!password || !passwordToMatch || (passwordToMatch !== password)) return 'This password does not match the password in the previous field';
+    return null;
   }
 
   renderField = (fieldName) => {
