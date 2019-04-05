@@ -37,6 +37,10 @@ exports.create = async (req, res) => {
     });
 };
 
+exports.login = (req, res) => {
+
+};
+
 exports.search = (req, res) => {
   const query = req.query.text;
 
