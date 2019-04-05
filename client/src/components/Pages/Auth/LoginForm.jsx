@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, TextInputField } from 'evergreen-ui';
-import { API, cookies } from '../../../constants';
+import { API } from '../../../constants';
 import AuthContext from '../../../context/auth-context';
 import User from '../../../models/User';
 import RequestState from '../../../models/RequestState';
@@ -18,14 +18,8 @@ class RegistrationForm extends Component {
 
     this.setState({ loginRequest: loginRequest.start() });
     API.user.login({ email, password })
-      .then(async (response) => {
-        const { token } = response;
-        delete response.token;
-        cookies.set('auth', token, {
-          secure: true,
-          httpOnly: true
-        });
-        const user = new User(response);
+      .then(async (rawUser) => {
+        const user = new User(rawUser);
         this.context.setAuthenticatedUser(user);
         closeForm();
       })
