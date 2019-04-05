@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Dialog } from 'evergreen-ui';
 
-class Register extends Component {
+class RegistrationForm extends Component {
   register = () => {
 
   };
@@ -15,7 +16,7 @@ class Register extends Component {
         isShown
         onConfirm={this.register}
         isConfirmLoading={isLoading}
-        onCloseComplete={this.cancelProfileUpdate}
+        onCloseComplete={this.props.cancel}
       >
         <form />
       </Dialog>
@@ -23,4 +24,8 @@ class Register extends Component {
   }
 }
 
-export default Register;
+RegistrationForm.propTypes = {
+  cancel: PropTypes.func.isRequired
+};
+
+export default RegistrationForm;
