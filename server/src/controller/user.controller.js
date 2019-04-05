@@ -1,5 +1,7 @@
+const passport = require('passport');
 const User = require('../model/user.model');
 const { hash, compareHash } = require('../lib/util');
+const { createToken } = require('../lib/auth');
 
 exports.findAll = (req, res) => {
   User.find()
@@ -38,7 +40,23 @@ exports.create = async (req, res) => {
 };
 
 exports.login = (req, res) => {
-
+  const { email, password } = req.body;
+  let foundUser = null;
+  User.findOne({ email })
+    .select('+password')
+    .then((user) => {
+      if (!user) return res.status(401).send({ message: 'Incorrect username or password' });
+      foundUser = user;
+      return compareHash(password, user.password);
+    })
+    .then((success) => {
+      if (!success) return res.status(401).send({ message: 'Incorrect username or password' });
+      const user = foundUser.toObject();
+      delete user.password;
+      const token = createToken(user);
+      return res.status(200).send({ ...user, token });
+    })
+    .catch(err => res.status(500).send({ message: err.message }));
 };
 
 exports.search = (req, res) => {

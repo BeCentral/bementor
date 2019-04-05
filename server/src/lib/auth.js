@@ -1,5 +1,6 @@
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
+const jwt = require('jsonwebtoken');
 const User = require('../model/user.model');
 
 const { ExtractJwt } = passportJWT;
@@ -20,3 +21,7 @@ const jwtAuth = new JwtStrategy(authOptions, (payload, done) => {
 });
 
 passport.use(jwtAuth);
+
+exports.createToken = user => jwt.sign({ _id: user._id }, JWT_SECRET);
+
+exports.requireAuth = () => passport.authenticate('jwt', { session: false });
