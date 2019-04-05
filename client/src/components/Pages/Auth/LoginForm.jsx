@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, TextInputField } from 'evergreen-ui';
 import { API, cookies } from '../../../constants';
+import AuthContext from '../../../context/auth-context';
 import User from '../../../models/User';
 import RequestState from '../../../models/RequestState';
 
@@ -23,6 +24,7 @@ class RegistrationForm extends Component {
           httpOnly: true
         });
         const user = new User(response);
+        this.context.setAuthenticatedUser(user);
         this.props.finish();
       });
   };
@@ -59,6 +61,8 @@ class RegistrationForm extends Component {
     );
   }
 }
+
+RegistrationForm.contextType = AuthContext;
 
 RegistrationForm.propTypes = {
   cancel: PropTypes.func.isRequired,
