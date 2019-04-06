@@ -2,13 +2,11 @@ const Conversation = require('../model/conversation.model');
 const Message = require('../model/message.model');
 
 exports.findAll = (req, res) => {
-  // TODO: change by cookie
-  const userId = "5ca0cd9a287d2f3b6520d370";
 
   Conversation.find({
     $or: [
-      {mentee: userId},
-      {mentor: userId}
+      {mentee: req.user._id},
+      {mentor: req.user._id}
     ]
   }).populate('mentor')
     .populate('mentee')
@@ -45,10 +43,15 @@ exports.message = (req, res) => {
 };
 
 const addMessage = async (req) => {
-  // TODO: add permission check
-
   const {id} = req.params;
   let conversation = await Conversation.findById(id);
+
+  if (
+    conversation.mentor._id.toString() !== req.user.id
+    && conversation.mentee._id.toString() !== req.user.id
+  ) {
+    throw 'Not authorized';
+  }
 
   let message = new Message({
     text: req.body["message.text"]
@@ -72,12 +75,9 @@ exports.initiate = async (req, res) => {
 };
 
 const initiateConversation = async (req) => {
-  // TODO: change by cookie
-  const userId = "5ca0cd9a287d2f3b6520d370";
-
   let conversation = await Conversation.findOne({
     mentor: req.body.mentor,
-    mentee: userId,
+    mentee: req.user.id,
   })
     .populate('mentor')
     .populate('mentee')
@@ -95,7 +95,7 @@ const initiateConversation = async (req) => {
 
   conversation = new Conversation({
     mentor: req.body.mentor,
-    mentee: userId,
+    mentee: req.user.id,
     messages: [message]
   });
 

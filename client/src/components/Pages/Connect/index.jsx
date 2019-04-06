@@ -5,6 +5,7 @@ import SearchBar from './SearchBar';
 import MiniUser from './MiniUser';
 import Wrapper from '../../Containers/Wrapper';
 import { API } from '../../../constants';
+import { Redirect } from "react-router-dom";
 
 class Users extends Component {
   constructor(props) {
@@ -29,8 +30,21 @@ class Users extends Component {
     });
   };
 
+  connect = async (userId) => {
+    await API.conversation.initiate(userId);
+
+    this.setState({
+      redirectToInbox: true
+    })
+  };
+
   render() {
-    const $users = this.state.users.map(user => <MiniUser key={user._id} {...user} />);
+
+    if (this.state.redirectToInbox === true) {
+      return <Redirect to="/inbox"/>
+    }
+
+    const $users = this.state.users.map(user => <MiniUser key={user._id} {...user} connect={this.connect} />);
 
     return (
       <AppContainer>

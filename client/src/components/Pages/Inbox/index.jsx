@@ -8,30 +8,51 @@ import NProgress from "nprogress";
 import "../../../assets/css/inbox.css"
 import {API} from "../../../constants";
 import * as PropTypes from "prop-types";
+import {Link} from "react-router-dom";
+import AuthContext from "../../../context/auth-context";
 
-function Profile(props) {
+class MiniConversation extends Component {
 
-  let classes = 'inbox-profile';
-  if (props.active === true) {
-    classes += ' inbox-profile__active'
+  static propTypes = {
+    user: PropTypes.object,
+    active: PropTypes.bool
+  };
+
+  static contextType = AuthContext;
+
+  handleClick = () => {
+    this.props.select(this.props.conversation)
+  };
+
+  render() {
+    let otherUser = this.props.conversation.mentor;
+    if (this.context.user.id === this.props.conversation.mentor) {
+      otherUser = this.props.conversation.mentee;
+    }
+
+    let classes = 'inbox-profile';
+    if (this.props.active === true) {
+      classes += ' inbox-profile__active'
+    }
+
+    return (
+      <div onClick={this.handleClick} className={classes}>
+        <p>
+          <img alt="avatar" src={`https://api.adorable.io/avatars/${otherUser._id}`}/>
+        </p>
+        <p>{otherUser.firstName} {otherUser.lastName}</p>
+      </div>
+    );
   }
-
-  return (
-    <div className={classes}>
-      <p>
-        <img alt="avatar" src={`https://api.adorable.io/avatars/${props.user._id}`}/>
-      </p>
-      <p>{props.user.firstName} {props.user.lastName}</p>
-    </div>
-  );
 }
-
-Profile.propTypes = {user: PropTypes.object, active: PropTypes.bool};
 
 class Conversation extends Component {
 
+  static contextType = AuthContext;
+
   onClick = () => {
     this.props.onMessage(this.replybar.value);
+    this.replybar.value = "";
   };
 
   renderMessages = () => {
@@ -45,13 +66,25 @@ class Conversation extends Component {
   };
 
   render() {
+    if (this.props.conversation === false) {
+      return (
+        <div className="inbox-conversation inbox-conversation__empty">
+          <h3>Find a mentor and start chatting</h3>
+          <p><Link to="/connect">Connect</Link></p>
+        </div>
+      );
+    }
+
     if (!this.props.conversation) {
       return (
         <div className="inbox-conversation"/>
       );
     }
 
-    const otherUser = this.props.conversation.mentor;
+    let otherUser = this.props.conversation.mentor;
+    if (this.context.user.id === this.props.conversation.mentor) {
+      otherUser = this.props.conversation.mentee;
+    }
 
     return <div className="inbox-conversation">
       <div className="inbox-details">
@@ -76,12 +109,13 @@ class Conversation extends Component {
   }
 }
 
-class Index extends Component {
+class Inbox extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      conversations: undefined
+      conversations: undefined,
+      current: undefined
     };
     NProgress.start();
   }
@@ -93,16 +127,36 @@ class Index extends Component {
       });
       return conversations[0];
     }).then((conversation) => {
+      if (!conversation) {
+        this.setState({
+          current: false
+        });
+        throw "No conversation yet"
+      }
       return API.conversation.get(conversation._id);
     }).then((conversation) => {
       this.setState({
         current: conversation
       })
     })
-      .finally(() => {
-        NProgress.done()
-      });
+    .catch(() => {
+      // noop
+    })
+    .finally(() => {
+      NProgress.done()
+    });
   }
+
+  handleSelect = (conversation) => {
+    API.conversation.get(conversation._id).then((conversation) => {
+      this.setState({
+        current: conversation
+      })
+    })
+    .catch(() => {
+      // noop
+    })
+  };
 
   handleMessage = (message) => {
     API.conversation.message(this.state.current._id, message).then((conversation) => {
@@ -120,9 +174,8 @@ class Index extends Component {
     }
 
     return this.state.conversations.map((conversation) => {
-      const otherUser = conversation.mentor;
       return (
-        <Profile key={conversation._id} user={otherUser}/>
+        <MiniConversation select={this.handleSelect} conversation={conversation} key={conversation._id}/>
       )
     })
   };
@@ -146,4 +199,4 @@ class Index extends Component {
 
 }
 
-export default Index;
+export default Inbox;

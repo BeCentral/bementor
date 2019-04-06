@@ -9,7 +9,7 @@ class ConversationAPI extends API {
 
   message = (conversationId, message) => fetch(`${this.ENDPOINT}/${conversationId}`, this.getOptions('patch', {"message.text": message})).then(this.handleResponse);
 
-  initiate = mentor => fetch(this.ENDPOINT, this.getOptions('post', {mentor: mentor})).then(this.handleResponse);
+  initiate = (mentor) => fetch(this.ENDPOINT, this.getOptions('post', {mentor: mentor})).then(this.handleResponse);
 }
 
 export default ConversationAPI;
