@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 require('dotenv').config();
@@ -20,13 +21,24 @@ mongoose
 
 const app = express();
 
-app.use(cors());
+const whitelist = [process.env.CLIENT_URL, 'https://bementor.be'];
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1) callback(null, true);
+    else callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+};
+app.use(cors(corsOptions));
+
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const router = express.Router();
 app.use('/api', router);
 
+require('./src/lib/auth');
 require('./src/route/user.route')(router);
 require('./src/route/conversation.route')(router);
 
