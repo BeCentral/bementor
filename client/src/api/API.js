@@ -21,7 +21,8 @@ class API {
   getOptions(method, body = null) {
     const options = {
       method: method.toUpperCase(),
-      headers: this.headers
+      headers: this.headers,
+      credentials: 'include'
     };
 
     if (body) options.body = JSON.stringify(body);

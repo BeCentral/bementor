@@ -124,7 +124,6 @@ class RegistrationForm extends Component {
 
   validatePasswordConfirmation = (password) => {
     const passwordToMatch = this.state.fields.password.value;
-    console.log(passwordToMatch);
     if (!password || !passwordToMatch || (passwordToMatch !== password)) return 'This password does not match the password in the previous field';
     return null;
   }
