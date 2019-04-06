@@ -26,3 +26,21 @@ exports.sendPasswordResetEmail = (toEmail, token) => {
 
   return transporter.sendMail(mailOptions);
 };
+
+exports.sendAccountConfirmationEmail = (toEmail, token) => {
+  const mailOptions = {
+    from: 'BeMentor <no-reply@bementor.be>',
+    to: toEmail,
+    subject: 'Welcome to BeMentor',
+    text: `
+      Welcome to BeMentor!
+
+      To use the platform to its full extent, please confirm your account.
+      You can do so by clicking the following link: http://${domain}/confirm-account/${token}
+
+      If you did not register for BeMentor, you can safely ignore this email.
+    `
+  };
+
+  return transporter.sendMail(mailOptions);
+};
