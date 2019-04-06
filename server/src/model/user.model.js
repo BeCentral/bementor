@@ -28,9 +28,6 @@ const User = new mongoose.Schema(
     interests: {
       type: [String]
     },
-    role: {
-      type: String
-    },
     picture: {
       type: String
     },
@@ -46,6 +43,14 @@ const User = new mongoose.Schema(
       required: true,
       type: String,
       unique: true
+    },
+    pending: {
+      type: Boolean,
+      default: true
+    },
+    role: {
+      type: String,
+      default: 'user'
     }
   },
   {
