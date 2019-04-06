@@ -1,4 +1,5 @@
 import UserAPI from './api/User';
+import ConversationAPI from "./api/Conversation";
 
 export const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000/api';
 
@@ -11,5 +12,6 @@ export const REQUEST_STATES = {
 export const { IS_LOADING, INACTIVE, HAS_ERRORED } = REQUEST_STATES;
 
 export const API = {
-  user: new UserAPI()
+  user: new UserAPI(),
+  conversation: new ConversationAPI()
 };

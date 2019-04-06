@@ -28,6 +28,7 @@ const router = express.Router();
 app.use('/api', router);
 
 require('./src/route/user.route')(router);
+require('./src/route/conversation.route')(router);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {

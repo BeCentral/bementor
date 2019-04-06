@@ -79,6 +79,8 @@
   padding: 1em;
   border-radius: 10px;
   margin: 1vh;
+  height: 40vh;
+  overflow-y: scroll;
 }
 
 .inbox-message {
