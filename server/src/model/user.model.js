@@ -35,10 +35,6 @@ const User = new mongoose.Schema(
       type: String,
       select: false
     },
-    passwordResetToken: {
-      type: String,
-      select: false
-    },
     email: {
       required: true,
       type: String,

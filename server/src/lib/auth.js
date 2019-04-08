@@ -21,5 +21,9 @@ const jwtAuth = new JwtStrategy(authOptions, (payload, done) => {
 passport.use(jwtAuth);
 
 exports.createToken = user => jwt.sign({ sub: user._id }, JWT_SECRET);
+exports.findUserByToken = async (token) => {
+  const payload = await jwt.verify(token, JWT_SECRET);
+  return User.findById(payload.sub);
+};
 
 exports.requireAuth = passport.authenticate('jwt', { session: false });
