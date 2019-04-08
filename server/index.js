@@ -21,7 +21,7 @@ mongoose
 
 const app = express();
 
-const whitelist = [process.env.CLIENT_URL, 'https://bementor.be'];
+const whitelist = [process.env.FRONTEND_URL, 'https://bementor.be'];
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1) callback(null, true);
