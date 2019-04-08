@@ -101,6 +101,16 @@ exports.resetPassword = (req, res) => {
   return completePasswordReset(req, res);
 };
 
+exports.confirmAccount = async (req, res) => {
+  const { token } = req.body;
+
+  const user = await findUserByToken(token);
+  if (!user) return res.status(401).send({ message: 'Invalid token' });
+
+  user.isPending = false;
+  return user.save().then(() => res.status(204).send());
+};
+
 exports.search = (req, res) => {
   const query = req.query.text;
 

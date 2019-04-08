@@ -6,9 +6,10 @@ module.exports = (app) => {
   app.get('/user/me', requireAuth, users.authenticate);
   app.get('/user/logout', requireAuth, users.logout);
   app.get('/user/:id', users.findOne);
-  app.post('/user/register', users.create);
-  app.put('/user/password', users.resetPassword);
-  app.post('/user/login', users.login);
   app.get('/user/search', users.search);
+  app.get('/user/verify/:token', users.confirmAccount);
+  app.post('/user/register', users.create);
+  app.post('/user/login', users.login);
+  app.put('/user/password', users.resetPassword);
   app.patch('/user/:id', requireAuth, users.update);
 };
