@@ -90,7 +90,6 @@ const completePasswordReset = async (req, res) => {
   if (!user) return res.status(401).send({ message: 'Invalid token' });
 
   user.password = await hash(password);
-  user.isPending = false;
   await user.save();
 
   return res.status(204).send({ message: 'New password set successfully' });
