@@ -1,16 +1,17 @@
 const nodemailer = require('nodemailer');
+const mg = require('nodemailer-mailgun-transport');
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.sparkpostmail.com',
-  port: 587,
-  secure: false,
+const { MAILGUN_API_KEY, MAILGUN_DOMAIN } = process.env;
+const mailgunOptions = {
   auth: {
-    user: 'SMTP_Injection',
-    pass: process.env.SPARKPOST_API_KEY
+    api_key: MAILGUN_API_KEY,
+    domain: MAILGUN_DOMAIN
   }
-});
+};
 
+const transporter = nodemailer.createTransport(mg(mailgunOptions));
 const domain = process.env.FRONTEND_URL || 'localhost:3000';
+
 exports.sendPasswordResetEmail = (toEmail, token) => {
   const mailOptions = {
     from: 'BeMentor <no-reply@bementor.be>',
