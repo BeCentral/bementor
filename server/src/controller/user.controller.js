@@ -1,5 +1,6 @@
 const User = require('../model/user.model');
 const { hash, compareHash } = require('../lib/util');
+const { sendAccountConfirmationEmail } = require('../lib/email');
 const { createToken } = require('../lib/auth');
 
 const cookieIsSecure = process.env.ENVIRONMENT === 'production';
@@ -30,9 +31,11 @@ exports.create = async (req, res) => {
   });
 
   User.create(user)
-    .then((result) => {
+    .then(async (result) => {
       const newUser = result.toObject();
       delete newUser.password;
+      const token = await createToken(user);
+      await sendAccountConfirmationEmail(user.email, token);
       res.send(newUser);
     })
     .catch((err) => {

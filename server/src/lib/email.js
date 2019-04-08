@@ -6,7 +6,8 @@ const mailgunOptions = {
   auth: {
     api_key: MAILGUN_API_KEY,
     domain: MAILGUN_DOMAIN
-  }
+  },
+  host: 'api.eu.mailgun.net'
 };
 
 const transporter = nodemailer.createTransport(mg(mailgunOptions));
