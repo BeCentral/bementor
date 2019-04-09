@@ -17,6 +17,8 @@ class UserAPI extends API {
     return fetch(`${this.ENDPOINT}/search?${params.toString()}`).then(this.handleResponse);
   }
 
+  requestPasswordReset = email => fetch(`${this.ENDPOINT}/password`, this.getOptions('put', { email })).then(this.handleResponse);
+
   resetPassword = (password, token) => fetch(`${this.ENDPOINT}/password`, this.getOptions('put', { password, token })).then(this.handleResponse);
 
   update = user => fetch(`${this.ENDPOINT}/${user._id}`, this.getOptions('patch', user)).then(this.handleResponse);

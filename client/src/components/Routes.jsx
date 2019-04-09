@@ -6,7 +6,8 @@ import Connect from './Pages/Connect';
 import Profile from './Pages/Profile';
 import Login from './Pages/Auth/LoginForm';
 import Register from './Pages/Auth/RegistrationForm';
-import PasswordReset from './Pages/Auth/PasswordResetForm';
+import RequestPasswordReset from './Pages/Auth/RequestPasswordReset';
+import ConfirmPasswordReset from './Pages/Auth/ConfirmPasswordReset';
 
 class Routes extends Component {
   previousLocation = this.props.location;
@@ -54,7 +55,8 @@ class Routes extends Component {
         </Switch>
         {isModal ? <Route path="/login" component={Login} /> : null}
         {isModal ? <Route path="/register" component={Register} /> : null}
-        {isModal ? <Route path="/reset-password/:token" component={PasswordReset} /> : null}
+        {isModal ? <Route exact path="/reset-password" component={RequestPasswordReset} /> : null}
+        {isModal ? <Route path="/reset-password/:token" component={ConfirmPasswordReset} /> : null}
       </>
     );
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Dialog, TextInputField } from 'evergreen-ui';
 import { API } from '../../../constants';
 import AuthContext from '../../../context/auth-context';
@@ -67,6 +68,7 @@ class LoginForm extends Component {
             innerRef={(node) => { this.passwordNode = node; }}
           />
         </form>
+        <Link to="/reset-password">Forgot your password?</Link>
       </Dialog>
     );
   }
