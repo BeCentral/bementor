@@ -11,7 +11,7 @@ const mailgunOptions = {
 };
 
 const transporter = nodemailer.createTransport(mg(mailgunOptions));
-const domain = process.env.FRONTEND_URL || 'localhost:3000';
+const clientUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
 
 exports.sendPasswordResetEmail = (toEmail, token) => {
   const mailOptions = {
@@ -20,7 +20,7 @@ exports.sendPasswordResetEmail = (toEmail, token) => {
     subject: 'Reset your password',
     text: `
       You're receiving this email because you submitted a request to reset your BeMentor password.
-      Set your new password here: http://${domain}/reset-password/${token}
+      Set your new password here: ${clientUrl}/reset-password/${token}
 
       If you did not submit this password reset request, you can safely ignore this email.
     `
@@ -38,7 +38,7 @@ exports.sendAccountConfirmationEmail = (toEmail, token) => {
       Welcome to BeMentor!
 
       To use the platform to its full extent, please confirm your account.
-      You can do so by clicking the following link: http://${domain}/confirm-account/${token}
+      You can do so by clicking the following link: ${clientUrl}/confirm-account/${token}
 
       If you did not register for BeMentor, you can safely ignore this email.
     `
