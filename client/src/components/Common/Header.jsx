@@ -7,10 +7,6 @@ import AuthContext from '../../context/auth-context';
 import '../../assets/css/header.css';
 
 class Header extends Component {
-  state = {
-    isRegistering: false
-  }
-
   doLogout = async () => {
     // TODO show logout state
     await API.user.logout();
