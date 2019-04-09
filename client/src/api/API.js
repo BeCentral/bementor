@@ -22,7 +22,7 @@ class API {
     const options = {
       method: method.toUpperCase(),
       headers: this.headers,
-      credentials: 'include'
+      credentials: 'same-origin'
     };
 
     if (body) options.body = JSON.stringify(body);
