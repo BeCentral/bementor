@@ -6,7 +6,7 @@ import AuthContext from '../../../context/auth-context';
 import User from '../../../models/User';
 import RequestState from '../../../models/RequestState';
 
-class RegistrationForm extends Component {
+class LoginForm extends Component {
   state = {
     loginRequest: new RequestState()
   }
@@ -32,12 +32,11 @@ class RegistrationForm extends Component {
   exitForm = () => {
     const { loginRequest } = this.state;
     this.setState({ loginRequest: loginRequest.finish() });
-    this.props.finish();
+    this.props.history.goBack();
   }
 
   render() {
     const { isLoading } = this.state.loginRequest;
-
     return (
       <Dialog
         title="Log in to BeMentor"
@@ -68,10 +67,11 @@ class RegistrationForm extends Component {
   }
 }
 
-RegistrationForm.contextType = AuthContext;
+LoginForm.contextType = AuthContext;
 
-RegistrationForm.propTypes = {
-  finish: PropTypes.func.isRequired
+LoginForm.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  history: PropTypes.object.isRequired
 };
 
-export default RegistrationForm;
+export default LoginForm;

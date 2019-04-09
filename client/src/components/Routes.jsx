@@ -9,6 +9,11 @@ import Login from './Pages/Auth/LoginForm';
 class Routes extends Component {
   previousLocation = this.props.location;
 
+  modalRoutes = [
+    '/login',
+    '/register'
+  ];
+
   componentWillUpdate(nextProps) {
     const { location } = this.props;
 
@@ -20,11 +25,18 @@ class Routes extends Component {
 
   render() {
     const { location } = this.props;
-    const isModal = !!(
+    let isModal = !!(
       location.state
       && location.state.modal
       && this.previousLocation !== location
     );
+
+    // If users land on the page without having clicked a link (e.g. accessing /login directly)
+    // This will make a page bookmarkable
+    if (!isModal && this.modalRoutes.includes(location.pathname)) {
+      this.previousLocation = { pathname: '/', state: { modal: true } };
+      isModal = true;
+    }
 
     return (
       <>
