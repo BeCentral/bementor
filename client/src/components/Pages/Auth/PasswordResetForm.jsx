@@ -13,7 +13,7 @@ class PasswordResetForm extends Component {
   };
 
   exitForm = () => {
-    this.props.history.goBack();
+    this.props.history.push('/login?redirect=home');
   }
 
   render() {

@@ -32,11 +32,16 @@ class LoginForm extends Component {
   exitForm = () => {
     const { loginRequest } = this.state;
     this.setState({ loginRequest: loginRequest.finish() });
-    this.props.history.goBack();
+
+    const query = new URLSearchParams(this.props.location.search);
+    const redirect = query.get('redirect');
+    if (!redirect) this.props.history.goBack();
+    else this.props.history.push(redirect);
   }
 
   render() {
     const { isLoading } = this.state.loginRequest;
+
     return (
       <Dialog
         title="Log in to BeMentor"
@@ -71,7 +76,9 @@ LoginForm.contextType = AuthContext;
 
 LoginForm.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  location: PropTypes.object.isRequired
 };
 
 export default LoginForm;
