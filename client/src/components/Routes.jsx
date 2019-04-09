@@ -6,13 +6,15 @@ import Connect from './Pages/Connect';
 import Profile from './Pages/Profile';
 import Login from './Pages/Auth/LoginForm';
 import Register from './Pages/Auth/RegistrationForm';
+import PasswordReset from './Pages/Auth/PasswordResetForm';
 
 class Routes extends Component {
   previousLocation = this.props.location;
 
   modalRoutes = [
     '/login',
-    '/register'
+    '/register',
+    '/reset-password'
   ];
 
   componentWillUpdate(nextProps) {
@@ -24,6 +26,8 @@ class Routes extends Component {
     }
   }
 
+  toBaseUrl = s => s.split('/').slice(0, 2).join('/');
+
   render() {
     const { location } = this.props;
     let isModal = !!(
@@ -32,9 +36,10 @@ class Routes extends Component {
       && this.previousLocation !== location
     );
 
+
     // If users land on the page without having clicked a link (e.g. accessing /login directly)
     // This will make a page bookmarkable
-    if (!isModal && this.modalRoutes.includes(location.pathname)) {
+    if (!isModal && this.modalRoutes.includes(this.toBaseUrl(location.pathname))) {
       this.previousLocation = { pathname: '/', state: { modal: true } };
       isModal = true;
     }
@@ -49,6 +54,7 @@ class Routes extends Component {
         </Switch>
         {isModal ? <Route path="/login" component={Login} /> : null}
         {isModal ? <Route path="/register" component={Register} /> : null}
+        {isModal ? <Route path="/reset-password/:token" component={PasswordReset} /> : null}
       </>
     );
   }
