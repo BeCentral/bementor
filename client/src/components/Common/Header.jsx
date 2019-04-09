@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { API } from '../../constants';
 import AuthContext from '../../context/auth-context';
-import LoginForm from '../Pages/Auth/LoginForm';
-import RegistrationForm from '../Pages/Auth/RegistrationForm';
 
 import '../../assets/css/header.css';
 
@@ -21,29 +19,17 @@ class Header extends Component {
     this.props.history.push('/');
   }
 
-  startRegistration = () => {
-    this.setState({ isRegistering: true });
-  }
-
-  stopRegistration = () => {
-    this.setState({ isRegistering: false });
-  }
-
   getModalLink = location => ({
     pathname: location,
     state: { modal: true }
   });
 
   render() {
-    const { isRegistering } = this.state;
     const currentUser = this.context.user;
     const isAuthenticated = !!currentUser;
 
     return (
       <>
-        {isRegistering && (
-          <RegistrationForm cancel={this.stopRegistration} finish={this.stopRegistration} />
-        )}
         <header className="app-header">
           <div className="app-header__top">
             <h1><Link to="/">BeMentor.</Link></h1>
@@ -67,7 +53,11 @@ class Header extends Component {
                       Log in
                     </Link>
                   </li>
-                  <li><button onClick={this.startRegistration} type="button" className="button--link">Register</button></li>
+                  <li>
+                    <Link to={this.getModalLink('/register')}>
+                      Register
+                    </Link>
+                  </li>
                 </>
               )}
             </ul>

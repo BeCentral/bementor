@@ -41,6 +41,10 @@ class RegistrationForm extends Component {
     createUserRequest: new RequestState()
   }
 
+  quitRegistration = () => {
+    this.props.history.goBack();
+  }
+
   register = () => {
     const { fields, createUserRequest } = this.state;
 
@@ -51,10 +55,9 @@ class RegistrationForm extends Component {
 
     this.setState({ createUserRequest: createUserRequest.start() });
     API.user.register(user)
-      .then((user) => {
+      .then(() => {
         // TODO show success
         this.setState({ createUserRequest: createUserRequest.finish('Account registered successfully! You may now log in') });
-        this.props.finish();
       })
       .catch((reason) => {
         // TODO show error
@@ -157,7 +160,7 @@ class RegistrationForm extends Component {
         isShown
         onConfirm={this.validateFields}
         isConfirmLoading={isLoading}
-        onCloseComplete={this.props.cancel}
+        onCloseComplete={this.quitRegistration}
       >
         <form>{$fields}</form>
       </Dialog>
@@ -166,8 +169,8 @@ class RegistrationForm extends Component {
 }
 
 RegistrationForm.propTypes = {
-  cancel: PropTypes.func.isRequired,
-  finish: PropTypes.func.isRequired
+  // eslint-disable-next-line react/forbid-prop-types
+  history: PropTypes.object.isRequired
 };
 
 export default RegistrationForm;

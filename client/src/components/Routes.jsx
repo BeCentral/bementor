@@ -5,6 +5,7 @@ import Home from './Pages/Home';
 import Connect from './Pages/Connect';
 import Profile from './Pages/Profile';
 import Login from './Pages/Auth/LoginForm';
+import Register from './Pages/Auth/RegistrationForm';
 
 class Routes extends Component {
   previousLocation = this.props.location;
@@ -47,6 +48,7 @@ class Routes extends Component {
           <Route render={() => <p>Page not found</p>} />
         </Switch>
         {isModal ? <Route path="/login" component={Login} /> : null}
+        {isModal ? <Route path="/register" component={Register} /> : null}
       </>
     );
   }
