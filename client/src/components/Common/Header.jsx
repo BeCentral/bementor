@@ -10,8 +10,7 @@ import '../../assets/css/header.css';
 
 class Header extends Component {
   state = {
-    isRegistering: false,
-    isLoggingIn: false
+    isRegistering: false
   }
 
   doLogout = async () => {
@@ -22,24 +21,21 @@ class Header extends Component {
     this.props.history.push('/');
   }
 
-  startLogin = () => {
-    this.setState({ isLoggingIn: true });
-  }
-
   startRegistration = () => {
     this.setState({ isRegistering: true });
-  }
-
-  stopLogin = () => {
-    this.setState({ isLoggingIn: false });
   }
 
   stopRegistration = () => {
     this.setState({ isRegistering: false });
   }
 
+  getModalLink = location => ({
+    pathname: location,
+    state: { modal: true }
+  });
+
   render() {
-    const { isRegistering, isLoggingIn } = this.state;
+    const { isRegistering } = this.state;
     const currentUser = this.context.user;
     const isAuthenticated = !!currentUser;
 
@@ -47,9 +43,6 @@ class Header extends Component {
       <>
         {isRegistering && (
           <RegistrationForm cancel={this.stopRegistration} finish={this.stopRegistration} />
-        )}
-        {isLoggingIn && (
-          <LoginForm finish={this.stopLogin} />
         )}
         <header className="app-header">
           <div className="app-header__top">
@@ -69,7 +62,11 @@ class Header extends Component {
               { !isAuthenticated && (
                 <>
                   <li>|</li>
-                  <li><button onClick={this.startLogin} type="button" className="button--link">Log in</button></li>
+                  <li>
+                    <Link to={this.getModalLink('/login')}>
+                      Log in
+                    </Link>
+                  </li>
                   <li><button onClick={this.startRegistration} type="button" className="button--link">Register</button></li>
                 </>
               )}
