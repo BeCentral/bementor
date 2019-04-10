@@ -5,7 +5,7 @@ const { createToken, findUserByToken } = require('../lib/auth');
 
 const cookieIsSecure = process.env.ENVIRONMENT === 'production';
 
-exports.findAll = (req, res) => {
+exports.findAll = async (req, res) => {
   User.find()
     .then((users) => { res.send(users); })
     .catch((err) => {
@@ -25,10 +25,8 @@ exports.findOne = (req, res) => {
 };
 
 exports.create = async (req, res) => {
-  User.create({
-    ...req.body,
-    password: await hash(req.body.password)
-  })
+  const password = await hash(req.body.password);
+  User.create({ ...req.body, password })
     .then(async (user) => {
       user.accountConfirmationToken = await createToken(user, '1 hour');
       return user.save();
@@ -114,7 +112,7 @@ exports.confirmAccount = async (req, res) => {
   if (!user) return res.status(401).send({ message: 'Invalid token' });
 
   user.accountConfirmationToken = null;
-  user.isPending = false;
+  user.pending = false;
   return user.save().then(() => res.status(204).send());
 };
 

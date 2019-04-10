@@ -8,6 +8,7 @@ import Login from './Pages/Auth/LoginForm';
 import Register from './Pages/Auth/RegistrationForm';
 import RequestPasswordReset from './Pages/Auth/RequestPasswordReset';
 import ConfirmPasswordReset from './Pages/Auth/ConfirmPasswordReset';
+import ConfirmAccount from './Pages/Auth/ConfirmAccount';
 
 class Routes extends Component {
   previousLocation = this.props.location;
@@ -51,6 +52,7 @@ class Routes extends Component {
           <Route path="/:path(|index|home|start)" component={Home} />
           <Route path="/connect" component={Connect} />
           <Route path="/profile/:userId" component={Profile} />
+          <Route path="/confirm-account/:token" component={ConfirmAccount} />
           <Route render={() => <p>Page not found</p>} />
         </Switch>
         {isModal ? <Route path="/login" component={Login} /> : null}

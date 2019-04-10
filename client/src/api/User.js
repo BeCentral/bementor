@@ -21,6 +21,8 @@ class UserAPI extends API {
 
   resetPassword = (password, token) => fetch(`${this.ENDPOINT}/password`, this.getOptions('put', { password, token })).then(this.handleResponse);
 
+  confirmAccount = token => fetch(`${this.ENDPOINT}/verify`, this.getOptions('post', { token })).then(this.handleResponse);
+
   update = user => fetch(`${this.ENDPOINT}/${user._id}`, this.getOptions('patch', user)).then(this.handleResponse);
 
   register = user => fetch(`${this.ENDPOINT}/register`, this.getOptions('post', user)).then(this.handleResponse);

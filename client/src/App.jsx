@@ -15,7 +15,6 @@ class App extends Component {
       })
       .catch((err) => {
         // TODO show err
-        this.setAuthenticatedUser(null);
       });
   }
 
