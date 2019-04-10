@@ -77,8 +77,10 @@ const requestPasswordReset = async (req, res) => {
   // https://ux.stackexchange.com/questions/87079/reset-password-appropriate-response-if-email-doesnt-exist
   if (!user) return res.status(202).send();
 
-  const token = await createToken(user);
-  return sendPasswordResetEmail(user.email, token)
+  const token = await createToken(user, '1 hour');
+  user.passwordResetToken = token;
+  return user.save()
+    .then(() => sendPasswordResetEmail(user.email, token))
     .then(() => res.status(202).send())
     .catch(mailError => console.log(mailError));
 };
@@ -88,8 +90,10 @@ const completePasswordReset = async (req, res) => {
 
   const user = await findUserByToken(token);
   if (!user) return res.status(401).send({ message: 'Invalid token' });
+  if (!user.passwordResetToken) res.status(403).send({ message: 'User did not request password reset' });
 
   user.password = await hash(password);
+  user.passwordResetToken = null;
   await user.save();
 
   return res.status(204).send({ message: 'New password set successfully' });
