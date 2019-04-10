@@ -25,17 +25,19 @@ exports.findOne = (req, res) => {
 };
 
 exports.create = async (req, res) => {
-  const user = new User({
+  User.create({
     ...req.body,
     password: await hash(req.body.password)
-  });
-
-  User.create(user)
-    .then(async (result) => {
-      const newUser = result.toObject();
+  })
+    .then(async (user) => {
+      user.accountConfirmationToken = await createToken(user, '1 hour');
+      return user.save();
+    })
+    .then(async (user) => {
+      const newUser = user.toObject();
+      await sendAccountConfirmationEmail(user.email, user.accountConfirmationToken);
       delete newUser.password;
-      const token = await createToken(user);
-      await sendAccountConfirmationEmail(user.email, token);
+      delete newUser.accountConfirmationToken;
       res.send(newUser);
     })
     .catch((err) => {
@@ -111,6 +113,7 @@ exports.confirmAccount = async (req, res) => {
   const user = await findUserByToken(token);
   if (!user) return res.status(401).send({ message: 'Invalid token' });
 
+  user.accountConfirmationToken = null;
   user.isPending = false;
   return user.save().then(() => res.status(204).send());
 };
