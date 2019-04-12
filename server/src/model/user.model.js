@@ -28,9 +28,6 @@ const User = new mongoose.Schema(
     interests: {
       type: [String]
     },
-    role: {
-      type: String
-    },
     picture: {
       type: String
     },
@@ -42,10 +39,22 @@ const User = new mongoose.Schema(
       type: String,
       select: false
     },
+    accountConfirmationToken: {
+      type: String,
+      select: false
+    },
     email: {
       required: true,
       type: String,
       unique: true
+    },
+    pending: {
+      type: Boolean,
+      default: true
+    },
+    role: {
+      type: String,
+      default: 'user'
     }
   },
   {

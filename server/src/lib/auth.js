@@ -20,6 +20,17 @@ const jwtAuth = new JwtStrategy(authOptions, (payload, done) => {
 
 passport.use(jwtAuth);
 
-exports.createToken = user => jwt.sign({ sub: user._id }, JWT_SECRET);
+exports.createToken = (user, expiresIn = null) => {
+  const options = {};
+  if (expiresIn) options.expiresIn = expiresIn;
+  return jwt.sign({ sub: user._id }, JWT_SECRET, options);
+};
+
+exports.findUserByToken = async (token) => {
+  const payload = await jwt.verify(token, JWT_SECRET);
+  return User.findById(payload.sub)
+    .select('+passwordResetToken')
+    .select('+accountConfirmationToken');
+};
 
 exports.requireAuth = passport.authenticate('jwt', { session: false });

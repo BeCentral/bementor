@@ -14,8 +14,14 @@ class UserAPI extends API {
   find = (query) => {
     const params = new URLSearchParams();
     params.append('text', query);
-    return fetch(`${this.ENDPOINT}/search?${params.toString()}`).then(response => response.json());
+    return fetch(`${this.ENDPOINT}/search?${params.toString()}`).then(this.handleResponse);
   }
+
+  requestPasswordReset = email => fetch(`${this.ENDPOINT}/password`, this.getOptions('put', { email })).then(this.handleResponse);
+
+  resetPassword = (password, token) => fetch(`${this.ENDPOINT}/password`, this.getOptions('put', { password, token })).then(this.handleResponse);
+
+  confirmAccount = token => fetch(`${this.ENDPOINT}/verify`, this.getOptions('post', { token })).then(this.handleResponse);
 
   update = user => fetch(`${this.ENDPOINT}/${user._id}`, this.getOptions('patch', user)).then(this.handleResponse);
 
