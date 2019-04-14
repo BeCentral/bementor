@@ -21,17 +21,16 @@ mongoose
 
 const app = express();
 
-if (process.env.ENVIRONMENT === 'production') {
-  const whitelist = [process.env.FRONTEND_URL, 'https://bementor.be'];
-  const corsOptions = {
-    origin: (origin, callback) => {
-      if (whitelist.indexOf(origin) !== -1) callback(null, true);
-      else callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true
-  };
-  app.use(cors(corsOptions));
-} else app.use(cors());
+const whitelist = [process.env.FRONTEND_URL, 'https://bementor.be'];
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (process.env.ENVIRONTMENT !== 'production' && !origin) return callback(null, true);
+    if (whitelist.indexOf(origin) !== -1) callback(null, true);
+    else callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+};
+app.use(cors(corsOptions));
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
