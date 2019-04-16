@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import '../../../assets/css/user.css';
 
@@ -8,16 +9,12 @@ const MiniUser = (props) => {
 
   return (
     <section className="app-user_mini">
-      <img alt="avatar" src={`https://api.adorable.io/avatars/${props._id}`} />
-      <p>
-        {props.firstName} {props.lastName}
-      </p>
-      <p style={{ backgroundColor: `'#${color}`, color: 'white' }}>
-        {props.about}
-      </p>
-      <p>
-        {interests}
-      </p>
+      <Link to={`/profile/${props._id}`}><img alt="avatar" src={`https://api.adorable.io/avatars/${props._id}`} /></Link>
+      <Link className="seamless" to={`/profile/${props._id}`}>
+        <p>
+          {props.firstName} {props.lastName}
+        </p>
+      </Link>
     </section>
   );
 };

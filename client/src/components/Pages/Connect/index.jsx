@@ -35,7 +35,7 @@ class Users extends Component {
     return (
       <AppContainer>
         <PageContainer>
-          <h2>Find your Guru</h2>
+          <h2>Connect.</h2>
           <SearchBar onSearch={this.search} />
           <Wrapper>
             {$users}

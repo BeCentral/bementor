@@ -63,6 +63,13 @@ a.github {
   color: #333;
 }
 
+a.seamless,
+a.seamless:visited,
+a.seamless:active {
+  color: inherit;
+  text-decoration: none;
+}
+
 .button--link {
   color: #fff;
   background: inherit;
