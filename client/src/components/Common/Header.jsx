@@ -7,10 +7,11 @@ import AuthContext from '../../context/auth-context';
 import '../../assets/css/header.css';
 
 const Header = ({ history }) => {
+  const { setAuthenticatedUser } = useContext(AuthContext);
+
   const doLogout = async () => {
     // TODO show logout state
     await API.user.logout();
-    const { setAuthenticatedUser } = useContext(AuthContext);
     setAuthenticatedUser(null);
     // TODO show logout success
     history.push('/');
