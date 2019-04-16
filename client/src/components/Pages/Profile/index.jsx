@@ -11,6 +11,7 @@ import PageContainer from '../../Containers/PageContainer';
 import ProfileForm from './ProfileForm';
 import User from '../../../models/User';
 import RequestState from '../../../models/RequestState';
+import AuthContext from '../../../context/auth-context';
 
 import '../../../assets/css/profile.css';
 
@@ -54,8 +55,21 @@ class Profile extends Component {
     </li>
   );
 
+  maybeRenderEditButton = () => {
+    const loggedInUser = this.context.user;
+    const { user } = this.state;
+
+    if (!loggedInUser || user._id !== loggedInUser._id) return null;
+    return (
+      <Button iconBefore="edit" className="profile__edit" onClick={this.openEditor}>
+        Edit your profile
+      </Button>
+    );
+  }
+
   render() {
     const { editingProfile, user, getUserRequest } = this.state;
+
     if (getUserRequest.isLoading) return <AppContainer />;
 
     const $interests = user.interests.map(this.renderInterest);
@@ -68,9 +82,7 @@ class Profile extends Component {
             handleUserUpdated={this.updateUser}
             cancelProfileUpdate={this.cancelProfileUpdate}
           />
-          <Button iconBefore="edit" className="profile__edit" onClick={this.openEditor}>
-            Edit your profile
-          </Button>
+          {this.maybeRenderEditButton()}
           <div className="profile__subject">
             <div className="profile__subject__avatar-wrapper">
               <img src={user.picture} alt={`Avatar of ${user.firstName}`} />
@@ -113,6 +125,7 @@ class Profile extends Component {
   }
 }
 
+Profile.contextType = AuthContext;
 Profile.propTypes = {
   // eslint-disable-next-line
   match: PropTypes.object.isRequired
