@@ -11,6 +11,7 @@
 
 .profile__subject__avatar-wrapper {
   width: 16rem;
+  margin-right: 2rem;
 }
 
 .profile__subject__avatar-wrapper img {
@@ -23,7 +24,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-left: 2rem;
   margin-bottom: 4rem;
 }
 
@@ -55,16 +55,17 @@
 }
 
 .profile__about__bio {
-  margin-right: 3rem;
   padding-right: 3rem;
-  border-right: 1px solid gray;
+  max-width: 80%;
+  word-wrap: break-word;
 }
 
 .profile__about__socials {
   padding-left: 0;
   line-height: 1.6;
   font-size: 1.8rem;
-  width: 65rem;
+  border-left: 1px solid gray;
+  padding-left: 3rem;
 }
 
 .profile__about__socials li {
@@ -98,5 +99,5 @@
 }
 
 .profile-form__field {
-  margin-bottom: 2.4rem;
+  margin-bottm: 2.4rem;
 }

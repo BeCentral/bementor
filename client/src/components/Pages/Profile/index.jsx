@@ -49,15 +49,17 @@ class Profile extends Component {
 
   updateUser = user => this.setState({ user, editingProfile: false });
 
-  renderInterest = interest => (
-    <li key={interest}>
-      <Badge color="neutral">{interest}</Badge>
-    </li>
-  );
+  maybeRenderInterests = (user) => {
+    if (!user.interests || user.interests.length === 0) return `${user.firstName} hasn't added any interests yet.`;
+    return user.interests.map(interest => (
+      <li key={interest}>
+        <Badge color="neutral">{interest}</Badge>
+      </li>
+    ));
+  }
 
-  maybeRenderEditButton = () => {
+  maybeRenderEditButton = (user) => {
     const loggedInUser = this.context.user;
-    const { user } = this.state;
 
     if (!loggedInUser || user._id !== loggedInUser._id) return null;
     return (
@@ -67,12 +69,37 @@ class Profile extends Component {
     );
   }
 
+  maybeRenderSocials = (user) => {
+    if (!user.hasSocials) return null;
+    return (
+      <ul className="profile__about__socials">
+        {user.twitter && (
+          <li>
+            <ExternalLink href={`https://twitter.com/${user.twitter}`} className="twitter">
+              <i><FontAwesomeIcon icon={faTwitter} /></i>
+              {user.twitter}
+            </ExternalLink>
+          </li>
+        )}
+        {user.github && (
+          <li>
+            <ExternalLink href={`https://github.com/${user.github}`} className="github">
+              <i><FontAwesomeIcon icon={faGithub} /></i>
+              {user.github}
+            </ExternalLink>
+          </li>
+        )}
+      </ul>
+    );
+  }
+
   render() {
     const { editingProfile, user, getUserRequest } = this.state;
 
     if (getUserRequest.isLoading) return <AppContainer />;
-
-    const $interests = user.interests.map(this.renderInterest);
+    const $editButton = this.maybeRenderEditButton(user);
+    const $socials = this.maybeRenderSocials(user);
+    const $interests = this.maybeRenderInterests(user);
     return (
       <AppContainer>
         <PageContainer className="profile">
@@ -82,35 +109,26 @@ class Profile extends Component {
             handleUserUpdated={this.updateUser}
             cancelProfileUpdate={this.cancelProfileUpdate}
           />
-          {this.maybeRenderEditButton()}
+          {$editButton}
           <div className="profile__subject">
-            <div className="profile__subject__avatar-wrapper">
-              <img src={user.picture} alt={`Avatar of ${user.firstName}`} />
-            </div>
+            {user.picture && (
+              <div className="profile__subject__avatar-wrapper">
+                <img src={user.picture} alt={`Avatar of ${user.firstName}`} />
+              </div>
+            )}
             <div className="profile__subject__title">
               <h2>{user.firstName} {user.lastName}</h2>
-              <h3>{user.tagline}</h3>
-              <h4><Icon icon="map-marker" /> {user.location}</h4>
+              {user.tagline ? <h3>{user.tagline}</h3> : null}
+              {user.location ? <h4><Icon icon="map-marker" /> {user.location}</h4> : null}
             </div>
           </div>
           <section>
             <h2 className="profile__about__title">About {user.firstName}</h2>
             <div className="profile__about">
-              <p className="profile__about__bio">{user.bio}</p>
-              <ul className="profile__about__socials">
-                <li>
-                  <ExternalLink href={`https://twitter.com/${user.twitter}`} className="twitter">
-                    <i><FontAwesomeIcon icon={faTwitter} /></i>
-                    {user.twitter}
-                  </ExternalLink>
-                </li>
-                <li>
-                  <ExternalLink href={`https://github.com/${user.github}`} className="github">
-                    <i><FontAwesomeIcon icon={faGithub} /></i>
-                    {user.github}
-                  </ExternalLink>
-                </li>
-              </ul>
+              <p className={`profile__about__bio ${user.hasSocials ? 'profile__about__bio--divider' : ''}`}>
+                {user.bio || `${user.firstName} hasn't set up their profile yet.` }
+              </p>
+              {$socials}
             </div>
             <article className="profile__interests">
               <h2>Interests</h2>
