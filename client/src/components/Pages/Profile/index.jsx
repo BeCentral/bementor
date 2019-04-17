@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import NProgress from 'nprogress';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { Button, Icon, Badge } from 'evergreen-ui';
-import { ExternalLink } from '../../UI';
 import { API } from '../../../constants';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
 import ProfileForm from './ProfileForm';
+import Socials from './Socials';
 import User from '../../../models/User';
 import RequestState from '../../../models/RequestState';
 import AuthContext from '../../../context/auth-context';
@@ -71,26 +69,7 @@ class Profile extends Component {
 
   maybeRenderSocials = (user) => {
     if (!user.hasSocials) return null;
-    return (
-      <ul className="profile__about__socials">
-        {user.twitter && (
-          <li>
-            <ExternalLink href={`https://twitter.com/${user.twitter}`} className="twitter">
-              <i><FontAwesomeIcon icon={faTwitter} /></i>
-              {user.twitter}
-            </ExternalLink>
-          </li>
-        )}
-        {user.github && (
-          <li>
-            <ExternalLink href={`https://github.com/${user.github}`} className="github">
-              <i><FontAwesomeIcon icon={faGithub} /></i>
-              {user.github}
-            </ExternalLink>
-          </li>
-        )}
-      </ul>
-    );
+    return <Socials {...user} />;
   }
 
   render() {
