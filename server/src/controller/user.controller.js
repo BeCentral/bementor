@@ -136,7 +136,9 @@ exports.search = (req, res) => {
 exports.update = (req, res) => {
   const { id } = req.params;
   if (req.user._id.toString() !== id) return res.status(403).send({ message: 'You can only edit your own profile' });
-  return User.findOneAndUpdate({ _id: id }, req.body, { new: true })
+
+  const newUser = { ...req.body, profileFtue: false };
+  return User.findOneAndUpdate({ _id: id }, newUser, { new: true })
     .then(user => res.send(user))
     .catch(err => res.status(500).send({ message: err.message }));
 };

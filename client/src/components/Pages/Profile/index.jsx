@@ -50,7 +50,10 @@ class Profile extends Component {
 
   cancelProfileUpdate = () => this.setState({ editingProfile: false });
 
-  updateUser = user => this.setState({ user, editingProfile: false });
+  updateUser = (user) => {
+    this.setState({ user, editingProfile: false });
+    this.context.setAuthenticatedUser(user);
+  }
 
   maybeRenderInterests = (user) => {
     if (!user.interests || user.interests.length === 0) return `${user.firstName} hasn't added any interests yet.`;
@@ -98,15 +101,15 @@ class Profile extends Component {
           {$editButton}
           <CornerDialog
             title="Welcome to your profile"
-            isShown
             confirmLabel="Get started"
+            isShown={user.profileFtue}
+            onConfirm={this.openEditor}
           >
             <p>
-              Welcome to your profile! This is where you can let people know what
-              you&#39;re interested in and what you&#39;re looking for.
+              This is where you can let people know what you&#39;re interested in and what you&#39;re looking for.
             </p>
             <p>
-              The information on your makes it easier for people to find you on the Connect page.
+              The information you add, makes it easier for people to find you on the Connect page.
             </p>
           </CornerDialog>
           <div className="profile__subject">
@@ -125,7 +128,7 @@ class Profile extends Component {
             <h2 className="profile__about__title">About {user.firstName}</h2>
             <div className="profile__about">
               <p className={`profile__about__bio ${user.hasSocials ? 'profile__about__bio--divider' : ''}`}>
-                {user.bio || `${user.firstName} hasn't set up their profile yet.` }
+                {user.bio || `${user.firstName} hasn't set up their profile yet.`}
               </p>
               {$socials}
             </div>

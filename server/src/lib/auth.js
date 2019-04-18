@@ -29,7 +29,6 @@ exports.createToken = (user, expiresIn = null) => {
 exports.findUserByToken = async (token) => {
   const payload = await jwt.verify(token, JWT_SECRET);
   return User.findById(payload.sub)
-    .select('+profileFtue')
     .select('+passwordResetToken')
     .select('+accountConfirmationToken');
 };

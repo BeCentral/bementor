@@ -58,8 +58,7 @@ const User = new mongoose.Schema(
     },
     profileFtue: {
       type: Boolean,
-      default: true,
-      select: false
+      default: true
     }
   },
   {
