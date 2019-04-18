@@ -104,11 +104,11 @@ class Profile extends Component {
             confirmLabel="Get started"
             isShown={user.profileFtue}
             onConfirm={this.openEditor}
+            onCloseComplete={() => { }}
           >
             <p>
-              This is where you can let people know what you&#39;re interested in and what you&#39;re looking for.
-            </p>
-            <p>
+              This is where you can let people know what you&#39;re interested in and what
+              you&#39;re looking for.
               The information you add, makes it easier for people to find you on the Connect page.
             </p>
           </CornerDialog>
