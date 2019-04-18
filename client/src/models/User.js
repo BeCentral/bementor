@@ -7,6 +7,10 @@ class User {
     this.role = user.role || 'user';
   }
 
+  get hasSocials() {
+    return this.twitter || this.github;
+  }
+
   get isAdmin() {
     return this.role === 'admin';
   }

@@ -7,10 +7,11 @@ import AuthContext from '../../context/auth-context';
 import '../../assets/css/header.css';
 
 const Header = ({ history }) => {
+  const { setAuthenticatedUser } = useContext(AuthContext);
+
   const doLogout = async () => {
     // TODO show logout state
     await API.user.logout();
-    const { setAuthenticatedUser } = useContext(AuthContext);
     setAuthenticatedUser(null);
     // TODO show logout success
     history.push('/');
@@ -36,7 +37,7 @@ const Header = ({ history }) => {
             { isAuthenticated && (
               <>
                 <li><Link to="#">Inbox</Link></li>
-                <li><Link to="/profile/5c851da63fc52b74c942680d">Profile</Link></li>
+                <li><Link to={`/profile/${user._id}`}>Profile</Link></li>
                 <li>|</li>
                 <li><button onClick={doLogout} type="button" className="button--link">Log out</button></li>
               </>
