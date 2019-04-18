@@ -55,6 +55,11 @@ const User = new mongoose.Schema(
     role: {
       type: String,
       default: 'user'
+    },
+    profileFtue: {
+      type: Boolean,
+      default: true,
+      select: false
     }
   },
   {

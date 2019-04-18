@@ -51,6 +51,7 @@ exports.login = (req, res) => {
   let foundUser = null;
   User.findOne({ email })
     .select('+password')
+    .select('+firstLogin')
     .then((user) => {
       if (!user) return res.status(401).send({ message: 'Incorrect username or password' });
       foundUser = user;

@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import NProgress from 'nprogress';
-import { Button, Icon, Badge } from 'evergreen-ui';
+import {
+  Button,
+  Icon,
+  Badge,
+  CornerDialog
+} from 'evergreen-ui';
 import { API } from '../../../constants';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
@@ -76,9 +81,11 @@ class Profile extends Component {
     const { editingProfile, user, getUserRequest } = this.state;
 
     if (getUserRequest.isLoading) return <AppContainer />;
+
     const $editButton = this.maybeRenderEditButton(user);
     const $socials = this.maybeRenderSocials(user);
     const $interests = this.maybeRenderInterests(user);
+
     return (
       <AppContainer>
         <PageContainer className="profile">
@@ -89,6 +96,19 @@ class Profile extends Component {
             cancelProfileUpdate={this.cancelProfileUpdate}
           />
           {$editButton}
+          <CornerDialog
+            title="Welcome to your profile"
+            isShown
+            confirmLabel="Get started"
+          >
+            <p>
+              Welcome to your profile! This is where you can let people know what
+              you&#39;re interested in and what you&#39;re looking for.
+            </p>
+            <p>
+              The information on your makes it easier for people to find you on the Connect page.
+            </p>
+          </CornerDialog>
           <div className="profile__subject">
             {user.picture && (
               <div className="profile__subject__avatar-wrapper">
