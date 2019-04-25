@@ -3,7 +3,7 @@ import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
 import SearchBar from './SearchBar';
 import MiniUser from './MiniUser';
-import Wrapper from '../../Containers/Wrapper';
+import Wrapper from '../../Containers/FlexWrapper';
 import { API } from '../../../constants';
 
 class Users extends Component {
