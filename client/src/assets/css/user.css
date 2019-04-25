@@ -1,13 +1,11 @@
-.app-user_mini {
-  flex: 1 1;
-  margin: 1em;
+.app-user-mini {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.app-user_mini img {
+.app-user-mini img {
   border: #00b265 .8rem solid;
   border-radius: 100%;
   width: 20rem;
@@ -15,19 +13,19 @@
   transition: transform .3s ease-in-out;
 }
 
-.app-user_mini:hover img {
+.app-user-mini:hover img {
     transform: rotate(25deg);
 }
 
-.app-user_mini p {
+.app-user-mini p {
   text-align: center;
-  margin: 0.2em 0;
-  padding: 0.5em;
+  margin: .2rem 0;
+  padding: .5rem;
 }
 
-.app-user_mini p:first-of-type {
+.app-user-mini p:first-of-type {
   background-color: #00b265;
-  margin-top: 1em;
-  padding: 0.5em;
+  margin-top: 1rem;
+  padding: .5rem;
   color: white;
 }

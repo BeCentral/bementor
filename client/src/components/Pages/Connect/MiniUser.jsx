@@ -8,14 +8,14 @@ const MiniUser = (props) => {
   const color = Math.floor(Math.random() * 16777215).toString(16);
 
   return (
-    <section className="app-user_mini">
+    <article className="app-user-mini">
       <Link to={`/profile/${props._id}`}><img alt="avatar" src={`https://api.adorable.io/avatars/${props._id}`} /></Link>
       <Link className="seamless" to={`/profile/${props._id}`}>
         <p>
           {props.firstName} {props.lastName}
         </p>
       </Link>
-    </section>
+    </article>
   );
 };
 

@@ -2,11 +2,6 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 4em;
-}
-
-.flex-wrapper > * {
-  flex: 1;
-  margin: 1em;
 }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { SearchInput, Button } from 'evergreen-ui';
 import Filters from './Filters';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
