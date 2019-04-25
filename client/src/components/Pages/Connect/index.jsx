@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { SearchInput, Button } from 'evergreen-ui';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
-import SearchBar from './SearchBar';
 import MiniUser from './MiniUser';
 import Wrapper from '../../Containers/FlexWrapper';
 import { API } from '../../../constants';
@@ -22,8 +22,8 @@ class Users extends Component {
     });
   }
 
-  search = async (query) => {
-    const users = await API.user.search(query);
+  search = async () => {
+    const users = await API.user.search(this.searchNode.value);
     this.setState({
       users
     });
@@ -36,7 +36,8 @@ class Users extends Component {
       <AppContainer>
         <PageContainer>
           <h2>Connect.</h2>
-          <SearchBar onSearch={this.search} />
+          <SearchInput ref={(node) => { this.searchNode = node; }} name="query" placeholder="Search keywords" />
+          <Button type="submit" onClick={this.search}>Search</Button>
           <Wrapper>
             {$users}
           </Wrapper>
