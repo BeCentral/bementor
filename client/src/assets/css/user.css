@@ -8,10 +8,11 @@
 }
 
 .app-user_mini img {
-  border: #00b265 0.8em solid;
+  border: #00b265 .8rem solid;
   border-radius: 100%;
-  width: 300px;
-  height: 300px;
+  width: 20rem;
+  height: 20rem;
+  transition: transform .3s ease-in-out;
 }
 
 .app-user_mini:hover img {

@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { SearchInput, Button } from 'evergreen-ui';
+import Filters from './Filters';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
 import MiniUser from './MiniUser';
 import Wrapper from '../../Containers/FlexWrapper';
 import { API } from '../../../constants';
+
+import '../../../assets/css/connect.css';
 
 class Users extends Component {
   constructor(props) {
@@ -22,8 +25,8 @@ class Users extends Component {
     });
   }
 
-  search = async () => {
-    const users = await API.user.search(this.searchNode.value);
+  filter = async (filters) => {
+    const users = await API.user.find(filters.search);
     this.setState({
       users
     });
@@ -34,10 +37,9 @@ class Users extends Component {
 
     return (
       <AppContainer>
-        <PageContainer>
-          <h2>Connect.</h2>
-          <SearchInput ref={(node) => { this.searchNode = node; }} name="query" placeholder="Search keywords" />
-          <Button type="submit" onClick={this.search}>Search</Button>
+        <PageContainer className="connect">
+          <h2 className="connect__title">Connect.</h2>
+          <Filters onFilter={this.filter} />
           <Wrapper>
             {$users}
           </Wrapper>
