@@ -7,6 +7,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.7.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "evergreen-ui": "^4.15.0",
+    "lodash": "^4.17.11",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "prop-types": "^15.7.2",
