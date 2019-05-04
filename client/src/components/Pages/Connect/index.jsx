@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import Filters from './Filters';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
-import SearchBar from './SearchBar';
 import MiniUser from './MiniUser';
-import Wrapper from '../../Containers/Wrapper';
+import Wrapper from '../../Containers/FlexWrapper';
 import { API } from '../../../constants';
+
+import '../../../assets/css/connect.css';
 
 class Users extends Component {
   constructor(props) {
@@ -22,8 +24,8 @@ class Users extends Component {
     });
   }
 
-  search = async (query) => {
-    const users = await API.user.search(query);
+  filter = async (filters) => {
+    const users = await API.user.find(filters.search);
     this.setState({
       users
     });
@@ -34,9 +36,9 @@ class Users extends Component {
 
     return (
       <AppContainer>
-        <PageContainer>
-          <h2>Connect.</h2>
-          <SearchBar onSearch={this.search} />
+        <PageContainer className="connect">
+          <h2 className="connect__title">Connect.</h2>
+          <Filters onFilter={this.filter} />
           <Wrapper>
             {$users}
           </Wrapper>

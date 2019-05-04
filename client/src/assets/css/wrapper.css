@@ -1,12 +1,7 @@
-.app-wrapper {
+.flex-wrapper {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 4em;
-}
-
-.app-wrapper > * {
-  flex: 1;
-  margin: 1em;
 }
