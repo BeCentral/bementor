@@ -1,4 +1,5 @@
 const User = require('../model/user.model');
+const interests = require('./interest.controller');
 const { hash, compareHash } = require('../lib/util');
 const { sendAccountConfirmationEmail, sendPasswordResetEmail } = require('../lib/email');
 const { createToken, findUserByToken } = require('../lib/auth');
@@ -138,7 +139,8 @@ exports.update = (req, res) => {
   if (req.user._id.toString() !== id) return res.status(403).send({ message: 'You can only edit your own profile' });
 
   const newUser = { ...req.body, profileFtue: false };
-  return User.findOneAndUpdate({ _id: id }, newUser, { new: true })
+  return interests.update(req.user.interests, newUser.interests)
+    .then(() => User.findOneAndUpdate({ _id: id }, newUser, { new: true }))
     .then(user => res.send(user))
     .catch(err => res.status(500).send({ message: err.message }));
 };

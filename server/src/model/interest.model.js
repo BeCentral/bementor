@@ -6,6 +6,10 @@ const Interest = new mongoose.Schema(
       type: String,
       required: true,
       unique: true
+    },
+    count: {
+      type: Number,
+      default: 1
     }
   },
   {
