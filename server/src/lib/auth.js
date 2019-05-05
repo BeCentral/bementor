@@ -14,6 +14,7 @@ const authOptions = {
 
 const jwtAuth = new JwtStrategy(authOptions, (payload, done) => {
   User.findById(payload.sub)
+    .populate('interests')
     .then(user => done(null, user))
     .catch(err => done(err, null));
 });

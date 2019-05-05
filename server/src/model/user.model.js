@@ -28,7 +28,8 @@ const User = new mongoose.Schema(
     interests: [
       {
         type: mongoose.ObjectId,
-        ref: 'Interest'
+        ref: 'Interest',
+        default: []
       }
     ],
     picture: {

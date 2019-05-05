@@ -53,9 +53,9 @@ exports.login = (req, res) => {
   const { email, password } = req.body;
   let foundUser = null;
   User.findOne({ email })
+    .populate('interests')
     .select('+password')
     .select('+firstLogin')
-    .populate('interests')
     .then((user) => {
       if (!user) return res.status(401).send({ message: 'Incorrect username or password' });
       foundUser = user;
@@ -140,10 +140,18 @@ exports.search = (req, res) => {
 exports.update = (req, res) => {
   const { id } = req.params;
   if (req.user._id.toString() !== id) return res.status(403).send({ message: 'You can only edit your own profile' });
-
   const newUser = { ...req.body, profileFtue: false };
-  return interests.update(req.user.interests, newUser.interests)
-    .then(() => User.findOneAndUpdate({ _id: id }, newUser, { new: true }))
+  // replace underscores and whitespace
+  const providedInterests = newUser.interests.map(i => i.replace(/[\W_]+/g, '').toUpperCase());
+  return interests.update(req.user.interests.map(i => i.name), [...new Set(providedInterests)])
+    .then(newInterests => (
+      User.findOneAndUpdate(
+        { _id: id },
+        // remove duplicates from interests if provided
+        { ...newUser, interests: newInterests },
+        { new: true }
+      ).populate('interests')
+    ))
     .then(user => res.send(user))
     .catch(err => res.status(500).send({ message: err.message }));
 };

@@ -25,9 +25,14 @@ const Socials = ({ twitter, github }) => (
   </ul>
 );
 
+Socials.defaultProps = {
+  twitter: '',
+  github: ''
+};
+
 Socials.propTypes = {
-  twitter: PropTypes.string.isRequired,
-  github: PropTypes.string.isRequired
+  twitter: PropTypes.string,
+  github: PropTypes.string
 };
 
 export default Socials;

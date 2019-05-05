@@ -12,23 +12,28 @@ exports.create = (req, res) => {
     });
 };
 
+const doInterestAddition = interest => Interest.findOne({ name: interest })
+  .then((interestToIncrement) => {
+    if (!interestToIncrement) return Interest.create({ name: interest });
+    interestToIncrement.count += 1;
+    return interestToIncrement.save();
+  });
+
+const doInterestRemoval = interest => Interest.findOne({ name: interest })
+  .then((interestToDecrement) => {
+    interestToDecrement.count -= 1;
+    if (interestToDecrement.count < 1) return Interest.findOneAndRemove({ name: interest });
+    return interestToDecrement.save();
+  });
+
 exports.update = (oldInterests, newInterests) => {
-  const intsToRemove = oldInterests.filter(int => !newInterests.includes(int));
   const intsToAdd = newInterests.filter(int => !oldInterests.includes(int));
+  const intsToRemove = oldInterests.filter(int => !newInterests.includes(int));
+  const additionQueue = intsToAdd.map(doInterestAddition);
+  const removalQueue = intsToRemove.map(doInterestRemoval);
 
-  let queue = intsToRemove.map(intId => Interest.findById(intId)
-    .then((interestToDecrement) => {
-      interestToDecrement.count -= 1;
-      if (interestToDecrement.count < 1) return Interest.findByIdAndRemove(intId);
-      return interestToDecrement.save();
-    }));
-
-  queue = queue.concat(intsToAdd.map(intId => Interest.findById(intId)
-    .then((interestToIncrement) => {
-      if (!interestToIncrement) return Interest.create({ name: intId });
-      interestToIncrement.count += 1;
-      return interestToIncrement.save();
-    })));
-
-  return Promise.all(queue);
+  return Promise.all(additionQueue.concat(removalQueue)).then(() => {
+    const q = newInterests.map(int => Interest.findOne({ name: int }));
+    return Promise.all(q);
+  });
 };
