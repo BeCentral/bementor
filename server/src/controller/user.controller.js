@@ -8,6 +8,7 @@ const cookieIsSecure = process.env.ENVIRONMENT === 'production';
 
 exports.findAll = async (req, res) => {
   User.find()
+    .populate('interests')
     .then((users) => { res.send(users); })
     .catch((err) => {
       res.status(500).send({
@@ -19,6 +20,7 @@ exports.findAll = async (req, res) => {
 exports.findOne = (req, res) => {
   const { id } = req.params;
   User.findById(id)
+    .populate('interests')
     .then((user) => { res.send(user); })
     .catch((err) => {
       res.status(500).send({ message: err.message });
@@ -53,6 +55,7 @@ exports.login = (req, res) => {
   User.findOne({ email })
     .select('+password')
     .select('+firstLogin')
+    .populate('interests')
     .then((user) => {
       if (!user) return res.status(401).send({ message: 'Incorrect username or password' });
       foundUser = user;
@@ -121,9 +124,9 @@ exports.confirmAccount = async (req, res) => {
 exports.search = (req, res) => {
   const query = req.query.text;
 
-  User.find({
-    $text: { $search: query }
-  })
+  User
+    .find({ $text: { $search: query } })
+    .populate('interests')
     .then((users) => {
       res.send(users);
     })

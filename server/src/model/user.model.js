@@ -25,9 +25,12 @@ const User = new mongoose.Schema(
     github: {
       type: String
     },
-    interests: {
-      type: [String]
-    },
+    interests: [
+      {
+        type: mongoose.ObjectId,
+        ref: 'Interest'
+      }
+    ],
     picture: {
       type: String
     },
