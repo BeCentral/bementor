@@ -58,8 +58,8 @@ class Profile extends Component {
   maybeRenderInterests = (user) => {
     if (!user.interests || user.interests.length === 0) return `${user.firstName} hasn't added any interests yet.`;
     return user.interests.map(interest => (
-      <li key={interest}>
-        <Badge color="neutral">{interest}</Badge>
+      <li key={interest._id}>
+        <Badge color="neutral">{interest.name}</Badge>
       </li>
     ));
   }
@@ -88,7 +88,6 @@ class Profile extends Component {
     const $editButton = this.maybeRenderEditButton(user);
     const $socials = this.maybeRenderSocials(user);
     const $interests = this.maybeRenderInterests(user);
-
     return (
       <AppContainer>
         <PageContainer className="profile">

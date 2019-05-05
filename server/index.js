@@ -41,6 +41,7 @@ app.use('/api', router);
 
 require('./src/lib/auth');
 require('./src/route/user.route')(router);
+require('./src/route/interest.route')(router);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {

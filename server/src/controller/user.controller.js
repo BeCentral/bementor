@@ -1,4 +1,5 @@
 const User = require('../model/user.model');
+const interests = require('./interest.controller');
 const { hash, compareHash } = require('../lib/util');
 const { sendAccountConfirmationEmail, sendPasswordResetEmail } = require('../lib/email');
 const { createToken, findUserByToken } = require('../lib/auth');
@@ -7,6 +8,7 @@ const cookieIsSecure = process.env.ENVIRONMENT === 'production';
 
 exports.findAll = async (req, res) => {
   User.find()
+    .populate('interests')
     .then((users) => { res.send(users); })
     .catch((err) => {
       res.status(500).send({
@@ -18,6 +20,7 @@ exports.findAll = async (req, res) => {
 exports.findOne = (req, res) => {
   const { id } = req.params;
   User.findById(id)
+    .populate('interests')
     .then((user) => { res.send(user); })
     .catch((err) => {
       res.status(500).send({ message: err.message });
@@ -50,6 +53,7 @@ exports.login = (req, res) => {
   const { email, password } = req.body;
   let foundUser = null;
   User.findOne({ email })
+    .populate('interests')
     .select('+password')
     .select('+firstLogin')
     .then((user) => {
@@ -120,9 +124,9 @@ exports.confirmAccount = async (req, res) => {
 exports.search = (req, res) => {
   const query = req.query.text;
 
-  User.find({
-    $text: { $search: query }
-  })
+  User
+    .find({ $text: { $search: query } })
+    .populate('interests')
     .then((users) => {
       res.send(users);
     })
@@ -136,9 +140,18 @@ exports.search = (req, res) => {
 exports.update = (req, res) => {
   const { id } = req.params;
   if (req.user._id.toString() !== id) return res.status(403).send({ message: 'You can only edit your own profile' });
-
   const newUser = { ...req.body, profileFtue: false };
-  return User.findOneAndUpdate({ _id: id }, newUser, { new: true })
+  // replace underscores and whitespace
+  const providedInterests = newUser.interests.map(i => i.replace(/[\W_]+/g, '').toUpperCase());
+  return interests.update(req.user.interests.map(i => i.name), [...new Set(providedInterests)])
+    .then(newInterests => (
+      User.findOneAndUpdate(
+        { _id: id },
+        // remove duplicates from interests if provided
+        { ...newUser, interests: newInterests },
+        { new: true }
+      ).populate('interests')
+    ))
     .then(user => res.send(user))
     .catch(err => res.status(500).send({ message: err.message }));
 };
