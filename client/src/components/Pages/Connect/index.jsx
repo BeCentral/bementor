@@ -3,7 +3,6 @@ import Filters from './Filters';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
 import MiniUser from './MiniUser';
-import Wrapper from '../../Containers/FlexWrapper';
 import { API } from '../../../constants';
 
 import '../../../assets/css/connect.css';
@@ -37,11 +36,12 @@ class Users extends Component {
     return (
       <AppContainer>
         <PageContainer className="connect">
-          <h2 className="connect__title">Connect.</h2>
           <Filters onFilter={this.filter} />
-          <Wrapper>
-            {$users}
-          </Wrapper>
+          <div className="connect__results">
+            <div className="connect__results__wrapper">
+              {$users}
+            </div>
+          </div>
         </PageContainer>
       </AppContainer>
     );

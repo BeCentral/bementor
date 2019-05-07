@@ -1,3 +1,32 @@
-.connect__title {
-  text-align: center;
+.connect {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 2rem;
+}
+
+.connect__results {
+  width: calc(99vw - 38rem);
+}
+
+.connect__results__wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+
+.connect__filters {
+  width: 38rem;
+}
+
+.connect__filters__group {
+  margin: 2rem 0;
+}
+
+.connect__filters__search {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
 }
