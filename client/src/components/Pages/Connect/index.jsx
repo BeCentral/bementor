@@ -38,6 +38,7 @@ class Users extends Component {
         <PageContainer className="connect">
           <Filters onFilter={this.filter} />
           <div className="connect__results">
+            <h2 className="center">Connect.</h2>
             <div className="connect__results__wrapper">
               {$users}
             </div>

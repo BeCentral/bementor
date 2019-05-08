@@ -82,3 +82,7 @@ a.seamless:active {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.center {
+  text-align: center;
+}

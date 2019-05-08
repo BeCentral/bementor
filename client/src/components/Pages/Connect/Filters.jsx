@@ -23,6 +23,7 @@ const Filters = ({ onFilter }) => {
 
   return (
     <div className="connect__filters">
+      <h3>Filter results</h3>
       <form onSubmit={search} className="connect__filters__search">
         <SearchInput onChange={updateSearch} name="search" placeholder="Search keywords" />
         <Button type="submit" onClick={search}>Search</Button>
