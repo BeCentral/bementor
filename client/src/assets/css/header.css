@@ -1,4 +1,4 @@
-.app-header__top {
+.app-header {
   height: 18rem;
   background-image: url('../images/pattern.gif');
   background-repeat: repeat;
@@ -7,7 +7,7 @@
   flex-direction: column;
 }
 
-.app-header__top h1 {
+.app-header h1 {
   margin: 0;
   display: inline-block;
   background: #fff;
@@ -16,18 +16,18 @@
   align-self: center;
 }
 
-.app-header__top a,
-.app-header__top a:visited,
-.app-header__top a:active {
+.app-header a,
+.app-header a:visited,
+.app-header a:active {
   color: #00b265;
 }
 
-.app-header__navigation {
+.navigation {
   width: 100%;
   box-shadow: 0 2px 1px -1px gray;
 }
 
-.app-header__navigation ul {
+.navigation ul {
   display: flex;
   width: 100%;
   margin: 0;
@@ -37,7 +37,7 @@
   align-content: center;
 }
 
-.app-header__navigation li {
+.navigation li {
   list-style-type: none;
   color: #fff;
   margin-right: 5rem;
@@ -45,13 +45,14 @@
   text-transform: uppercase;
 }
 
-.app-header__navigation__link:hover {
+.navigation__link:hover {
   text-decoration: underline;
   cursor: pointer;
 }
 
-.app-header__navigation a,
-.app-header__navigation a:visited,
-.app-header__navigation a:active {
+.navigation a,
+.navigation a:visited,
+.navigation a:active {
   color: #fff;
 }
+
