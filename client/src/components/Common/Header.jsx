@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { API } from '../../constants';
@@ -7,10 +7,21 @@ import AuthContext from '../../context/auth-context';
 import '../../assets/css/header.css';
 
 const Header = ({ history }) => {
+  const [topHeaderShown, setTopHeaderVisibility] = useState(false);
   const { setAuthenticatedUser } = useContext(AuthContext);
 
-  useEffect(() => {
+  const handleScroll = () => {
+    // 180 is header height
+    if (window.pageYOffset >= 180) return setTopHeaderVisibility(false);
+    return setTopHeaderVisibility(true);
+  };
 
+  useEffect(() => {
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const doLogout = async () => {
@@ -34,7 +45,10 @@ const Header = ({ history }) => {
       <header className="app-header">
         <h1><Link to="/">BeMentor.</Link></h1>
       </header>
-      <nav className="navigation">
+      <nav className={`navigation ${topHeaderShown ? '' : 'navigation--fixed'}`}>
+        <h1 className={`navigation__title ${topHeaderShown ? '' : 'navigation__title--active'}`}>
+          <Link to="/">BeMentor.</Link>
+        </h1>
         <ul>
           <li><Link to="/connect">Connect</Link></li>
           { isAuthenticated && (
@@ -62,6 +76,7 @@ const Header = ({ history }) => {
           )}
         </ul>
       </nav>
+      <div className={`nav-spacer ${topHeaderShown ? '' : 'nav-spacer--active'}`} />
     </>
   );
 };
