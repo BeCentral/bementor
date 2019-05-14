@@ -1,7 +1,7 @@
 .app-footer {
   height: 11rem;
   position: absolute;
-  background: #00b265;
+  background: var(--green);
   bottom: 0;
   left: 0;
   width: 100%;

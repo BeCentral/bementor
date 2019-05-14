@@ -19,7 +19,7 @@
 .app-header a,
 .app-header a:visited,
 .app-header a:active {
-  color: #00b265;
+  color: var(--green);
 }
 
 @media only screen and (max-width: 850px) {
@@ -38,7 +38,7 @@
   display: flex;
   justify-content: space-between;
   align-content: center;
-  background: #00b265;
+  background: rgba(0, 178, 101, 1);
   height: 6rem;
   padding: 0 2rem;
   z-index: 10;
@@ -48,6 +48,7 @@
   position: fixed;
   top: 0;
   left: 0;
+  background: rgba(0,178,101, .9);
 }
 
 .nav-spacer {

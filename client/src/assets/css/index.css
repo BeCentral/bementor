@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 
+:root {
+ --green: #00b265;
+ --gray: gray;
+ --yellow: #d8a928;
+}
+
 html {
   box-sizing: border-box;
   font-size: 62.5%;
@@ -46,7 +52,7 @@ h3 {
 a,
 a:visited,
 a:active {
-  color: #d8a928;
+  color: var(--yellow);
   text-decoration: none;
 }
 
