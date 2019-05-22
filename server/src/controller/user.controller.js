@@ -142,8 +142,9 @@ exports.update = (req, res) => {
   if (req.user._id.toString() !== id) return res.status(403).send({ message: 'You can only edit your own profile' });
   const newUser = { ...req.body, profileFtue: false };
   // replace underscores and whitespace
-  const providedInterests = newUser.interests.map(i => i.replace(/[\W_]+/g, '').toUpperCase());
-  return interests.update(req.user.interests.map(i => i.name), [...new Set(providedInterests)])
+  const providedInterests = newUser.interests || req.user.interests;
+  const transformedInterests = providedInterests.map(i => i.replace(/[\W_]+/g, '').toUpperCase());
+  return interests.update(req.user.interests.map(i => i.name), [...new Set(transformedInterests)])
     .then(newInterests => (
       User.findOneAndUpdate(
         { _id: id },
