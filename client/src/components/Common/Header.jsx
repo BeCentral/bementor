@@ -7,8 +7,10 @@ import AuthContext from '../../context/auth-context';
 import '../../assets/css/header.css';
 
 const Header = ({ history }) => {
-  const [topHeaderShown, setTopHeaderVisibility] = useState(false);
-  const { setAuthenticatedUser } = useContext(AuthContext);
+  const [topHeaderShown, setTopHeaderVisibility] = useState(true);
+  const [mobileNavShown, setMobileNavVisibility] = useState(false);
+
+  const { setAuthenticatedUser, user } = useContext(AuthContext);
 
   const handleScroll = () => {
     // 180 is header height
@@ -37,9 +39,41 @@ const Header = ({ history }) => {
     state: { modal: true }
   });
 
-  const { user } = useContext(AuthContext);
-  const isAuthenticated = !!user;
+  const toggleMobileNav = () => setMobileNavVisibility(!mobileNavShown);
 
+  const renderNavItems = () => {
+    const isAuthenticated = !!user;
+    return (
+      <>
+        <li><Link to="/connect">Connect</Link></li>
+        { isAuthenticated && (
+          <>
+            <li><Link to="/connect">Inbox</Link></li>
+            <li><Link to={`/profile/${user._id}`}>Profile</Link></li>
+            <li>|</li>
+            <li><button onClick={doLogout} type="button" className="button--link">Log out</button></li>
+          </>
+        )}
+        { !isAuthenticated && (
+          <>
+            <li>|</li>
+            <li>
+              <Link to={getModalLink('/login')}>
+                Log in
+              </Link>
+            </li>
+            <li>
+              <Link to={getModalLink('/register')}>
+                Register
+              </Link>
+            </li>
+          </>
+        )}
+      </>
+    );
+  };
+
+  const $navItems = renderNavItems();
   return (
     <>
       <header className="app-header">
@@ -49,32 +83,20 @@ const Header = ({ history }) => {
         <h1 className={`navigation__title ${topHeaderShown ? '' : 'navigation__title--active'}`}>
           <Link to="/">BeMentor.</Link>
         </h1>
-        <ul>
-          <li><Link to="/connect">Connect</Link></li>
-          { isAuthenticated && (
-            <>
-              <li><Link to="#">Inbox</Link></li>
-              <li><Link to={`/profile/${user._id}`}>Profile</Link></li>
-              <li>|</li>
-              <li><button onClick={doLogout} type="button" className="button--link">Log out</button></li>
-            </>
-          )}
-          { !isAuthenticated && (
-            <>
-              <li>|</li>
-              <li>
-                <Link to={getModalLink('/login')}>
-                  Log in
-                </Link>
-              </li>
-              <li>
-                <Link to={getModalLink('/register')}>
-                  Register
-                </Link>
-              </li>
-            </>
-          )}
+        <ul className="navigation__items">
+          {$navItems}
         </ul>
+        <div className="hamburger-container">
+          <button
+            type="button"
+            className={`button--seamless hamburger ${mobileNavShown ? 'hamburger--open' : ''}`}
+            onClick={toggleMobileNav}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
       </nav>
       <div className={`nav-spacer ${topHeaderShown ? '' : 'nav-spacer--active'}`} />
     </>

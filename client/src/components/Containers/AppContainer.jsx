@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import Header from '../Common/Header';
 import Footer from '../Common/Footer';
+import { PageTransition } from '../UI';
 
-import '../../assets/css/container.css';
-
-const AppContainer = props => (
+const AppContainer = ({ location, children }) => (
   <div className="app-container">
     <Header />
-    {props.children}
+    <PageTransition location={location}>
+      {children}
+    </PageTransition>
     <Footer />
   </div>
 );
@@ -18,7 +20,9 @@ AppContainer.defaultProps = {
 };
 
 AppContainer.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  // eslint-disable-next-line react/forbid-prop-types
+  location: PropTypes.object.isRequired
 };
 
-export default AppContainer;
+export default withRouter(AppContainer);

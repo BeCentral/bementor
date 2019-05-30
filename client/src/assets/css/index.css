@@ -87,3 +87,13 @@ a.seamless:active {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.button--seamless {
+  color: inherit;
+  cursor: pointer;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+}
