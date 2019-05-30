@@ -31,7 +31,7 @@
   background: rgba(0, 178, 101, 1);
   height: 6rem;
   padding: 0 2rem;
-  z-index: 10;
+  z-index: 20;
 }
 
 .navigation--fixed {
@@ -96,7 +96,12 @@
 }
 
 .hamburger {
+  opacity: 1;
+  transition: opacity ease-out .3s;
+}
 
+.hamburger--hidden {
+  opacity: 0;
 }
 
 .hamburger span {
@@ -106,41 +111,16 @@
   position: relative;
   background: #fff;
   border-radius: 3px;
-  transform-origin: 0px 0px;
-  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-              background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-              opacity 0.55s ease;
   display: block;
 }
 
-.hamburger span:first-child {
-  transform-origin: 0% 0%;
-}
-
-.hamburger-open span:nth-child(2) {
-  transform-origin: 0% 100%;
-}
-
-.hamburger span:nth-child(3){
-  transform-origin: 0% 100%;
+.hamburger span:last-of-type {
   margin-bottom: 0;
 }
 
-.hamburger--open span {
-  opacity: 1;
-  transform: rotate(45deg) translate(0px, 0px);
-  background: #fff;
+.mobile-nav {
+  background-image: url('../images/pattern.gif');
 }
-
-.hamburger--open span:nth-child(2) {
-  opacity: 0;
-  transform: rotate(0deg) scale(0.2, 0.2);
-}
-
-.hamburger--open span:nth-child(3) {
-  transform: rotate(-45deg) translate(0, 0px);
-}
-
 
 @media only screen and (max-width: 850px) {
   .app-header h1 {

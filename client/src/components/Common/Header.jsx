@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { API } from '../../constants';
+import { SideSheet } from 'evergreen-ui';
 import AuthContext from '../../context/auth-context';
 
 import '../../assets/css/header.css';
@@ -76,6 +77,14 @@ const Header = ({ history }) => {
   const $navItems = renderNavItems();
   return (
     <>
+      <SideSheet
+        isShown={mobileNavShown}
+        onCloseComplete={toggleMobileNav}
+        containerProps={{ className: 'mobile-nav' }}
+        width={250}
+      >
+
+      </SideSheet>
       <header className="app-header">
         <h1><Link to="/">BeMentor.</Link></h1>
       </header>
@@ -89,7 +98,7 @@ const Header = ({ history }) => {
         <div className="hamburger-container">
           <button
             type="button"
-            className={`button--seamless hamburger ${mobileNavShown ? 'hamburger--open' : ''}`}
+            className={`button--seamless hamburger ${mobileNavShown ? 'hamburger--hidden' : ''}`}
             onClick={toggleMobileNav}
           >
             <span />
