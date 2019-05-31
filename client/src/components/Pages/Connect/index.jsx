@@ -35,15 +35,13 @@ class Users extends Component {
     const $users = this.state.users.map(user => <MiniUser key={user._id} {...user} />);
 
     return (
-      <AppContainer>
-        <PageContainer className="connect">
-          <h2 className="connect__title">Connect.</h2>
-          <Filters onFilter={this.filter} />
-          <Wrapper>
-            {$users}
-          </Wrapper>
-        </PageContainer>
-      </AppContainer>
+      <PageContainer className="connect">
+        <h2 className="connect__title">Connect.</h2>
+        <Filters onFilter={this.filter} />
+        <Wrapper>
+          {$users}
+        </Wrapper>
+      </PageContainer>
     );
   }
 }

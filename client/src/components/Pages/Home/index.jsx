@@ -1,10 +1,10 @@
 import React from 'react';
-import AppContainer from '../../Containers/AppContainer';
+import PageContainer from '../../Containers/PageContainer';
 
 const Home = () => (
-  <AppContainer>
+  <PageContainer>
     This is the home page
-  </AppContainer>
+  </PageContainer>
 );
 
 export default Home;
