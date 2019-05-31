@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { SideSheet, Avatar } from 'evergreen-ui';
 import { API } from '../../constants';
+import { NavItem } from '../UI';
 import AuthContext from '../../context/auth-context';
 
 import '../../assets/css/header.css';
@@ -35,8 +36,8 @@ const Header = ({ history }) => {
     history.push('/');
   };
 
-  const getModalLink = location => ({
-    pathname: location,
+  const getModalLink = pathname => ({
+    pathname,
     state: { modal: true }
   });
 
@@ -58,28 +59,20 @@ const Header = ({ history }) => {
     const isAuthenticated = !!user;
     return (
       <>
-        <li><Link to="/connect">Connect</Link></li>
+        <NavItem href="/connect">Connect</NavItem>
         { isAuthenticated && (
           <>
-            <li><Link to="/connect">Inbox</Link></li>
-            <li><Link to={`/profile/${user._id}`}>Profile</Link></li>
-            <li>|</li>
+            <NavItem href="/connect">Inbox</NavItem>
+            <NavItem href={`/profile/${user._id}`}>Profile</NavItem>
+            <li className="navigation__items__spacer">|</li>
             <li><button onClick={doLogout} type="button" className="button--link">Log out</button></li>
           </>
         )}
         { !isAuthenticated && (
           <>
             <li>|</li>
-            <li>
-              <Link to={getModalLink('/login')}>
-                Log in
-              </Link>
-            </li>
-            <li>
-              <Link to={getModalLink('/register')}>
-                Register
-              </Link>
-            </li>
+            <NavItem href={getModalLink('/login')}>Log in</NavItem>
+            <NavItem href={getModalLink('/login')}>Register</NavItem>
           </>
         )}
       </>
