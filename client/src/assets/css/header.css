@@ -18,7 +18,8 @@
 
 .app-header a,
 .app-header a:visited,
-.app-header a:active {
+.app-header a:active,
+.app-header a:hover {
   color: var(--green);
 }
 
@@ -82,19 +83,6 @@
   position: relative;
   line-height: 6rem;
   z-index: 20;
-}
-
-.navigation__items a:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.navigation__items a,
-.navigation__items a:visited,
-.navigation__items a:active,
-.navigation__items a:hover {
-  color: #fff;
-  text-decoration: none;
 }
 
 .navigation__items .navigation-item:before, .navigation__items .navigation-item:after {

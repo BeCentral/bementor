@@ -62,7 +62,7 @@ const Header = ({ history }) => {
         <NavItem href="/connect">Connect</NavItem>
         { isAuthenticated && (
           <>
-            <NavItem href="/connect">Inbox</NavItem>
+            <NavItem href="#">Inbox</NavItem>
             <NavItem href={`/profile/${user._id}`}>Profile</NavItem>
             <li className="navigation__items__spacer">|</li>
             <li><button onClick={doLogout} type="button" className="button--link">Log out</button></li>

@@ -51,8 +51,9 @@ h3 {
 
 a,
 a:visited,
-a:active {
-  color: var(--yellow);
+a:active,
+a:hover {
+  color: #fff;
   text-decoration: none;
 }
 
