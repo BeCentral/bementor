@@ -8,7 +8,6 @@ import {
   CornerDialog
 } from 'evergreen-ui';
 import { API } from '../../../constants';
-import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
 import ProfileForm from './ProfileForm';
 import Socials from './Socials';
@@ -82,8 +81,9 @@ class Profile extends Component {
 
   render() {
     const { editingProfile, user, getUserRequest } = this.state;
+    const { userId } = this.props.match.params;
 
-    if (getUserRequest.isLoading) return <AppContainer />;
+    if (getUserRequest.isLoading) return <PageContainer className="profile" />;
 
     const $editButton = this.maybeRenderEditButton(user);
     const $socials = this.maybeRenderSocials(user);
@@ -100,7 +100,7 @@ class Profile extends Component {
         <CornerDialog
           title="Welcome to your profile"
           confirmLabel="Get started"
-          isShown={user.profileFtue}
+          isShown={user.profileFtue && (this.context.user && this.context.user.id === userId)}
           onConfirm={this.openEditor}
           onCloseComplete={() => { }}
         >

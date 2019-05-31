@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import NProgress from 'nprogress';
 import Filters from './Filters';
-import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
 import MiniUser from './MiniUser';
 import Wrapper from '../../Containers/FlexWrapper';
