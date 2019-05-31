@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import NProgress from 'nprogress';
 import Filters from './Filters';
 import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
@@ -17,19 +18,19 @@ class Users extends Component {
   }
 
   async componentDidMount() {
+    NProgress.start();
     const users = await API.user.get();
 
-    this.setState({
-      users
-    });
+    await this.setState({ users });
+    NProgress.done();
   }
 
   filter = async (filters) => {
+    NProgress.start();
     const users = await API.user.find(filters.search);
-    this.setState({
-      users
-    });
-  };
+    this.setState({ users });
+    NProgress.done();
+  }
 
   render() {
     const $users = this.state.users.map(user => <MiniUser key={user._id} {...user} />);
