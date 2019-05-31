@@ -5,3 +5,8 @@
   justify-content: center;
   margin-top: 4em;
 }
+
+.flex-wrapper > * {
+  margin-right: 2rem;
+}
+
