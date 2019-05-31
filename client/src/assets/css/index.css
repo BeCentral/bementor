@@ -81,6 +81,7 @@ a.seamless:active {
   background: inherit;
   border: none;
   outline: 0;
+  text-transform: inherit;
 }
 
 .button--link:hover {
@@ -96,4 +97,5 @@ a.seamless:active {
   outline: none;
   padding: 0;
   margin: 0;
+  text-transform: inherit;
 }

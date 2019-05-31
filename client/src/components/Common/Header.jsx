@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
+import { SideSheet, Avatar } from 'evergreen-ui';
 import { API } from '../../constants';
-import { SideSheet } from 'evergreen-ui';
 import AuthContext from '../../context/auth-context';
 
 import '../../assets/css/header.css';
@@ -42,6 +42,18 @@ const Header = ({ history }) => {
 
   const toggleMobileNav = () => setMobileNavVisibility(!mobileNavShown);
 
+  const maybeRenderAvatar = () => {
+    if (!user) return null;
+    const { firstName, lastName } = user;
+    return (
+      <div className={`${mobileNavShown ? 'nav__avatar--mobile' : 'nav__avatar'}`}>
+        <Avatar src={user.picture} size={35} name={`${user.firstName} ${user.lastName}`} />
+        <h3 className="nav__avatar__name">{firstName} {lastName}</h3>
+      </div>
+    );
+  };
+
+  const $avatar = maybeRenderAvatar();
   const renderNavItems = () => {
     const isAuthenticated = !!user;
     return (
@@ -83,7 +95,9 @@ const Header = ({ history }) => {
         containerProps={{ className: 'mobile-nav' }}
         width={250}
       >
-
+        <header className="mobile-nav__header">
+          {$avatar}
+        </header>
       </SideSheet>
       <header className="app-header">
         <h1><Link to="/">BeMentor.</Link></h1>
@@ -94,6 +108,7 @@ const Header = ({ history }) => {
         </h1>
         <ul className="navigation__items">
           {$navItems}
+          <li>{$avatar}</li>
         </ul>
         <div className="hamburger-container">
           <button

@@ -68,6 +68,7 @@
   margin: 0;
   padding: 0;
   justify-content: flex-end;
+  text-transform: uppercase;
 }
 
 .navigation__items li {
@@ -122,17 +123,42 @@
   background-image: url('../images/pattern.gif');
 }
 
+.nav__avatar {
+  display: flex;
+}
+
+.nav__avatar--mobile {
+  width: 100%;
+  padding: 1rem;
+  background: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.nav__avatar__name {
+  display: none;
+  font-size: 1.6rem;
+  margin-left: .8rem;
+  word-break: break-all;
+}
+
 @media only screen and (max-width: 850px) {
   .app-header h1 {
     font-size: 4rem;
   }
 }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 800px) {
   .navigation__items {
     display: none;
   }
   .hamburger-container {
+    display: block;
+  }
+  .nav__avatar {
+    display: none;
+  }
+  .nav__avatar__name {
     display: block;
   }
 }
