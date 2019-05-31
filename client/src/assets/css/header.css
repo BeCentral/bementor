@@ -97,7 +97,7 @@
   text-decoration: none;
 }
 
-.navigation__item:before, .navigation__item:after {
+.navigation__items .navigation-item:before, .navigation__items .navigation-item:after {
     position: absolute;
     opacity: .4;
     height: 50%;
@@ -107,18 +107,18 @@
     transition: all 0.3s;
 }
 
-.navigation__item:before {
+.navigation__items .navigation-item:before {
     left: -1.2rem;
     top: 25%;
 }
 
-.navigation__item:after {
+.navigation__items .navigation-item:after {
     right: -1.2rem;
     bottom: 25%;
 }
 
-.navigation__item:hover:before, .navigation__item:hover:after,
-.navigation__item.active:before, .navigation__item.active:after {
+.navigation__items .navigation-item:hover:before, .navigation__items .navigation-item:hover:after,
+.navigation__items .navigation-item.active:before, .navigation__items .navigation-item.active:after {
     opacity: 1;
     height: 2px;
     width: 100%;
@@ -126,12 +126,46 @@
     right: 0;
 }
 
-.navigation__item:hover:after, .navigation__item.active:after {
+.navigation__items .navigation-item:hover:after, .navigation__items .navigation-item.active:after {
   bottom: 15%;
 }
 
-.navigation__item:hover:before, .navigation__item.active:before {
+.navigation__items .navigation-item:hover:before, .navigation__items .navigation-item.active:before {
   top: 15%;
+}
+
+.navigation__items--mobile {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 100%;
+  background: rgba(255, 255, 255, .9);
+  padding: 1rem;
+}
+
+.navigation__items--mobile li {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 100%;
+  padding: 2rem;
+  text-transform: uppercase;
+}
+
+.navigation__items--mobile li.active {
+  border: .2rem #333 solid;
+}
+
+.navigation__items--mobile a,
+.navigation__items--mobile a:visited,
+.navigation__items--mobile a:active,
+.navigation__items--mobile a:hover {
+  color: #333;
+  text-decoration: none;
 }
 
 .hamburger-container {
@@ -196,7 +230,7 @@
     display: none;
   }
   .navigation__items__spacer {
-    display: none;
+    display: none!important;
   }
   .hamburger-container {
     display: block;

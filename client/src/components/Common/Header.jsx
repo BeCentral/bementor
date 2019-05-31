@@ -90,6 +90,9 @@ const Header = ({ history }) => {
       >
         <header className="mobile-nav__header">
           {$avatar}
+          <ul className="navigation__items--mobile">
+            {$navItems}
+          </ul>
         </header>
       </SideSheet>
       <header className="app-header">

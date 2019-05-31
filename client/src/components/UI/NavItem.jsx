@@ -7,7 +7,7 @@ const NavItem = ({
 }) => {
   const isActive = href === location.pathname;
   return (
-    <li className={`navigation__item ${className} ${isActive ? 'active' : ''}`}>
+    <li className={`navigation-item ${className} ${isActive ? 'active' : ''}`}>
       <Link to={href} {...rest}>
         {children}
       </Link>

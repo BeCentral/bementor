@@ -76,7 +76,7 @@ a.seamless:active {
 }
 
 .button--link {
-  color: #fff;
+  color: inherit;
   background: inherit;
   border: none;
   outline: 0;
