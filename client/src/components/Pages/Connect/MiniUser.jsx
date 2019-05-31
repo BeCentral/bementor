@@ -8,7 +8,9 @@ const MiniUser = (props) => {
 
   return (
     <article className="app-user-mini">
-      <Link to={`/profile/${props._id}`}><img alt="avatar" src={`https://api.adorable.io/avatars/${props._id}`} /></Link>
+      <Link to={`/profile/${props._id}`}>
+        <img alt="avatar" src={props.picture || `https://api.adorable.io/avatars/${props._id}`} />
+      </Link>
       <Link className="seamless" to={`/profile/${props._id}`}>
         <p>
           {props.firstName} {props.lastName}

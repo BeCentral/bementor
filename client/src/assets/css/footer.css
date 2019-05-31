@@ -1,7 +1,7 @@
 .app-footer {
   height: 11rem;
   position: absolute;
-  background: #00b265;
+  background: var(--green);
   bottom: 0;
   left: 0;
   width: 100%;
@@ -35,9 +35,32 @@
 }
 
 .app-footer__logos a:first-child {
+  margin-left: 0;
+}
+
+.app-footer__logos a:first-child {
   width: 10rem;
 }
 
 .app-footer__logos img {
   width: 100%;
+}
+
+@media only screen and (max-width: 500px) {
+  .app-footer {
+    flex-direction: column;
+    padding: 0 2rem;
+    justify-content: center;
+    height: 20rem;
+  }
+  .app-footer__socials {
+    justify-content: space-between;
+    width: 70%;
+    margin: 0 auto 2rem auto;
+  }
+  .app-footer__logos {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+  }
 }

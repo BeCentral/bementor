@@ -17,7 +17,7 @@
 .profile__subject__avatar-wrapper img {
   border-radius: 50%;
   width: 100%;
-  border: .6rem solid #00b265;
+  border: .6rem solid var(--green);
 }
 
 .profile__subject__title {
@@ -28,14 +28,14 @@
 }
 
 .profile__subject__title h2 {
-  background: #00b265;
+  background: var(--green);
   margin: 1rem 0 0;
   padding: .6rem;
   color: #fff;
 }
 
 .profile__subject__title h3 {
-  background: #d8a928;
+  background: var(--yellow);
   padding: .4rem;
   color: #fff;
   margin-bottom: 0;

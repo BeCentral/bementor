@@ -8,7 +8,6 @@ import {
   CornerDialog
 } from 'evergreen-ui';
 import { API } from '../../../constants';
-import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
 import ProfileForm from './ProfileForm';
 import Socials from './Socials';
@@ -82,64 +81,63 @@ class Profile extends Component {
 
   render() {
     const { editingProfile, user, getUserRequest } = this.state;
+    const { userId } = this.props.match.params;
 
-    if (getUserRequest.isLoading) return <AppContainer />;
+    if (getUserRequest.isLoading) return <PageContainer className="profile" />;
 
     const $editButton = this.maybeRenderEditButton(user);
     const $socials = this.maybeRenderSocials(user);
     const $interests = this.maybeRenderInterests(user);
     return (
-      <AppContainer>
-        <PageContainer className="profile">
-          <ProfileForm
-            isShown={editingProfile}
-            user={user}
-            handleUserUpdated={this.updateUser}
-            cancelProfileUpdate={this.cancelProfileUpdate}
-          />
-          {$editButton}
-          <CornerDialog
-            title="Welcome to your profile"
-            confirmLabel="Get started"
-            isShown={user.profileFtue}
-            onConfirm={this.openEditor}
-            onCloseComplete={() => { }}
-          >
-            <p>
-              This is where you can let people know what you&#39;re interested in and what
-              you&#39;re looking for.
-              The information you add, makes it easier for people to find you on the Connect page.
-            </p>
-          </CornerDialog>
-          <div className="profile__subject">
-            {user.picture && (
-              <div className="profile__subject__avatar-wrapper">
-                <img src={user.picture} alt={`Avatar of ${user.firstName}`} />
-              </div>
-            )}
-            <div className="profile__subject__title">
-              <h2>{user.firstName} {user.lastName}</h2>
-              {user.tagline ? <h3>{user.tagline}</h3> : null}
-              {user.location ? <h4><Icon icon="map-marker" /> {user.location}</h4> : null}
+      <PageContainer className="profile">
+        <ProfileForm
+          isShown={editingProfile}
+          user={user}
+          handleUserUpdated={this.updateUser}
+          cancelProfileUpdate={this.cancelProfileUpdate}
+        />
+        {$editButton}
+        <CornerDialog
+          title="Welcome to your profile"
+          confirmLabel="Get started"
+          isShown={user.profileFtue && (this.context.user && this.context.user.id === userId)}
+          onConfirm={this.openEditor}
+          onCloseComplete={() => { }}
+        >
+          <p>
+            This is where you can let people know what you&#39;re interested in and what
+            you&#39;re looking for.
+            The information you add, makes it easier for people to find you on the Connect page.
+          </p>
+        </CornerDialog>
+        <div className="profile__subject">
+          {user.picture && (
+            <div className="profile__subject__avatar-wrapper">
+              <img src={user.picture} alt={`Avatar of ${user.firstName}`} />
             </div>
+          )}
+          <div className="profile__subject__title">
+            <h2>{user.firstName} {user.lastName}</h2>
+            {user.tagline ? <h3>{user.tagline}</h3> : null}
+            {user.location ? <h4><Icon icon="map-marker" /> {user.location}</h4> : null}
           </div>
-          <section>
-            <h2 className="profile__about__title">About {user.firstName}</h2>
-            <div className="profile__about">
-              <p className={`profile__about__bio ${user.hasSocials ? 'profile__about__bio--divider' : ''}`}>
-                {user.bio || `${user.firstName} hasn't set up their profile yet.`}
-              </p>
-              {$socials}
-            </div>
-            <article className="profile__interests">
-              <h2>Interests</h2>
-              <ul>
-                {$interests}
-              </ul>
-            </article>
-          </section>
-        </PageContainer>
-      </AppContainer>
+        </div>
+        <section>
+          <h2 className="profile__about__title">About {user.firstName}</h2>
+          <div className="profile__about">
+            <p className={`profile__about__bio ${user.hasSocials ? 'profile__about__bio--divider' : ''}`}>
+              {user.bio || `${user.firstName} hasn't set up their profile yet.`}
+            </p>
+            {$socials}
+          </div>
+          <article className="profile__interests">
+            <h2>Interests</h2>
+            <ul>
+              {$interests}
+            </ul>
+          </article>
+        </section>
+      </PageContainer>
     );
   }
 }
