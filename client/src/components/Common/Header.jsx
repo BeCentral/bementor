@@ -8,11 +8,13 @@ import AuthContext from '../../context/auth-context';
 
 import '../../assets/css/header.css';
 
-const Header = ({ history }) => {
+const Header = ({ history, location }) => {
   const [topHeaderShown, setTopHeaderVisibility] = useState(true);
   const [mobileNavShown, setMobileNavVisibility] = useState(false);
 
   const { setAuthenticatedUser, user } = useContext(AuthContext);
+
+  const toggleMobileNav = () => setMobileNavVisibility(!mobileNavShown);
 
   const handleScroll = () => {
     // 180 is header height
@@ -28,6 +30,10 @@ const Header = ({ history }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (mobileNavShown) setMobileNavVisibility(false);
+  }, [location.pathname]);
+
   const doLogout = async () => {
     // TODO show logout state
     await API.user.logout();
@@ -40,8 +46,6 @@ const Header = ({ history }) => {
     pathname,
     state: { modal: true }
   });
-
-  const toggleMobileNav = () => setMobileNavVisibility(!mobileNavShown);
 
   const maybeRenderAvatar = () => {
     if (!user) return null;
@@ -64,13 +68,13 @@ const Header = ({ history }) => {
           <>
             <NavItem href="#">Inbox</NavItem>
             <NavItem href={`/profile/${user._id}`}>Profile</NavItem>
-            <li className="navigation__items__spacer">|</li>
+            <li className="navigation__items__spacer">-</li>
             <li><button onClick={doLogout} type="button" className="button--link">Log out</button></li>
           </>
         )}
         { !isAuthenticated && (
           <>
-            <li>|</li>
+            <li className="navigation__items__spacer">-</li>
             <NavItem href={getModalLink('/login')}>Log in</NavItem>
             <NavItem href={getModalLink('/login')}>Register</NavItem>
           </>
@@ -84,7 +88,7 @@ const Header = ({ history }) => {
     <>
       <SideSheet
         isShown={mobileNavShown}
-        onCloseComplete={toggleMobileNav}
+        onCloseComplete={() => setMobileNavVisibility(false)}
         containerProps={{ className: 'mobile-nav' }}
         width={250}
       >
@@ -125,7 +129,9 @@ const Header = ({ history }) => {
 
 Header.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  location: PropTypes.object.isRequired
 };
 
 export default withRouter(Header);
