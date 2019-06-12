@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import NProgress from 'nprogress';
 import Filters from './Filters';
 import PageContainer from '../../Containers/PageContainer';
-import MiniUser from './MiniUser';
+import UserCard from './UserCard';
 import { API } from '../../../constants';
+
+import User from '../../../models/User';
 
 import '../../../assets/css/connect.css';
 
@@ -19,19 +21,23 @@ class Users extends Component {
     NProgress.start();
     const users = await API.user.get();
 
-    await this.setState({ users });
+    this.setUsers(users);
     NProgress.done();
+  }
+
+  setUsers(users) {
+    this.setState({ users: users.map(u => new User(u)) });
   }
 
   filter = async (filters) => {
     NProgress.start();
     const users = await API.user.find(filters.search);
-    this.setState({ users });
+    this.setUsers(users);
     NProgress.done();
   }
 
   render() {
-    const $users = this.state.users.map(user => <MiniUser key={user._id} {...user} />);
+    const $users = this.state.users.map(user => <UserCard key={user._id} user={user} />);
 
     return (
       <PageContainer className="connect">

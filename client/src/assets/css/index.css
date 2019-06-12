@@ -98,3 +98,7 @@ a.seamless:active {
   margin: 0;
   text-transform: inherit;
 }
+
+.center {
+  text-align: center;
+}
