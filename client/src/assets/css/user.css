@@ -1,11 +1,11 @@
-.app-user-mini {
+.user-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.app-user-mini img {
+.user-card img {
   border: var(--green) .8rem solid;
   border-radius: 100%;
   width: 20rem;
@@ -13,19 +13,36 @@
   transition: transform .3s ease-in-out;
 }
 
-.app-user-mini:hover img {
-    transform: rotate(25deg);
+.user-card:hover img {
+  transform: rotate(25deg);
 }
 
-.app-user-mini p {
+.user-card p {
   text-align: center;
   margin: .2rem 0;
   padding: .5rem;
 }
 
-.app-user-mini p:first-of-type {
+.user-card p {
   background-color: var(--green);
   margin-top: 1rem;
   padding: .5rem;
   color: white;
+}
+
+.user-card .user-card__interests {
+  background-color: transparent;
+  padding: 0;
+  margin: .5rem 0 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 20rem;
+  justify-content: center;
+  max-height: 4.4rem;
+}
+
+.user-card .user-card__interests li {
+  list-style-type: none;
+  padding: .2rem;
 }
