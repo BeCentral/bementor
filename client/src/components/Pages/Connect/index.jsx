@@ -9,7 +9,6 @@ import User from '../../../models/User';
 
 import '../../../assets/css/connect.css';
 
-
 const Users = () => {
   const [users, setUserState] = useState([]);
   const [filtersAreFixed, setFixedFilterState] = useState(false);
@@ -26,11 +25,6 @@ const Users = () => {
   };
 
   useEffect(() => {
-    NProgress.start();
-    API.user.get().then((rawusers) => {
-      setUsers(rawusers);
-      NProgress.done();
-    });
     window.addEventListener('scroll', handleScroll);
     handleScroll();
     return () => {
@@ -40,9 +34,10 @@ const Users = () => {
 
   const filter = async (filters) => {
     NProgress.start();
-    const rawUsers = await API.user.find(filters.search);
-    setUsers(rawUsers);
-    NProgress.done();
+    console.log(filters);
+    // const rawUsers = await API.user.find(filters.search);
+    // setUsers(rawUsers);
+    // NProgress.done();
   };
 
   const $users = users.map(user => <UserCard key={user._id} user={user} />);

@@ -34,8 +34,18 @@
   margin: 2rem 0;
 }
 
-.connect__filters__search {
+.connect__filters__search, .connect__filters__location {
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 2rem;
+}
+
+.connect__filters__search > div, .connect__filters__location > div {
+  width: 70%;
+  margin-bottom: 0;
+}
+
+.connect__filters__search input, .connect__filters__location input {
+  width: 100%;
 }
