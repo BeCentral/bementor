@@ -1,56 +1,63 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import NProgress from 'nprogress';
 import Filters from './Filters';
 import PageContainer from '../../Containers/PageContainer';
 import UserCard from './UserCard';
+import RequestState from '../../../models/RequestState';
 import { API } from '../../../constants';
-
 import User from '../../../models/User';
 
 import '../../../assets/css/connect.css';
 
-class Users extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      users: []
+
+const Users = () => {
+  const [users, setUserState] = useState([]);
+  const [filtersAreFixed, setFixedFilterState] = useState(false);
+  const getUserRequest = new RequestState();
+
+  const handleScroll = () => {
+    // 180 is header height
+    if (window.pageYOffset >= 180) return setFixedFilterState(true);
+    return setFixedFilterState(false);
+  };
+
+  const setUsers = (rawUsers) => {
+    setUserState(rawUsers.map(u => new User(u)));
+  };
+
+  useEffect(() => {
+    NProgress.start();
+    API.user.get().then((rawusers) => {
+      setUsers(rawusers);
+      NProgress.done();
+    });
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
     };
-  }
+  }, []);
 
-  async componentDidMount() {
+  const filter = async (filters) => {
     NProgress.start();
-    const users = await API.user.get();
-
-    this.setUsers(users);
+    const rawUsers = await API.user.find(filters.search);
+    setUsers(rawUsers);
     NProgress.done();
-  }
+  };
 
-  setUsers(users) {
-    this.setState({ users: users.map(u => new User(u)) });
-  }
+  const $users = users.map(user => <UserCard key={user._id} user={user} />);
 
-  filter = async (filters) => {
-    NProgress.start();
-    const users = await API.user.find(filters.search);
-    this.setUsers(users);
-    NProgress.done();
-  }
-
-  render() {
-    const $users = this.state.users.map(user => <UserCard key={user._id} user={user} />);
-
-    return (
-      <PageContainer className="connect">
-        <Filters onFilter={this.filter} />
-        <div className="connect__results">
-          <h2 className="center">Connect.</h2>
-          <div className="connect__results__wrapper">
-            {$users}
-          </div>
+  return (
+    <PageContainer className="connect">
+      <Filters onFilter={filter} fixed={filtersAreFixed} />
+      <div className={`connect__results ${filtersAreFixed ? 'connect__results--scroll' : ''}`}>
+        <h2 className="center">Connect.</h2>
+        <div className="connect__results__wrapper">
+          {$users}
         </div>
-      </PageContainer>
-    );
-  }
-}
+      </div>
+    </PageContainer>
+  );
+};
 
 export default Users;

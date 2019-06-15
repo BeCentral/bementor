@@ -5,7 +5,7 @@
 }
 
 .connect__results {
-  width: calc(99vw - 38rem);
+  width: calc(99vw - 36rem);
 }
 
 .connect__results__wrapper {
@@ -17,9 +17,17 @@
   margin-top: 3rem;
 }
 
+.connect__results--scroll {
+  margin-left: 36rem;
+}
 
 .connect__filters {
-  width: 38rem;
+  width: 36rem;
+}
+
+.connect__filters--scroll {
+  position: fixed;
+  top: 7rem;
 }
 
 .connect__filters__group {

@@ -4,7 +4,7 @@ import {
   SearchInput, Button, TagInput, Pane, Checkbox, TextInputField, Label
 } from 'evergreen-ui';
 
-const Filters = ({ onFilter }) => {
+const Filters = ({ onFilter, fixed }) => {
   const [searchQuery, updateSearchState] = useState('');
   const updateSearch = e => updateSearchState(e.target.value);
 
@@ -22,7 +22,7 @@ const Filters = ({ onFilter }) => {
   };
 
   return (
-    <div className="connect__filters">
+    <div className={`connect__filters ${fixed ? 'connect__filters--scroll' : ''}`}>
       <h3>Filter results</h3>
       <form onSubmit={search} className="connect__filters__search">
         <SearchInput onChange={updateSearch} name="search" placeholder="Search keywords" />
@@ -47,7 +47,8 @@ const Filters = ({ onFilter }) => {
 };
 
 Filters.propTypes = {
-  onFilter: PropTypes.func.isRequired
+  onFilter: PropTypes.func.isRequired,
+  fixed: PropTypes.bool.isRequired
 };
 
 export default Filters;
