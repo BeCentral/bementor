@@ -12,6 +12,7 @@ const Filters = ({ onFilter, fixed }) => {
     mentee: true,
     interests: []
   });
+  const [interests, setInterests] = useState([]);
 
   let $search;
   let $location;
@@ -30,6 +31,12 @@ const Filters = ({ onFilter, fixed }) => {
     setFilters({ ...filters, location: $location.value });
   };
 
+  const filterByInterests = (rawInterests) => {
+    const newInterests = rawInterests.map(i => i.toUpperCase());
+    setInterests(newInterests);
+    setFilters({ ...filters, interests: newInterests });
+  };
+
   return (
     <div className={`connect__filters ${fixed ? 'connect__filters--scroll' : ''}`}>
       <h3>Filter results</h3>
@@ -41,9 +48,14 @@ const Filters = ({ onFilter, fixed }) => {
         <TextInputField innerRef={(n) => { $location = n; }} name="location" label="Location" />
         <Button type="submit">Update</Button>
       </form>
-      <Pane className="connect__filters__group">
+      <Pane className="connect__filters__group connect__filters__interests">
         <Label>Filter by interests</Label>
-        <TagInput width="100%" inputProps={{ placeholder: 'press ENTER to add an interest' }} />
+        <TagInput
+          onChange={filterByInterests}
+          width="100%"
+          values={interests}
+          inputProps={{ placeholder: 'press ENTER to add an interest' }}
+        />
       </Pane>
 
       <Pane className="connect__filters__group">
