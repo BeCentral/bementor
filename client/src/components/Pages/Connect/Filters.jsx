@@ -37,6 +37,14 @@ const Filters = ({ onFilter, fixed }) => {
     setFilters({ ...filters, interests: newInterests });
   };
 
+  const toggleMentorStatus = () => {
+    setFilters(f => ({ ...f, mentor: !f.mentor }));
+  };
+
+  const toggleMenteeStatus = () => {
+    setFilters(f => ({ ...f, mentee: !f.mentee }));
+  };
+
   return (
     <div className={`connect__filters ${fixed ? 'connect__filters--scroll' : ''}`}>
       <h3>Filter results</h3>
@@ -60,8 +68,8 @@ const Filters = ({ onFilter, fixed }) => {
 
       <Pane className="connect__filters__group">
         <Label>Types</Label>
-        <Checkbox label="Mentors" checked name="mentor" />
-        <Checkbox label="Mentees" checked name="mentee" />
+        <Checkbox label="Mentors" onChange={toggleMentorStatus} checked={filters.mentor} name="mentor" />
+        <Checkbox label="Mentees" onChange={toggleMenteeStatus} checked={filters.mentee} name="mentee" />
       </Pane>
     </div>
   );
