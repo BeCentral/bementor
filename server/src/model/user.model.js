@@ -63,6 +63,14 @@ const User = new mongoose.Schema(
     profileFtue: {
       type: Boolean,
       default: true
+    },
+    isMentor: {
+      type: Boolean,
+      default: true
+    },
+    isMentee: {
+      type: Boolean,
+      default: true
     }
   },
   {
@@ -71,7 +79,11 @@ const User = new mongoose.Schema(
 );
 
 User.index({
-  firstName: 'text', lastName: 'text', bio: 'text', interests: 'text'
+  firstName: 'text',
+  lastName: 'text',
+  tagline: 'text',
+  bio: 'text',
+  location: 'text'
 });
 
 module.exports = mongoose.model('User', User);

@@ -29,7 +29,7 @@ exports.findOne = (req, res) => {
 
 exports.create = async (req, res) => {
   const password = await hash(req.body.password);
-  User.create({ ...req.body, password })
+  User.create({ ...req.body, password, location: req.body.location.toLowerCase() })
     .then(async (user) => {
       user.accountConfirmationToken = await createToken(user, '1 hour');
       return user.save();
@@ -121,14 +121,41 @@ exports.confirmAccount = async (req, res) => {
   return user.save().then(() => res.status(204).send());
 };
 
-exports.search = (req, res) => {
-  const query = req.query.text;
-
-  User
-    .find({ $text: { $search: query } })
-    .populate('interests')
+exports.search = async (req, res) => {
+  const filters = req.query;
+  const interestFilters = filters.interests ? filters.interests.split(',').map(i => i.toLowerCase()) : [];
+  const query = {
+    $match: { $and: [] }
+  };
+  if (filters.search) {
+    const searchQuery = filters.search.toLowerCase();
+    query.$match.$and.push({
+      $or: [
+        { firstName: { $regex: searchQuery, $options: 'i' } },
+        { lastName: { $regex: searchQuery, $options: 'i' } },
+        { tagline: { $regex: searchQuery, $options: 'i' } },
+        { bio: { $regex: searchQuery, $options: 'i' } },
+        { location: { $regex: searchQuery, $options: 'i' } }
+      ]
+    });
+  }
+  if (filters.location) query.$match.location = { $regex: filters.location.toLowerCase(), $options: 'i' };
+  query.$match.$and.push({
+    $or: [
+      { isMentor: filters.mentor === 'true' },
+      { isMentee: filters.mentee === 'true' }
+    ]
+  });
+  User.aggregate([query])
+    .then(users => User.populate(users, { path: 'interests' }))
     .then((users) => {
-      res.send(users);
+      const result = interestFilters.length > 0
+        ? users.filter((u) => {
+          const hasInterests = u.interests.filter(i => interestFilters.incudes(i.name));
+          return hasInterests.length > 0;
+        })
+        : users;
+      res.send(result);
     })
     .catch((err) => {
       res.status(500).send({
