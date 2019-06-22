@@ -140,12 +140,16 @@ exports.search = async (req, res) => {
     });
   }
   if (filters.location) query.$match.location = { $regex: filters.location.toLowerCase(), $options: 'i' };
-  query.$match.$and.push({
-    $or: [
-      { isMentor: filters.mentor === 'true' },
-      { isMentee: filters.mentee === 'true' }
-    ]
-  });
+  const isMentor = filters.mentor === 'true';
+  const isMentee = filters.mentee === 'true';
+  if (!isMentor && !isMentee) {
+    query.$match.$and.push({ isMentor });
+    query.$match.$and.push({ isMentee });
+  } else {
+    query.$match.$and.push({
+      $or: [{ isMentor }, { isMentee }]
+    });
+  }
   User.aggregate([query])
     .then(users => User.populate(users, { path: 'interests' }))
     .then((users) => {
