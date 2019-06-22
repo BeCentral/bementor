@@ -4,7 +4,7 @@ import {
   SearchInput, Button, TagInput, Pane, Checkbox, TextInputField, Label
 } from 'evergreen-ui';
 
-const Filters = ({ onFilter, fixed }) => {
+const Filters = ({ doFilter, fixed }) => {
   const [filters, setFilters] = useState({
     search: '',
     location: '',
@@ -18,7 +18,7 @@ const Filters = ({ onFilter, fixed }) => {
   let $location;
 
   useEffect(() => {
-    onFilter(filters);
+    doFilter(filters);
   }, [filters]);
 
   const filterBySearchQuery = async (e) => {
@@ -76,7 +76,7 @@ const Filters = ({ onFilter, fixed }) => {
 };
 
 Filters.propTypes = {
-  onFilter: PropTypes.func.isRequired,
+  doFilter: PropTypes.func.isRequired,
   fixed: PropTypes.bool.isRequired
 };
 

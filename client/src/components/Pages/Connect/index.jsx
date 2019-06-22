@@ -34,17 +34,16 @@ const Users = () => {
 
   const filter = async (filters) => {
     NProgress.start();
-    console.log(filters);
-    // const rawUsers = await API.user.find(filters.search);
-    // setUsers(rawUsers);
-    // NProgress.done();
+    const rawUsers = await API.user.find(filters);
+    setUsers(rawUsers);
+    NProgress.done();
   };
 
   const $users = users.map(user => <UserCard key={user._id} user={user} />);
 
   return (
     <PageContainer className="connect">
-      <Filters onFilter={filter} fixed={filtersAreFixed} />
+      <Filters doFilter={filter} fixed={filtersAreFixed} />
       <div className={`connect__results ${filtersAreFixed ? 'connect__results--scroll' : ''}`}>
         <h2 className="center">Connect.</h2>
         <div className="connect__results__wrapper">
