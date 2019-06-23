@@ -1,49 +1,72 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import NProgress from 'nprogress';
+import { Button } from 'evergreen-ui';
 import Filters from './Filters';
 import PageContainer from '../../Containers/PageContainer';
-import MiniUser from './MiniUser';
-import Wrapper from '../../Containers/FlexWrapper';
+import UserCard from './UserCard';
+import RequestState from '../../../models/RequestState';
 import { API } from '../../../constants';
+import User from '../../../models/User';
 
 import '../../../assets/css/connect.css';
 
-class Users extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      users: []
+const Users = () => {
+  const [users, setUserState] = useState([]);
+  const [filtersAreFixed, setFixedFilterState] = useState(false);
+  const [mobileFiltersShown, setMobileFilterVisibility] = useState(false);
+  const getUserRequest = new RequestState();
+
+  const handleScroll = () => {
+    // 180 is header height
+    if (window.pageYOffset >= 180) return setFixedFilterState(true);
+    return setFixedFilterState(false);
+  };
+
+  const setUsers = (rawUsers) => {
+    setUserState(rawUsers.map(u => new User(u)));
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
     };
-  }
+  }, []);
 
-  async componentDidMount() {
+  const filter = async (filters) => {
     NProgress.start();
-    const users = await API.user.get();
-
-    await this.setState({ users });
+    const rawUsers = await API.user.find(filters);
+    setUsers(rawUsers);
     NProgress.done();
-  }
+  };
 
-  filter = async (filters) => {
-    NProgress.start();
-    const users = await API.user.find(filters.search);
-    this.setState({ users });
-    NProgress.done();
-  }
+  const $users = users.map(user => <UserCard key={user._id} user={user} />);
 
-  render() {
-    const $users = this.state.users.map(user => <MiniUser key={user._id} {...user} />);
-
-    return (
-      <PageContainer className="connect">
-        <h2 className="connect__title">Connect.</h2>
-        <Filters onFilter={this.filter} />
-        <Wrapper>
+  return (
+    <PageContainer className="connect">
+      <Button
+        onClick={() => setMobileFilterVisibility(true)}
+        className={`connect__btn-filter ${filtersAreFixed ? 'connect__btn-filter--scroll' : ''}`}
+        height={40}
+        iconBefore="filter-list"
+      >
+        Filter results
+      </Button>
+      <Filters
+        doFilter={filter}
+        mobileFiltersShown={mobileFiltersShown}
+        setMobileFilterVisibility={setMobileFilterVisibility}
+        fixed={filtersAreFixed}
+      />
+      <div className={`connect__results ${filtersAreFixed ? 'connect__results--scroll' : ''}`}>
+        <h2 className="center">Connect.</h2>
+        <div className="connect__results__wrapper">
           {$users}
-        </Wrapper>
-      </PageContainer>
-    );
-  }
-}
+        </div>
+      </div>
+    </PageContainer>
+  );
+};
 
 export default Users;

@@ -11,9 +11,12 @@ class UserAPI extends API {
 
   getOne = id => fetch(`${this.ENDPOINT}/${id}`, this.getOptions('get')).then(this.handleResponse);
 
-  find = (query) => {
+  find = (filters) => {
     const params = new URLSearchParams();
-    params.append('text', query);
+    Object.keys(filters).forEach((filter) => {
+      const value = filters[filter];
+      params.append(filter, Array.isArray(value) ? value.join(',') : value);
+    });
     return fetch(`${this.ENDPOINT}/search?${params.toString()}`).then(this.handleResponse);
   }
 

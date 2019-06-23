@@ -4,6 +4,7 @@
  --green: #00b265;
  --gray: gray;
  --yellow: #d8a928;
+ --black: #333;
 }
 
 html {
@@ -31,6 +32,10 @@ body {
   min-height: 100%;
   position: relative;
   padding-bottom: 11rem;
+}
+
+@media only screen and (max-width: 500px) {
+  #root { padding-bottom: 20rem }
 }
 
 p {
@@ -97,4 +102,8 @@ a.seamless:active {
   padding: 0;
   margin: 0;
   text-transform: inherit;
+}
+
+.center {
+  text-align: center;
 }

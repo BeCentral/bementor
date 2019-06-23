@@ -1,6 +1,6 @@
 .profile__edit {
   position: absolute;
-  top: 0;
+  top: 1rem;
   right: 0;
 }
 
@@ -99,5 +99,5 @@
 }
 
 .profile-form__field {
-  margin-bottm: 2.4rem;
+  margin-bottom: 2.4rem;
 }
