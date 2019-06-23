@@ -155,7 +155,7 @@ exports.search = async (req, res) => {
     .then((users) => {
       const result = interestFilters.length > 0
         ? users.filter((u) => {
-          const hasInterests = u.interests.filter(i => interestFilters.incudes(i.name));
+          const hasInterests = u.interests.filter(i => interestFilters.includes(i.name));
           return hasInterests.length > 0;
         })
         : users;
