@@ -89,8 +89,16 @@
   }
   .connect__filters {
     display: none;
+    z-index: 2;
   }
   .connect__results {
     width: calc(99vw);
+  }
+  .connect__results--scroll {
+    margin-left: 0;
+  }
+  .connect__btn-filter--scroll {
+    position: fixed;
+    top: 7rem;
   }
 }

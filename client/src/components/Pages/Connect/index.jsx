@@ -45,7 +45,12 @@ const Users = () => {
 
   return (
     <PageContainer className="connect">
-      <Button onClick={() => setMobileFilterVisibility(true)} className="connect__btn-filter" height={40} iconBefore="filter-list">
+      <Button
+        onClick={() => setMobileFilterVisibility(true)}
+        className={`connect__btn-filter ${filtersAreFixed ? 'connect__btn-filter--scroll' : ''}`}
+        height={40}
+        iconBefore="filter-list"
+      >
         Filter results
       </Button>
       <Filters
