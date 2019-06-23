@@ -57,6 +57,29 @@
   width: 100%;
 }
 
+.connect__filters--mobile {
+  padding: 2rem;
+}
+
+.connect__filters--mobile .connect__filters__search,
+.connect__filters--mobile .connect__filters__location {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.connect__filters--mobile .connect__filters__search > div,
+.connect__filters--mobile .connect__filters__location > div {
+  width: 95%;
+}
+.connect__filters--mobile .connect__filters__search button,
+.connect__filters--mobile .connect__filters__location button {
+  margin-top: 1rem;
+}
+
+.connect__filters--mobile .connect__filters__interests input {
+  overflow: hidden;
+}
+
 @media only screen and (max-width: 860px) {
   .connect {
     padding-top: 4rem;
