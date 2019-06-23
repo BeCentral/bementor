@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  SearchInput, Button, TagInput, Pane, Checkbox, TextInputField, Label
+  SearchInput, Button, TagInput, Pane, Checkbox, TextInputField, Label, SideSheet, Position
 } from 'evergreen-ui';
 
-const Filters = ({ doFilter, fixed }) => {
+const Filters = ({
+  doFilter, fixed, mobileFiltersShown, setMobileFilterVisibility
+}) => {
   const [filters, setFilters] = useState({
     search: '',
     location: '',
@@ -45,9 +47,8 @@ const Filters = ({ doFilter, fixed }) => {
     setFilters(f => ({ ...f, mentee: !f.mentee }));
   };
 
-  return (
-    <div className={`connect__filters ${fixed ? 'connect__filters--scroll' : ''}`}>
-      <h3>Filter results</h3>
+  const renderFilterContents = () => (
+    <>
       <form onSubmit={filterBySearchQuery} className="connect__filters__search">
         <SearchInput innerRef={(n) => { $search = n; }} name="search" placeholder="Search keywords" />
         <Button type="submit">Search</Button>
@@ -71,13 +72,35 @@ const Filters = ({ doFilter, fixed }) => {
         <Checkbox label="Mentors" onChange={toggleMentorStatus} checked={filters.mentor} name="mentor" />
         <Checkbox label="Mentees" onChange={toggleMenteeStatus} checked={filters.mentee} name="mentee" />
       </Pane>
-    </div>
+    </>
+  );
+
+  const $filters = renderFilterContents();
+  return (
+    <>
+      <SideSheet
+        isShown={mobileFiltersShown}
+        onCloseComplete={() => setMobileFilterVisibility(false)}
+        containerProps={{ className: 'connect__filters--mobile' }}
+        width={250}
+        position={Position.LEFT}
+      >
+        <h3>Filter results</h3>
+        {$filters}
+      </SideSheet>
+      <div className={`connect__filters ${fixed ? 'connect__filters--scroll' : ''}`}>
+        <h3>Filter results</h3>
+        {$filters}
+      </div>
+    </>
   );
 };
 
 Filters.propTypes = {
   doFilter: PropTypes.func.isRequired,
-  fixed: PropTypes.bool.isRequired
+  fixed: PropTypes.bool.isRequired,
+  setMobileFilterVisibility: PropTypes.func.isRequired,
+  mobileFiltersShown: PropTypes.bool.isRequired
 };
 
 export default Filters;

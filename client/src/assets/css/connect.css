@@ -30,6 +30,13 @@
   top: 7rem;
 }
 
+.connect__btn-filter {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: none;
+}
+
 .connect__filters__group {
   margin: 2rem 0;
 }
@@ -48,4 +55,19 @@
 
 .connect__filters__search input, .connect__filters__location input {
   width: 100%;
+}
+
+@media only screen and (max-width: 860px) {
+  .connect {
+    padding-top: 4rem;
+  }
+  .connect__btn-filter {
+    display: block;
+  }
+  .connect__filters {
+    display: none;
+  }
+  .connect__results {
+    width: calc(99vw);
+  }
 }

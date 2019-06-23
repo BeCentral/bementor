@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import NProgress from 'nprogress';
+import { Button } from 'evergreen-ui';
 import Filters from './Filters';
 import PageContainer from '../../Containers/PageContainer';
 import UserCard from './UserCard';
@@ -12,6 +13,7 @@ import '../../../assets/css/connect.css';
 const Users = () => {
   const [users, setUserState] = useState([]);
   const [filtersAreFixed, setFixedFilterState] = useState(false);
+  const [mobileFiltersShown, setMobileFilterVisibility] = useState(false);
   const getUserRequest = new RequestState();
 
   const handleScroll = () => {
@@ -43,7 +45,15 @@ const Users = () => {
 
   return (
     <PageContainer className="connect">
-      <Filters doFilter={filter} fixed={filtersAreFixed} />
+      <Button onClick={() => setMobileFilterVisibility(true)} className="connect__btn-filter" height={40} iconBefore="filter-list">
+        Filter results
+      </Button>
+      <Filters
+        doFilter={filter}
+        mobileFiltersShown={mobileFiltersShown}
+        setMobileFilterVisibility={setMobileFilterVisibility}
+        fixed={filtersAreFixed}
+      />
       <div className={`connect__results ${filtersAreFixed ? 'connect__results--scroll' : ''}`}>
         <h2 className="center">Connect.</h2>
         <div className="connect__results__wrapper">

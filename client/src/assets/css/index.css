@@ -34,6 +34,10 @@ body {
   padding-bottom: 11rem;
 }
 
+@media only screen and (max-width: 500px) {
+  #root { padding-bottom: 20rem }
+}
+
 p {
   line-height: 1.6;
 }
