@@ -1,92 +1,137 @@
-import React, { Component } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
+import { SideSheet, Avatar } from 'evergreen-ui';
 import { API } from '../../constants';
+import { NavItem } from '../UI';
 import AuthContext from '../../context/auth-context';
-import LoginForm from '../Pages/Auth/LoginForm';
-import RegistrationForm from '../Pages/Auth/RegistrationForm';
 
 import '../../assets/css/header.css';
 
-class Header extends Component {
-  state = {
-    isRegistering: false,
-    isLoggingIn: false
-  }
+const Header = ({ history, location }) => {
+  const [topHeaderShown, setTopHeaderVisibility] = useState(true);
+  const [mobileNavShown, setMobileNavVisibility] = useState(false);
 
-  doLogout = async () => {
+  const { setAuthenticatedUser, user } = useContext(AuthContext);
+
+  const toggleMobileNav = () => setMobileNavVisibility(!mobileNavShown);
+
+  const handleScroll = () => {
+    // 180 is header height
+    if (window.pageYOffset >= 180) return setTopHeaderVisibility(false);
+    return setTopHeaderVisibility(true);
+  };
+
+  useEffect(() => {
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (mobileNavShown) setMobileNavVisibility(false);
+  }, [location.pathname]);
+
+  const doLogout = async () => {
     // TODO show logout state
     await API.user.logout();
-    this.context.setAuthenticatedUser(null);
+    setAuthenticatedUser(null);
     // TODO show logout success
-    this.props.history.push('/');
-  }
+    history.push('/');
+  };
 
-  startLogin = () => {
-    this.setState({ isLoggingIn: true });
-  }
+  const getModalLink = pathname => ({
+    pathname,
+    state: { modal: true }
+  });
 
-  startRegistration = () => {
-    this.setState({ isRegistering: true });
-  }
+  const maybeRenderAvatar = () => {
+    if (!user) return null;
+    const { firstName, lastName } = user;
+    return (
+      <div className={`${mobileNavShown ? 'nav__avatar--mobile' : 'nav__avatar'}`}>
+        <Avatar src={user.picture} size={35} name={`${user.firstName} ${user.lastName}`} />
+        <h3 className="nav__avatar__name">{firstName} {lastName}</h3>
+      </div>
+    );
+  };
 
-  stopLogin = () => {
-    this.setState({ isLoggingIn: false });
-  }
-
-  stopRegistration = () => {
-    this.setState({ isRegistering: false });
-  }
-
-  render() {
-    const { isRegistering, isLoggingIn } = this.state;
-    const currentUser = this.context.user;
-    const isAuthenticated = !!currentUser;
-
+  const $avatar = maybeRenderAvatar();
+  const renderNavItems = () => {
+    const isAuthenticated = !!user;
     return (
       <>
-        {isRegistering && (
-          <RegistrationForm cancel={this.stopRegistration} finish={this.stopRegistration} />
+        <NavItem href="/connect">Connect</NavItem>
+        {isAuthenticated && (
+          <>
+            <NavItem href="/inbox">Inbox</NavItem>
+            <NavItem href={`/profile/${user._id}`}>Profile</NavItem>
+            <li className="navigation__items__spacer">-</li>
+            <li><button onClick={doLogout} type="button" className="button--link">Log out</button></li>
+          </>
         )}
-        {isLoggingIn && (
-          <LoginForm finish={this.stopLogin} />
+        {!isAuthenticated && (
+          <>
+            <li className="navigation__items__spacer">-</li>
+            <NavItem href={getModalLink('/login')}>Log in</NavItem>
+            <NavItem href={getModalLink('/login')}>Register</NavItem>
+          </>
         )}
-        <header className="app-header">
-          <div className="app-header__top">
-            <h1><Link to="/">BeMentor.</Link></h1>
-          </div>
-          <nav className="app-header__navigation">
-            <ul>
-              <li><Link to="/connect">Connect</Link></li>
-              { isAuthenticated && (
-                <>
-                  <li><Link to="/inbox">Inbox</Link></li>
-                  <li><Link to="/profile/5c851da63fc52b74c942680d">Profile</Link></li>
-                  <li>|</li>
-                  <li><button onClick={this.doLogout} type="button" className="button--link">Log out</button></li>
-                </>
-              )}
-              { !isAuthenticated && (
-                <>
-                  <li>|</li>
-                  <li><button onClick={this.startLogin} type="button" className="button--link">Log in</button></li>
-                  <li><button onClick={this.startRegistration} type="button" className="button--link">Register</button></li>
-                </>
-              )}
-            </ul>
-          </nav>
-        </header>
       </>
     );
-  }
-}
+  };
+
+  const $navItems = renderNavItems();
+  return (
+    <>
+      <SideSheet
+        isShown={mobileNavShown}
+        onCloseComplete={() => setMobileNavVisibility(false)}
+        containerProps={{ className: 'mobile-nav' }}
+        width={250}
+      >
+        <header className="mobile-nav__header">
+          {$avatar}
+          <ul className="navigation__items--mobile">
+            {$navItems}
+          </ul>
+        </header>
+      </SideSheet>
+      <header className="app-header">
+        <h1><Link to="/">BeMentor.</Link></h1>
+      </header>
+      <nav className={`navigation ${topHeaderShown ? '' : 'navigation--fixed'}`}>
+        <h1 className={`navigation__title ${topHeaderShown ? '' : 'navigation__title--active'}`}>
+          <Link to="/">BeMentor.</Link>
+        </h1>
+        <ul className="navigation__items">
+          {$navItems}
+          <li>{$avatar}</li>
+        </ul>
+        <div className="hamburger-container">
+          <button
+            type="button"
+            className={`button--seamless hamburger ${mobileNavShown ? 'hamburger--hidden' : ''}`}
+            onClick={toggleMobileNav}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
+      </nav>
+      <div className={`nav-spacer ${topHeaderShown ? '' : 'nav-spacer--active'}`} />
+    </>
+  );
+};
 
 Header.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  location: PropTypes.object.isRequired
 };
 
 export default withRouter(Header);
-
-// including under export because https://stackoverflow.com/questions/53240058/use-hoist-non-react-statics-with-withrouter
-Header.contextType = AuthContext;

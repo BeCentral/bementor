@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
+import { defaultTheme } from 'evergreen-ui';
+import merge from 'lodash/merge';
 import AuthContext from './context/auth-context';
-import Home from './components/Pages/Home';
-import Connect from './components/Pages/Connect';
-import Profile from './components/Pages/Profile';
 import User from './models/User';
-import Inbox from './components/Pages/Inbox';
+import Routes from './components/Routes';
 import { API } from './constants';
+
+// see https://github.com/segmentio/evergreen/issues/542
+merge(defaultTheme, {
+  typography: {
+    fontFamilies: {
+      display: '"Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+      ui: '"Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+      mono: '"Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    }
+  }
+});
 
 class App extends Component {
   state = { user: null }
@@ -18,7 +28,6 @@ class App extends Component {
       })
       .catch((err) => {
         // TODO show err
-        this.setAuthenticatedUser(null);
       });
   }
 
@@ -33,13 +42,7 @@ class App extends Component {
     return (
       <AuthContext.Provider value={authContext}>
         <BrowserRouter>
-          <Switch>
-            <Route path="/:path(|index|home|start)" component={Home} />
-            <Route path="/connect" component={Connect} />
-            <Route path="/profile/:userId" component={Profile} />
-            <Route path="/inbox" component={Inbox} />
-            <Route render={() => <p>Page not found</p>} />
-          </Switch>
+          <Route component={Routes} />
         </BrowserRouter>
       </AuthContext.Provider>
     );

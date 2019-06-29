@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import NProgress from 'nprogress';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
-import { Button, Icon, Badge } from 'evergreen-ui';
-import { ExternalLink } from '../../UI';
+import {
+  Button,
+  Icon,
+  Badge,
+  CornerDialog
+} from 'evergreen-ui';
 import { API } from '../../../constants';
-import AppContainer from '../../Containers/AppContainer';
 import PageContainer from '../../Containers/PageContainer';
 import ProfileForm from './ProfileForm';
+import Socials from './Socials';
 import User from '../../../models/User';
 import RequestState from '../../../models/RequestState';
+import AuthContext from '../../../context/auth-context';
 
 import '../../../assets/css/profile.css';
 
@@ -46,73 +49,100 @@ class Profile extends Component {
 
   cancelProfileUpdate = () => this.setState({ editingProfile: false });
 
-  updateUser = user => this.setState({ user, editingProfile: false });
+  updateUser = (user) => {
+    this.setState({ user, editingProfile: false });
+    this.context.setAuthenticatedUser(user);
+  }
 
-  renderInterest = interest => (
-    <li key={interest}>
-      <Badge color="neutral">{interest}</Badge>
-    </li>
-  );
+  maybeRenderInterests = (user) => {
+    if (!user.interests || user.interests.length === 0) return `${user.firstName} hasn't added any interests yet.`;
+    return user.interests.map(interest => (
+      <li key={interest._id}>
+        <Badge color="neutral">{interest.name}</Badge>
+      </li>
+    ));
+  }
+
+  maybeRenderEditButton = (user) => {
+    const loggedInUser = this.context.user;
+
+    if (!loggedInUser || user._id !== loggedInUser._id) return null;
+    return (
+      <Button iconBefore="edit" className="profile__edit" onClick={this.openEditor}>
+        Edit your profile
+      </Button>
+    );
+  }
+
+  maybeRenderSocials = (user) => {
+    if (!user.hasSocials) return null;
+    return <Socials {...user} />;
+  }
 
   render() {
     const { editingProfile, user, getUserRequest } = this.state;
-    if (getUserRequest.isLoading) return <AppContainer />;
+    const { userId } = this.props.match.params;
 
-    const $interests = user.interests.map(this.renderInterest);
+    if (getUserRequest.isLoading) return <PageContainer className="profile" />;
+
+    const $editButton = this.maybeRenderEditButton(user);
+    const $socials = this.maybeRenderSocials(user);
+    const $interests = this.maybeRenderInterests(user);
     return (
-      <AppContainer>
-        <PageContainer className="profile">
-          <ProfileForm
-            isShown={editingProfile}
-            user={user}
-            handleUserUpdated={this.updateUser}
-            cancelProfileUpdate={this.cancelProfileUpdate}
-          />
-          <Button iconBefore="edit" className="profile__edit" onClick={this.openEditor}>
-            Edit your profile
-          </Button>
-          <div className="profile__subject">
+      <PageContainer className="profile">
+        <ProfileForm
+          isShown={editingProfile}
+          user={user}
+          handleUserUpdated={this.updateUser}
+          cancelProfileUpdate={this.cancelProfileUpdate}
+        />
+        {$editButton}
+        <CornerDialog
+          title="Welcome to your profile"
+          confirmLabel="Get started"
+          isShown={user.profileFtue && (this.context.user && this.context.user.id === userId)}
+          onConfirm={this.openEditor}
+          onCloseComplete={() => { }}
+        >
+          <p>
+            This is where you can let people know what you&#39;re interested in and what
+            you&#39;re looking for.
+            The information you add, makes it easier for people to find you on the Connect page.
+          </p>
+        </CornerDialog>
+        <div className="profile__subject">
+          {user.picture && (
             <div className="profile__subject__avatar-wrapper">
               <img src={user.picture} alt={`Avatar of ${user.firstName}`} />
             </div>
-            <div className="profile__subject__title">
-              <h2>{user.firstName} {user.lastName}</h2>
-              <h3>{user.tagline}</h3>
-              <h4><Icon icon="map-marker" /> {user.location}</h4>
-            </div>
+          )}
+          <div className="profile__subject__title">
+            <h2>{user.firstName} {user.lastName}</h2>
+            {user.tagline ? <h3>{user.tagline}</h3> : null}
+            {user.location ? <h4><Icon icon="map-marker" /> {user.location}</h4> : null}
           </div>
-          <section>
-            <h2 className="profile__about__title">About {user.firstName}</h2>
-            <div className="profile__about">
-              <p className="profile__about__bio">{user.bio}</p>
-              <ul className="profile__about__socials">
-                <li>
-                  <ExternalLink href={`https://twitter.com/${user.twitter}`} className="twitter">
-                    <i><FontAwesomeIcon icon={faTwitter} /></i>
-                    {user.twitter}
-                  </ExternalLink>
-                </li>
-                <li>
-                  <ExternalLink href={`https://github.com/${user.github}`} className="github">
-                    <i><FontAwesomeIcon icon={faGithub} /></i>
-                    {user.github}
-                  </ExternalLink>
-                </li>
-              </ul>
-            </div>
-            <article className="profile__interests">
-              <h2>Interests</h2>
-              <ul>
-                {$interests}
-              </ul>
-            </article>
-          </section>
-        </PageContainer>
-      </AppContainer>
+        </div>
+        <section>
+          <h2 className="profile__about__title">About {user.firstName}</h2>
+          <div className="profile__about">
+            <p className={`profile__about__bio ${user.hasSocials ? 'profile__about__bio--divider' : ''}`}>
+              {user.bio || `${user.firstName} hasn't set up their profile yet.`}
+            </p>
+            {$socials}
+          </div>
+          <article className="profile__interests">
+            <h2>Interests</h2>
+            <ul>
+              {$interests}
+            </ul>
+          </article>
+        </section>
+      </PageContainer>
     );
   }
 }
 
+Profile.contextType = AuthContext;
 Profile.propTypes = {
   // eslint-disable-next-line
   match: PropTypes.object.isRequired

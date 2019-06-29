@@ -21,9 +21,10 @@ mongoose
 
 const app = express();
 
-const whitelist = [process.env.CLIENT_URL, 'https://bementor.be'];
+const whitelist = [process.env.FRONTEND_URL, 'https://bementor.be'];
 const corsOptions = {
   origin: (origin, callback) => {
+    if (process.env.ENVIRONTMENT !== 'production' && !origin) return callback(null, true);
     if (whitelist.indexOf(origin) !== -1) callback(null, true);
     else callback(new Error('Not allowed by CORS'));
   },
@@ -41,6 +42,7 @@ app.use('/api', router);
 require('./src/lib/auth');
 require('./src/route/user.route')(router);
 require('./src/route/conversation.route')(router);
+require('./src/route/interest.route')(router);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {

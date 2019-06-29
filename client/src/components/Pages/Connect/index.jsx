@@ -1,63 +1,76 @@
-import React, { Component } from 'react';
-import AppContainer from '../../Containers/AppContainer';
+import React, { useEffect, useState } from 'react';
+import NProgress from 'nprogress';
+import { Button } from 'evergreen-ui';
+import Filters from './Filters';
 import PageContainer from '../../Containers/PageContainer';
-import SearchBar from './SearchBar';
-import MiniUser from './MiniUser';
-import Wrapper from '../../Containers/Wrapper';
+import UserCard from './UserCard';
+import RequestState from '../../../models/RequestState';
 import { API } from '../../../constants';
-import { Redirect } from "react-router-dom";
+import User from '../../../models/User';
 
-class Users extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      users: []
+import '../../../assets/css/connect.css';
+
+const Users = () => {
+  const [users, setUserState] = useState([]);
+  const [filtersAreFixed, setFixedFilterState] = useState(false);
+  const [mobileFiltersShown, setMobileFilterVisibility] = useState(false);
+  const getUserRequest = new RequestState();
+
+  const handleScroll = () => {
+    // 180 is header height
+    if (window.pageYOffset >= 180) return setFixedFilterState(true);
+    return setFixedFilterState(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
     };
-  }
+  }, []);
 
-  async componentDidMount() {
-    const users = await API.user.get();
-
-    this.setState({
-      users
-    });
-  }
-
-  search = async (query) => {
-    const users = await API.user.search(query);
-    this.setState({
-      users
-    });
+  const setUsers = (rawUsers) => {
+    setUserState(rawUsers.map(u => new User(u)));
   };
 
-  connect = async (userId) => {
+  const connect = async (userId) => {
     await API.conversation.initiate(userId);
-
-    this.setState({
-      redirectToInbox: true
-    })
   };
 
-  render() {
+  const filter = async (filters) => {
+    NProgress.start();
+    const rawUsers = await API.user.find(filters);
+    setUsers(rawUsers);
+    NProgress.done();
+  };
 
-    if (this.state.redirectToInbox === true) {
-      return <Redirect to="/inbox"/>
-    }
+  const $users = users.map(user => <UserCard key={user._id} user={user} />);
 
-    const $users = this.state.users.map(user => <MiniUser key={user._id} {...user} connect={this.connect} />);
-
-    return (
-      <AppContainer>
-        <PageContainer>
-          <h2>Find your Guru</h2>
-          <SearchBar onSearch={this.search} />
-          <Wrapper>
-            {$users}
-          </Wrapper>
-        </PageContainer>
-      </AppContainer>
-    );
-  }
-}
+  return (
+    <PageContainer className="connect">
+      <Button
+        onClick={() => setMobileFilterVisibility(true)}
+        className={`connect__btn-filter ${filtersAreFixed ? 'connect__btn-filter--scroll' : ''}`}
+        height={40}
+        iconBefore="filter-list"
+      >
+        Filter results
+      </Button>
+      <Filters
+        doFilter={filter}
+        mobileFiltersShown={mobileFiltersShown}
+        setMobileFilterVisibility={setMobileFilterVisibility}
+        fixed={filtersAreFixed}
+      />
+      <div className={`connect__results ${filtersAreFixed ? 'connect__results--scroll' : ''}`}>
+        <h2 className="center">Connect.</h2>
+        <div className="connect__results__wrapper">
+          {$users}
+        </div>
+      </div>
+    </PageContainer>
+  );
+};
 
 export default Users;

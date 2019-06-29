@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Dialog, TextInputField } from 'evergreen-ui';
 import { API } from '../../../constants';
 import AuthContext from '../../../context/auth-context';
 import User from '../../../models/User';
 import RequestState from '../../../models/RequestState';
 
-class RegistrationForm extends Component {
+class LoginForm extends Component {
   state = {
     loginRequest: new RequestState()
   }
@@ -32,7 +33,11 @@ class RegistrationForm extends Component {
   exitForm = () => {
     const { loginRequest } = this.state;
     this.setState({ loginRequest: loginRequest.finish() });
-    this.props.finish();
+
+    const query = new URLSearchParams(this.props.location.search);
+    const redirect = query.get('redirect');
+    if (!redirect) this.props.history.goBack();
+    else this.props.history.push(redirect);
   }
 
   render() {
@@ -63,15 +68,19 @@ class RegistrationForm extends Component {
             innerRef={(node) => { this.passwordNode = node; }}
           />
         </form>
+        <Link to="/reset-password">Forgot your password?</Link>
       </Dialog>
     );
   }
 }
 
-RegistrationForm.contextType = AuthContext;
+LoginForm.contextType = AuthContext;
 
-RegistrationForm.propTypes = {
-  finish: PropTypes.func.isRequired
+LoginForm.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  history: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  location: PropTypes.object.isRequired
 };
 
-export default RegistrationForm;
+export default LoginForm;

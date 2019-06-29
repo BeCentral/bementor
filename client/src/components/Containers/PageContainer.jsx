@@ -13,11 +13,12 @@ const PageContainer = (props) => {
 };
 
 PageContainer.defaultProps = {
-  className: ''
+  className: '',
+  children: <p />
 };
 
 PageContainer.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   className: PropTypes.string
 };
 

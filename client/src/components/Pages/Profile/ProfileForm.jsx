@@ -21,7 +21,8 @@ class ProfileEditor extends Component {
   componentDidMount() {
     const { user } = this.props;
     Object.keys(user).forEach((prop) => {
-      this.setFieldValue(prop, user[prop]);
+      if (prop === 'interests') return this.setFieldValue('interestNames', user.interestNames);
+      return this.setFieldValue(prop, user[prop]);
     });
   }
 
@@ -48,7 +49,8 @@ class ProfileEditor extends Component {
 
     const { user, handleUserUpdated } = this.props;
     Object.keys(fields).forEach((key) => {
-      user[key] = fields[key].value;
+      if (key === 'interestNames') user.interests = fields.interestNames.value;
+      else user[key] = fields[key].value;
     });
 
     const { updateUserRequest } = this.state;
@@ -69,7 +71,7 @@ class ProfileEditor extends Component {
   }
 
   handleInterestsChanged = (values) => {
-    this.setFieldValue('interests', values.map(v => v.toUpperCase()));
+    this.setFieldValue('interestNames', values.map(v => v.toUpperCase()));
   }
 
   setFieldValue = (fieldName, fieldValue) => {
@@ -87,7 +89,7 @@ class ProfileEditor extends Component {
   getFieldValue = (field) => {
     const { fields } = this.state;
     if (!fields[field]) {
-      if (field === 'interests') return [];
+      if (field === 'interestNames') return [];
       return '';
     }
     return fields[field].value;
@@ -180,9 +182,9 @@ class ProfileEditor extends Component {
             <Label className="profile-form__label" htmlFor="field--interests">Interests</Label>
             <TagInput
               id="field--interests"
-              name="interests"
+              name="interestNames"
               inputProps={{ placeholder: 'Add interests...' }}
-              values={this.getFieldValue('interests')}
+              values={this.getFieldValue('interestNames')}
               width="100%"
               onChange={this.handleInterestsChanged}
             />
@@ -196,6 +198,7 @@ class ProfileEditor extends Component {
 ProfileEditor.propTypes = {
   user: PropTypes.instanceOf(User).isRequired,
   handleUserUpdated: PropTypes.func.isRequired,
+  cancelProfileUpdate: PropTypes.func.isRequired,
   isShown: PropTypes.bool.isRequired
 };
 

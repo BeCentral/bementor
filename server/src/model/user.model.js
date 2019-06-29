@@ -25,12 +25,13 @@ const User = new mongoose.Schema(
     github: {
       type: String
     },
-    interests: {
-      type: [String]
-    },
-    role: {
-      type: String
-    },
+    interests: [
+      {
+        type: mongoose.ObjectId,
+        ref: 'Interest',
+        default: []
+      }
+    ],
     picture: {
       type: String
     },
@@ -42,10 +43,34 @@ const User = new mongoose.Schema(
       type: String,
       select: false
     },
+    accountConfirmationToken: {
+      type: String,
+      select: false
+    },
     email: {
       required: true,
       type: String,
       unique: true
+    },
+    pending: {
+      type: Boolean,
+      default: true
+    },
+    role: {
+      type: String,
+      default: 'user'
+    },
+    profileFtue: {
+      type: Boolean,
+      default: true
+    },
+    isMentor: {
+      type: Boolean,
+      default: true
+    },
+    isMentee: {
+      type: Boolean,
+      default: true
     }
   },
   {
@@ -54,7 +79,11 @@ const User = new mongoose.Schema(
 );
 
 User.index({
-  firstName: 'text', lastName: 'text', bio: 'text', interests: 'text'
+  firstName: 'text',
+  lastName: 'text',
+  tagline: 'text',
+  bio: 'text',
+  location: 'text'
 });
 
 module.exports = mongoose.model('User', User);

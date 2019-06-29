@@ -6,7 +6,8 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.15",
     "@fortawesome/free-brands-svg-icons": "^5.7.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
-    "evergreen-ui": "^4.14.1",
+    "evergreen-ui": "^4.15.0",
+    "lodash": "^4.17.11",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "prop-types": "^15.7.2",
@@ -14,7 +15,8 @@
     "react-dom": "^16.8.3",
     "react-modal": "^3.8.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^2.1.5"
+    "react-scripts": "^2.1.5",
+    "react-transition-group": "^4.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
