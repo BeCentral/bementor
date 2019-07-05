@@ -1,55 +1,20 @@
-import React, { Component } from 'react';
-import PageContainer from "../../Containers/PageContainer";
-import ConversationOverview from "./ConversationOverview"
-import NProgress from "nprogress";
+import React, { useState, useContext } from 'react';
+import * as PropTypes from 'prop-types';
+import NProgress from 'nprogress';
+import { Link } from 'react-router-dom';
+import PageContainer from '../../Containers/PageContainer';
+import { API } from '../../../constants';
+import AuthContext from '../../../context/auth-context';
+import MiniConversation from './MiniConversation';
 
-import "../../../assets/css/inbox.css"
-import { API } from "../../../constants";
-import * as PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import AuthContext from "../../../context/auth-context";
+import '../../../assets/css/inbox.css';
 
-class MiniConversation extends Component {
-  static propTypes = {
-    user: PropTypes.object,
-    active: PropTypes.bool
-  };
-
-  static contextType = AuthContext;
-
-  handleClick = () => {
-    this.props.select(this.props.conversation)
-  };
-
-  render() {
-    let otherUser = this.props.conversation.mentor;
-    if (this.context.user.id === this.props.conversation.mentor) {
-      otherUser = this.props.conversation.mentee;
-    }
-
-    let classes = 'inbox-profile';
-    if (this.props.active === true) {
-      classes += ' inbox-profile__active'
-    }
-
-    return (
-      <div onClick={this.handleClick} className={classes}>
-        <p>
-          <img alt="avatar" src={`https://api.adorable.io/avatars/${otherUser._id}`} />
-        </p>
-        <p>{otherUser.firstName} {otherUser.lastName}</p>
-      </div>
-    );
-  }
-}
-
-class Conversation extends Component {
-
-  static contextType = AuthContext;
+const Conversation = () => {
+  const { user } = useContext(AuthContext);
 
   onClick = () => {
     this.props.onMessage(this.replybar.value);
-    this.replybar.value = "";
+    this.replybar.value = '';
   };
 
   renderMessages = () => {
@@ -94,7 +59,9 @@ class Conversation extends Component {
         </div>
       </div>
       <div className="inbox-messages">
-        {this.renderMessages()}
+        <section className="inbox-overview">
+          {this.renderMessages()}
+        </section>
       </div>
       <div className="inbox-reply">
         <textarea ref={(node) => {
