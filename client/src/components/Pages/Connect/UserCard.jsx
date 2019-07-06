@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Badge } from 'evergreen-ui';
+import { Badge, IconButton, Tooltip } from 'evergreen-ui';
 import { Link } from 'react-router-dom';
 import User from '../../../models/User';
 
@@ -19,10 +19,13 @@ const UserCard = ({ user }) => {
       <Link to={`/profile/${user._id}`}>
         <img alt="User vatar" src={user.picture || `https://api.adorable.io/avatars/${user._id}`} />
       </Link>
-      <Link className="seamless" to={`/profile/${user._id}`}>
+      <Link className="user-card__link seamless" to={`/profile/${user._id}`}>
         <p>
           {user.firstName} {user.lastName}
         </p>
+        <Tooltip content={`Connect with ${user.firstName}`}>
+          <IconButton className="user-card__connect" appearance="minimal" height={32} icon="chat" />
+        </Tooltip>
       </Link>
       {$interests}
     </article>
