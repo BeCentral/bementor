@@ -1,5 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { Button } from 'evergreen-ui';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../../context/auth-context';
 
@@ -14,17 +15,14 @@ const Conversation = ({ onMessage, conversation }) => {
     $replyBar.current.value = '';
   };
 
-  const renderMessages = () => conversation.messages.map(message => (
-    <div key={message._id} className="inbox-message inbox-message">
-      <p>{message.text}</p>
-    </div>
-  ));
-
-  if (conversation === false) {
+  console.log(conversation);
+  if (!conversation === false) {
     return (
       <div className="inbox-conversation inbox-conversation__empty">
         <h3>Find a mentor and start chatting</h3>
-        <p><Link to="/connect">Connect</Link></p>
+        <Button appearance="primary" intent="success" size={28}>
+          <Link className="seamless" to="/connect">Connect</Link>
+        </Button>
       </div>
     );
   }
@@ -34,6 +32,14 @@ const Conversation = ({ onMessage, conversation }) => {
   let otherUser = conversation.mentor;
   if (user.id === conversation.mentor) otherUser = conversation.mentee;
 
+
+  if (!conversation.messages) return <p />;
+  const $messages = conversation.messages.map(message => (
+    <div key={message._id} className="inbox-message inbox-message">
+      <p>{message.text}</p>
+    </div>
+  ));
+
   return (
     <div className="inbox-conversation">
       <div className="inbox-details">
@@ -42,12 +48,12 @@ const Conversation = ({ onMessage, conversation }) => {
         </div>
         <div>
           <h3>{otherUser.firstName} {otherUser.lastName}</h3>
-          <p>l{otherUser.tagline}</p>
+          <p>{otherUser.tagline}</p>
         </div>
       </div>
       <div className="inbox-messages">
         <section className="inbox-overview">
-          {renderMessages()}
+          {$messages}
         </section>
       </div>
       <div className="inbox-reply">

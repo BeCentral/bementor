@@ -12,7 +12,7 @@
 
 .inbox-overview {
   flex: 1;
-  border: 5px solid #00b265;
+  border: 5px solid var(--green);
   border-right: 0;
   overflow-y: scroll;
 }
@@ -28,7 +28,7 @@
 }
 
 .inbox-profile__active {
-  background-color: #00b265;
+  background-color: var(--green);
 }
 
 .inbox-profile img {
@@ -46,27 +46,17 @@
 
 .inbox-conversation {
   flex: 3;
-  border: 5px solid #00b265;
+  border: 5px solid var(--green);
   background-color: #bde2cf;
 }
 
+.inbox-conversation__empty {
+  text-align: center;
+}
+
 .inbox-conversation__empty h3 {
-  color: #00b265;
-  font-size: 3em;
-  text-align: center;
-}
-
-.inbox-conversation__empty p {
-  text-align: center;
-}
-
-.inbox-conversation__empty a {
-  background-color: #00b265;
-  color: white;
-  border-radius: 5px;
-  width: 40%;
-  font-size: 1.5em;
-  padding: 0.5em;
+  color: var(--green);
+  font-size: 2.6rem;
 }
 
 .inbox-conversation__empty a:visited {
@@ -89,7 +79,7 @@
 
 .inbox-details h3 {
   flex: 2;
-  background-color: #00b265;
+  background-color: var(--green);
   color: white;
   padding: 5px;
   margin: 5px 0;
@@ -105,7 +95,7 @@
 .inbox-messages {
   display: flex;
   flex-direction: column;
-  background-color: #00b265;
+  background-color: var(--green);
   box-sizing: border-box;
   padding: 1em;
   border-radius: 10px;
@@ -144,6 +134,6 @@
   float: right;
   width: 100px;
   padding: 10px;
-  background-color: #00b265;
-  color: white;
+  background-color: var(--green);
+  color: rgb(31, 28, 28);
 }

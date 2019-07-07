@@ -57,6 +57,7 @@ class Routes extends Component {
           <Switch location={isModal ? this.previousLocation : location}>
             <Route path="/:path(|index|home|start)" component={Home} />
             <Route path="/inbox" component={Inbox} />
+            <Route path="/inbox/:userId" component={Inbox} />
             <Route path="/connect" component={Connect} />
             <Route path="/profile/:userId" component={Profile} />
             <Route path="/confirm-account/:token" component={ConfirmAccount} />

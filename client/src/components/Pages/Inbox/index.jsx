@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import NProgress from 'nprogress';
 import PageContainer from '../../Containers/PageContainer';
 import { API } from '../../../constants';
@@ -7,9 +9,11 @@ import MiniConversation from './MiniConversation';
 
 import '../../../assets/css/inbox.css';
 
-const Inbox = () => {
+const Inbox = ({ match }) => {
   const [conversations, setConversations] = useState([]);
   const [currentConversation, setCurrentConversation] = useState(null);
+
+  const { userId } = match.params;
 
   useEffect(() => {
     NProgress.start();
@@ -18,7 +22,11 @@ const Inbox = () => {
         setConversations(convos);
         return convos[0];
       })
-      .then((conversation) => {
+      .then(async (conversation) => {
+        if (userId) {
+          const convo = await API.conversation.getOneWithUser(userId);
+          if (convo) return convo;
+        }
         if (!conversation) setCurrentConversation(null);
         return API.conversation.get(conversation._id);
       })
@@ -39,7 +47,7 @@ const Inbox = () => {
       .then(conversation => setCurrentConversation(conversation));
   };
 
-  const renderConversations = () => conversations.map(conversation => (
+  const $conversations = conversations.map(conversation => (
     <MiniConversation
       select={handleSelect}
       conversation={conversation}
@@ -47,7 +55,6 @@ const Inbox = () => {
     />
   ));
 
-  const $conversations = renderConversations();
   return (
     <PageContainer>
       <div className="inbox">
@@ -58,4 +65,9 @@ const Inbox = () => {
   );
 };
 
-export default Inbox;
+Inbox.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  match: PropTypes.object.isRequired
+};
+
+export default withRouter(Inbox);

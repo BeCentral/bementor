@@ -10,18 +10,16 @@ const MiniConversation = ({ conversation, select, active }) => {
   let otherUser = conversation.mentor;
   if (user.id === conversation.mentor) otherUser = conversation.mentee;
 
-  let classes = 'inbox-profile';
+  let classes = 'button--seamless inbox-profile';
   if (active === true) classes += ' inbox-profile__active';
 
   return (
-    <div className={classes}>
-      <button onClick={handleClick} type="button" className="button--seamless">
-        <p>
-          <img alt="avatar" src={`https://api.adorable.io/avatars/${otherUser._id}`} />
-        </p>
-        <p>{otherUser.firstName} {otherUser.lastName}</p>
-      </button>
-    </div>
+    <button onClick={handleClick} type="button" className={classes}>
+      <p>
+        <img alt="avatar" src={`https://api.adorable.io/avatars/${otherUser._id}`} />
+      </p>
+      <p>{otherUser.firstName} {otherUser.lastName}</p>
+    </button>
   );
 };
 
