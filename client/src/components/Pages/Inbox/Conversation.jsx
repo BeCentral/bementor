@@ -15,13 +15,14 @@ const Conversation = ({ onMessage, conversation }) => {
     $replyBar.current.value = '';
   };
 
-  console.log(conversation);
   if (!conversation === false) {
     return (
       <div className="inbox-conversation inbox-conversation__empty">
         <h3>Find a mentor and start chatting</h3>
-        <Button appearance="primary" intent="success" size={28}>
-          <Link className="seamless" to="/connect">Connect</Link>
+        <Button appearance="primary" intent="success">
+          <Link className="seamless" to="/connect">
+            Connect
+          </Link>
         </Button>
       </div>
     );
@@ -31,7 +32,6 @@ const Conversation = ({ onMessage, conversation }) => {
 
   let otherUser = conversation.mentor;
   if (user.id === conversation.mentor) otherUser = conversation.mentee;
-
 
   if (!conversation.messages) return <p />;
   const $messages = conversation.messages.map(message => (
@@ -47,18 +47,20 @@ const Conversation = ({ onMessage, conversation }) => {
           <img alt="avatar" src={`https://api.adorable.io/avatars/${otherUser._id}`} />
         </div>
         <div>
-          <h3>{otherUser.firstName} {otherUser.lastName}</h3>
+          <h3>
+            {otherUser.firstName} {otherUser.lastName}
+          </h3>
           <p>{otherUser.tagline}</p>
         </div>
       </div>
       <div className="inbox-messages">
-        <section className="inbox-overview">
-          {$messages}
-        </section>
+        <section className="inbox-overview">{$messages}</section>
       </div>
       <div className="inbox-reply">
         <textarea ref={$replyBar} />
-        <button type="button" onClick={onClick}>Send</button>
+        <button type="button" onClick={onClick}>
+          Send
+        </button>
       </div>
     </div>
   );

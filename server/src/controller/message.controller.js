@@ -1,8 +1,7 @@
-const Conversation = require('../model/conversation.model');
 const Message = require('../model/message.model');
 
 exports.findAll = (req, res) => {
-  Conversation.find({
+  Message.find({
     $or: [{ mentee: req.user._id }, { mentor: req.user._id }]
   })
     .populate('mentor')
@@ -17,7 +16,7 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const { id } = req.params;
-  Conversation.findById(id)
+  Message.findById(id)
     .populate('mentor')
     .populate('mentee')
     .populate('messages')
@@ -31,7 +30,7 @@ exports.findOne = (req, res) => {
 
 const addMessage = async req => {
   const { id } = req.params;
-  const conversation = await Conversation.findById(id);
+  const conversation = await Message.findById(id);
 
   if (
     conversation.mentor._id.toString() !== req.user.id &&
@@ -62,7 +61,7 @@ exports.message = (req, res) => {
 };
 
 const initiateConversation = async req => {
-  let conversation = await Conversation.findOne({
+  let conversation = await Message.findOne({
     mentor: req.body.mentor,
     mentee: req.user.id
   })
@@ -80,7 +79,7 @@ const initiateConversation = async req => {
 
   message = await message.save();
 
-  conversation = new Conversation({
+  conversation = new Message({
     mentor: req.body.mentor,
     mentee: req.user.id,
     messages: [message]
