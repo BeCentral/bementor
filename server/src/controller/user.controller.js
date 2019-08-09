@@ -64,11 +64,10 @@ exports.login = async (req, res) => {
       .populate('interests')
       .select('+password')
       .select('+firstLogin');
-    if (!rawUser) throw new Error({ status: 401, message: 'Incorrect username or password' });
+    if (!rawUser) throw new Error('Incorrect username or password');
 
     const passwordIsCorrect = await compareHash(password, rawUser.password);
-    if (!passwordIsCorrect)
-      throw new Error({ status: 401, message: 'Incorrect username or password' });
+    if (!passwordIsCorrect) throw new Error('Incorrect username or password');
 
     const user = rawUser.toObject();
     delete user.password;
@@ -78,9 +77,9 @@ exports.login = async (req, res) => {
       .cookie('jwt', token, { httpOnly: true, secure: cookieIsSecure })
       .send(user);
   } catch (error) {
-    if (!error.status)
+    if (!error.message)
       return res.status(500).send({ message: 'An unexpected error occurred during login' });
-    return res.status(error.status).send({ message: error });
+    return res.status(401).send({ message: error.message });
   }
 };
 
