@@ -8,18 +8,18 @@ const Conversation = ({ onMessage, conversation }) => {
   const { user } = useContext(AuthContext);
   const $replyBar = useRef(null);
 
+  if (!conversation) return <div className="inbox-conversation" />;
+
   const onClick = () => {
     onMessage($replyBar.current.value);
     $replyBar.current.value = '';
   };
 
-  if (!conversation) return <div className="inbox-conversation" />;
-  console.log(conversation);
-  let otherUser = conversation.with;
-  //if (user.id === conversation.recipient) otherUser = conversation.sender;
+  const { messages } = conversation;
+  const partner = conversation.with;
 
-  if (!conversation.messages) return <p />;
-  const $messages = conversation.messages.map(message => (
+  if (!messages) return <p />;
+  const $messages = messages.map(message => (
     <div key={message._id} className="inbox-message inbox-message">
       <p>{message.text}</p>
     </div>
@@ -29,13 +29,13 @@ const Conversation = ({ onMessage, conversation }) => {
     <div className="inbox-conversation">
       <div className="inbox-details">
         <div>
-          <img alt="avatar" src={`https://api.adorable.io/avatars/${otherUser._id}`} />
+          <img alt="avatar" src={`https://api.adorable.io/avatars/${partner._id}`} />
         </div>
         <div>
           <h3>
-            {otherUser.firstName} {otherUser.lastName}
+            {partner.firstName} {partner.lastName}
           </h3>
-          <p>{otherUser.tagline}</p>
+          {partner.tagline && <p>{partner.tagline}</p>}
         </div>
       </div>
       <div className="inbox-messages">

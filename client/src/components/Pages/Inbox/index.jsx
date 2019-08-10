@@ -27,10 +27,9 @@ const SELECT_CONVO = 'SELECT_CONVO';
 const reducer = (state, action) => {
   switch (action.type) {
     case GET_INBOX: {
-      const rawConversations = action.payload;
-      const conversations = Object.keys(rawConversations)
-        .map(user => rawConversations[user])
-        .sort((a, b) => new Date(a.lastActivity).getTime() - new Date(b.lastActivity).getTime());
+      const conversations = action.payload.sort(
+        (a, b) => new Date(a.lastActivity).getTime() - new Date(b.lastActivity).getTime()
+      );
       return { ...state, inbox: conversations, currentConversation: conversations[0] };
     }
     case GET_CONVO_WITH_USER:

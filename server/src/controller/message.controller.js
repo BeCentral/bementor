@@ -1,7 +1,15 @@
 const mongoose = require('mongoose');
+const User = require('../model/user.model');
 const Message = require('../model/message.model');
 
-const containerizeMessages = (messages, currentUserId) => {
+const populateInboxWithUsers = conversations =>
+  Promise.all(
+    conversations.map(convo =>
+      User.findById(convo.with).select('firstName lastName tagline location')
+    )
+  );
+
+const containerizeMessages = async (messages, currentUserId) => {
   const conversations = messages.reduce((convos, message) => {
     const partner =
       currentUserId === message.recipient.toString() ? message.sender : message.recipient;
@@ -14,23 +22,27 @@ const containerizeMessages = (messages, currentUserId) => {
     };
     return convos;
   }, {});
-  Object.keys(conversations).forEach(partner => {
-    conversations[partner].messages.sort((a, b) => a.date.getTime() - b.date.getTime());
-    const thisConvo = conversations[partner];
-    conversations[partner].lastActivity = thisConvo.messages[thisConvo.messages.length - 1].date;
-  });
-  return conversations;
+  return Promise.all(
+    Object.keys(conversations).map(async partnerId => {
+      const thisConvo = conversations[partnerId];
+      conversations[partnerId].messages.sort((a, b) => a.date.getTime() - b.date.getTime());
+      conversations[partnerId].lastActivity =
+        thisConvo.messages[thisConvo.messages.length - 1].date;
+      conversations[partnerId].with = await User.findById(thisConvo.with).select(
+        'firstName lastName tagline location'
+      );
+      return conversations[partnerId];
+    })
+  );
 };
 
 exports.findAll = (req, res) => {
   const $uid = mongoose.Types.ObjectId(req.user.id);
-  Message.aggregate([
-    { $match: { $or: [{ recipient: $uid }, { sender: $uid }] } },
-    { $limit: 50 }
-  ]).then(allMessages => {
-    const conversations = containerizeMessages(allMessages, req.user.id);
-    res.send(conversations);
-  });
+  Message.aggregate([{ $match: { $or: [{ recipient: $uid }, { sender: $uid }] } }, { $limit: 50 }])
+    .then(allMessages => {
+      return containerizeMessages(allMessages, req.user.id);
+    })
+    .then(conversations => res.send(conversations));
 };
 
 exports.send = (req, res) => {
