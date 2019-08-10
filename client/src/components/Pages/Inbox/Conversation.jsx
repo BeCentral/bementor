@@ -1,7 +1,5 @@
 import React, { useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'evergreen-ui';
-import { Link } from 'react-router-dom';
 import AuthContext from '../../../context/auth-context';
 
 import '../../../assets/css/inbox.css';
@@ -15,23 +13,10 @@ const Conversation = ({ onMessage, conversation }) => {
     $replyBar.current.value = '';
   };
 
-  if (!conversation === false) {
-    return (
-      <div className="inbox-conversation inbox-conversation__empty">
-        <h3>Find a mentor and start chatting</h3>
-        <Button appearance="primary" intent="success">
-          <Link className="seamless" to="/connect">
-            Connect
-          </Link>
-        </Button>
-      </div>
-    );
-  }
-
   if (!conversation) return <div className="inbox-conversation" />;
-
-  let otherUser = conversation.mentor;
-  if (user.id === conversation.mentor) otherUser = conversation.mentee;
+  console.log(conversation);
+  let otherUser = conversation.with;
+  //if (user.id === conversation.recipient) otherUser = conversation.sender;
 
   if (!conversation.messages) return <p />;
   const $messages = conversation.messages.map(message => (

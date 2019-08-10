@@ -8,14 +8,16 @@ const containerizeMessages = (messages, currentUserId) => {
     const convo = convos[partner] || { messages: [] };
     convos[partner] = {
       ...convo,
+      // replace by populated user
+      with: partner,
       messages: [...convo.messages, message]
     };
-    // replace by populated user
-    if (!convo.with) convo.with = partner;
     return convos;
   }, {});
-  Object.keys(conversations).forEach(conversationPartner => {
-    conversations[conversationPartner].messages.sort((a, b) => a.date.getTime() - b.date.getTime());
+  Object.keys(conversations).forEach(partner => {
+    conversations[partner].messages.sort((a, b) => a.date.getTime() - b.date.getTime());
+    const thisConvo = conversations[partner];
+    conversations[partner].lastActivity = thisConvo.messages[thisConvo.messages.length - 1].date;
   });
   return conversations;
 };
