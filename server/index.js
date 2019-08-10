@@ -13,8 +13,10 @@ mongoose
     useCreateIndex: true,
     useNewUrlParser: true
   })
-  .then(() => { console.log('Database connection established'); })
-  .catch((err) => {
+  .then(() => {
+    console.log('Database connection established');
+  })
+  .catch(err => {
     console.error(`Database error, exiting. Stack trace:\n${err}`);
     process.exit();
   });
@@ -42,6 +44,7 @@ app.use('/api', router);
 require('./src/lib/auth');
 require('./src/route/user.route')(router);
 require('./src/route/conversation.route')(router);
+require('./src/route/message.route')(router);
 require('./src/route/interest.route')(router);
 
 const port = process.env.PORT || 4000;

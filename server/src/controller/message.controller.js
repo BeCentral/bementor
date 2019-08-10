@@ -1,5 +1,46 @@
+const mongoose = require('mongoose');
 const Message = require('../model/message.model');
 
+exports.findAll = (req, res) => {
+  const $uid = mongoose.Types.ObjectId(req.user.id);
+  Message.aggregate([
+    { $match: { $or: [{ recipient: $uid }, { sender: $uid }] } },
+    { $limit: 50 }
+  ]).then(allMessages => {
+    const conversations = allMessages.reduce((convos, message) => {
+      const partner =
+        req.user.id === message.recipient.toString() ? message.sender : message.recipient;
+      const convo = convos[partner] || { messages: [] };
+      convos[partner] = {
+        ...convo,
+        messages: [...convo.messages, message]
+      };
+      // replace by populated user
+      if (!convo.with) convo.with = partner;
+      return convos;
+    }, {});
+    Object.keys(conversations).forEach(conversationPartner => {
+      conversations[conversationPartner].messages.sort(
+        (a, b) => a.date.getTime() - b.date.getTime()
+      );
+    });
+    res.send(conversations);
+  });
+};
+
+exports.send = (req, res) => {
+  if (req.user.id === req.body.recipient) {
+    return res.status(400).send({ message: 'You cannot send yourself a message' });
+  }
+  return Message.create({
+    body: req.body.message,
+    recipient: req.body.recipient,
+    sender: req.user.id,
+    date: Date.now()
+  }).then(message => res.status(201).send(message));
+};
+
+/*
 exports.findAll = (req, res) => {
   Message.find({
     $or: [{ mentee: req.user._id }, { mentor: req.user._id }]
@@ -97,3 +138,5 @@ exports.initiate = async (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+*/
