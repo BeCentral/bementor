@@ -1,29 +1,32 @@
 const mongoose = require('mongoose');
 const Message = require('../model/message.model');
 
+const containerizeMessages = (messages, currentUserId) => {
+  const conversations = messages.reduce((convos, message) => {
+    const partner =
+      currentUserId === message.recipient.toString() ? message.sender : message.recipient;
+    const convo = convos[partner] || { messages: [] };
+    convos[partner] = {
+      ...convo,
+      messages: [...convo.messages, message]
+    };
+    // replace by populated user
+    if (!convo.with) convo.with = partner;
+    return convos;
+  }, {});
+  Object.keys(conversations).forEach(conversationPartner => {
+    conversations[conversationPartner].messages.sort((a, b) => a.date.getTime() - b.date.getTime());
+  });
+  return conversations;
+};
+
 exports.findAll = (req, res) => {
   const $uid = mongoose.Types.ObjectId(req.user.id);
   Message.aggregate([
     { $match: { $or: [{ recipient: $uid }, { sender: $uid }] } },
     { $limit: 50 }
   ]).then(allMessages => {
-    const conversations = allMessages.reduce((convos, message) => {
-      const partner =
-        req.user.id === message.recipient.toString() ? message.sender : message.recipient;
-      const convo = convos[partner] || { messages: [] };
-      convos[partner] = {
-        ...convo,
-        messages: [...convo.messages, message]
-      };
-      // replace by populated user
-      if (!convo.with) convo.with = partner;
-      return convos;
-    }, {});
-    Object.keys(conversations).forEach(conversationPartner => {
-      conversations[conversationPartner].messages.sort(
-        (a, b) => a.date.getTime() - b.date.getTime()
-      );
-    });
+    const conversations = containerizeMessages(allMessages, req.user.id);
     res.send(conversations);
   });
 };
