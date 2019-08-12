@@ -69,17 +69,14 @@ const Inbox = ({ match }) => {
 
   const handleMessage = message => {};
 
-  const $conversations = state.inbox.map(conversation => {
-    const active = conversation.id === state.currentConversation;
-    return (
-      <MiniConversation
-        select={handleSelect}
-        active={active}
-        conversation={conversation}
-        key={conversation.with}
-      />
-    );
-  });
+  const $conversations = state.inbox.map(conversation => (
+    <MiniConversation
+      select={handleSelect}
+      active={conversation.with._id === state.currentConversation.with._id}
+      conversation={conversation}
+      key={conversation.with._id}
+    />
+  ));
 
   return (
     <PageContainer>

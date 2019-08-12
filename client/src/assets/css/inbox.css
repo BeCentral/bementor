@@ -17,34 +17,55 @@
   overflow-y: scroll;
 }
 
-.inbox-profile {
+.inbox__profile {
   width: 100%;
-  height: 10vh;
+  height: 10%;
+  padding: 1rem;
   background-color: #00d073;
   box-sizing: border-box;
   display: flex;
-  align-content: center;
+  align-items: center;
   cursor: pointer;
+  display: flex;
 }
 
-.inbox-profile__active {
-  background-color: var(--green);
+.inbox__profile__active {
+  background-color: var(--green) !important;
+  color: #fff !important;
 }
 
-.inbox-profile img {
-  border-radius: 100%;
-  height: 8vh;
-  vertical-align: middle;
+.inbox__profile__avatar {
   margin: 0 10px;
 }
 
-.inbox-profile p {
+.inbox__profile p {
   display: block;
   margin: 0;
   line-height: 10vh;
 }
 
-.inbox-conversation {
+.inbox__conversation__partner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0.8rem;
+  width: 100%;
+}
+
+.inbox__conversation__partner h2 a {
+  color: #333;
+}
+
+.inbox__conversation__partner__avatar {
+  margin-right: 1rem;
+}
+
+.inbox__conversation__partner__cta {
+  margin-left: auto;
+  margin-right: 2rem;
+}
+
+.inbox__conversation {
   flex: 3;
   border: 5px solid var(--green);
   background-color: #bde2cf;
@@ -63,36 +84,7 @@
   color: white;
 }
 
-.inbox-details {
-  display: flex;
-  height: 18vh;
-  align-items: center;
-  margin: 1vh;
-}
-
-.inbox-details img {
-  border-radius: 100%;
-  flex: 1;
-  height: 16vh;
-  margin: 0 10px;
-}
-
-.inbox-details h3 {
-  flex: 2;
-  background-color: var(--green);
-  color: white;
-  padding: 5px;
-  margin: 5px 0;
-}
-
-.inbox-details p {
-  background-color: black;
-  color: white;
-  padding: 5px;
-  margin: 5px 0;
-}
-
-.inbox-messages {
+.inbox__conversation__messages {
   display: flex;
   flex-direction: column;
   background-color: var(--green);
@@ -104,7 +96,7 @@
   overflow-y: scroll;
 }
 
-.inbox-message {
+.inbox__conversation__message {
   align-self: flex-start;
   background-color: white;
   padding: 1em;
@@ -112,28 +104,20 @@
   margin-bottom: 0.3em;
 }
 
-.inbox-message p {
+.inbox__conversation__message p {
   margin: 0;
 }
 
-.inbox-message__right {
+.inbox__conversation__message__right {
   align-self: flex-end;
 }
 
-.inbox-reply {
+.inbox__conversation__reply {
   margin: 1em;
   height: 20vh;
 }
 
-.inbox-reply textarea {
+.inbox__conversation__reply textarea {
   height: 10vh;
   width: 100%;
-}
-
-.inbox-reply button {
-  float: right;
-  width: 100px;
-  padding: 10px;
-  background-color: var(--green);
-  color: rgb(31, 28, 28);
 }

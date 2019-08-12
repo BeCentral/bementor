@@ -1,22 +1,22 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
+import { Avatar } from 'evergreen-ui';
 
 const MiniConversation = ({ conversation, select, active }) => {
   const handleClick = () => select(conversation);
 
-  const otherUser = conversation.with;
+  const partner = conversation.with;
   return (
     <button
       onClick={handleClick}
       type="button"
-      className={`button--seamless inbox-profile ${active ? 'inbox-profile__active' : ''}`}
+      className={`button--seamless inbox__profile ${active ? 'inbox__profile__active' : ''}`}
     >
-      <div />
+      <div className="inbox__profile__avatar ">
+        <Avatar src={partner.picture} size={50} name={`${partner.firstName} ${partner.lastName}`} />
+      </div>
       <p>
-        <img alt="avatar" src={`https://api.adorable.io/avatars/${otherUser._id}`} />
-      </p>
-      <p>
-        {otherUser.firstName} {otherUser.lastName}
+        {partner.firstName} {partner.lastName}
       </p>
     </button>
   );

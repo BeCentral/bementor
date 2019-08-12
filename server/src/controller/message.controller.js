@@ -2,13 +2,6 @@ const mongoose = require('mongoose');
 const User = require('../model/user.model');
 const Message = require('../model/message.model');
 
-const populateInboxWithUsers = conversations =>
-  Promise.all(
-    conversations.map(convo =>
-      User.findById(convo.with).select('firstName lastName tagline location')
-    )
-  );
-
 const containerizeMessages = async (messages, currentUserId) => {
   const conversations = messages.reduce((convos, message) => {
     const partner =
@@ -29,7 +22,7 @@ const containerizeMessages = async (messages, currentUserId) => {
       conversations[partnerId].lastActivity =
         thisConvo.messages[thisConvo.messages.length - 1].date;
       conversations[partnerId].with = await User.findById(thisConvo.with).select(
-        'firstName lastName tagline location'
+        'firstName lastName tagline location picture'
       );
       return conversations[partnerId];
     })
