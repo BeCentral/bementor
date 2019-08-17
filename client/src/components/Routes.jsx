@@ -12,16 +12,13 @@ import Register from './Pages/Auth/RegistrationForm';
 import RequestPasswordReset from './Pages/Auth/RequestPasswordReset';
 import ConfirmPasswordReset from './Pages/Auth/ConfirmPasswordReset';
 import ConfirmAccount from './Pages/Auth/ConfirmAccount';
+import AuthContext from '../context/auth-context';
 import { PageTransition } from './UI';
 
 class Routes extends Component {
   previousLocation = this.props.location;
 
-  modalRoutes = [
-    '/login',
-    '/register',
-    '/reset-password'
-  ];
+  modalRoutes = ['/login', '/register', '/reset-password'];
 
   componentWillUpdate(nextProps) {
     const { location } = this.props;
@@ -32,16 +29,19 @@ class Routes extends Component {
     }
   }
 
-  toBaseUrl = s => s.split('/').slice(0, 2).join('/');
+  toBaseUrl = s =>
+    s
+      .split('/')
+      .slice(0, 2)
+      .join('/');
 
   render() {
-    const { location } = this.props;
-    let isModal = !!(
-      location.state
-      && location.state.modal
-      && this.previousLocation !== location
-    );
+    const authRequest = this.context.requestState;
 
+    if (authRequest.isLoading) return <div className="app-container" />;
+
+    const { location } = this.props;
+    let isModal = !!(location.state && location.state.modal && this.previousLocation !== location);
 
     // If users land on the page without having clicked a link (e.g. accessing /login directly)
     // This will make a page bookmarkable
@@ -66,13 +66,17 @@ class Routes extends Component {
           {isModal ? <Route path="/login" component={Login} /> : null}
           {isModal ? <Route path="/register" component={Register} /> : null}
           {isModal ? <Route exact path="/reset-password" component={RequestPasswordReset} /> : null}
-          {isModal ? <Route path="/reset-password/:token" component={ConfirmPasswordReset} /> : null}
+          {isModal ? (
+            <Route path="/reset-password/:token" component={ConfirmPasswordReset} />
+          ) : null}
         </PageTransition>
         <Footer />
       </div>
     );
   }
 }
+
+Routes.contextType = AuthContext;
 
 Routes.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
