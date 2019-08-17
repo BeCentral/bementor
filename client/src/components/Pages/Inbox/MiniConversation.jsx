@@ -25,7 +25,8 @@ const MiniConversation = ({ conversation, select, active }) => {
 MiniConversation.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   conversation: PropTypes.object.isRequired,
-  select: PropTypes.func.isRequired
+  select: PropTypes.func.isRequired,
+  active: PropTypes.bool.isRequired
 };
 
 export default MiniConversation;

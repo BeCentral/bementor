@@ -1,20 +1,24 @@
 import React, { useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Avatar, Button } from 'evergreen-ui';
+import { Avatar, Button, Textarea } from 'evergreen-ui';
 import AuthContext from '../../../context/auth-context';
 
 import '../../../assets/css/inbox.css';
 
 const Conversation = ({ onMessage, conversation }) => {
   const { user } = useContext(AuthContext);
-  const $replyBar = useRef(null);
+  let $replyBar = useRef(null);
 
   if (!conversation) return <div className="inbox-conversation" />;
 
-  const onClick = () => {
-    onMessage($replyBar.current.value);
-    $replyBar.current.value = '';
+  const send = () => {
+    onMessage($replyBar.value);
+    $replyBar.value = '';
+  };
+
+  const handleKeyDown = e => {
+    console.log(e);
   };
 
   const { messages } = conversation;
@@ -42,16 +46,22 @@ const Conversation = ({ onMessage, conversation }) => {
             {partner.firstName} {partner.lastName}
           </Link>
         </h2>
-        <Button className="inbox__conversation__partner__cta" iconBefore="people" size={28}>
+        <Button className="inbox__conversation__partner__cta" iconBefore="people">
           View profile
         </Button>
       </div>
       <section className="inbox__conversation__messages">{$messages}</section>
       <div className="inbox__conversation__reply">
-        <textarea ref={$replyBar} />
-        <button type="button" onClick={onClick}>
-          Send
-        </button>
+        <Textarea
+          onKeyDown={handleKeyDown}
+          innerRef={c => {
+            $replyBar = c;
+          }}
+          placeholder={`Send ${partner.firstName} a message...`}
+        />
+        <Button onClick={send} className="inbox__conversation__reply__send" iconBefore="people">
+          Send message
+        </Button>
       </div>
     </div>
   );

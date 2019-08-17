@@ -69,32 +69,44 @@ const Inbox = ({ match }) => {
 
   const handleMessage = message => {};
 
-  const $conversations = state.inbox.map(conversation => (
+  const renderEmptyMessageState = () => (
+    <div className="inbox-conversation inbox-conversation__empty">
+      <h3>Find a mentor and start chatting</h3>
+      <Button appearance="primary" intent="success">
+        <Link className="seamless" to="/connect">
+          Connect
+        </Link>
+      </Button>
+    </div>
+  );
+
+  const renderMiniConversation = conversation => (
     <MiniConversation
       select={handleSelect}
       active={conversation.with._id === state.currentConversation.with._id}
       conversation={conversation}
       key={conversation.with._id}
     />
-  ));
+  );
+
+  const $conversations =
+    state.inbox.length > 0 ? (
+      state.inbox.map(renderMiniConversation)
+    ) : (
+      <div className="inbox-overview__empty">No active conversations</div>
+    );
+
+  const $conversationContents = state.currentConversation ? (
+    <Conversation onMessage={handleMessage} conversation={state.currentConversation} />
+  ) : (
+    renderEmptyMessageState()
+  );
 
   return (
     <PageContainer>
       <div className="inbox">
         <section className="inbox-overview">{$conversations}</section>
-        {state.currentConversation && (
-          <Conversation onMessage={handleMessage} conversation={state.currentConversation} />
-        )}
-        {!state.currentConversation && (
-          <div className="inbox-conversation inbox-conversation__empty">
-            <h3>Find a mentor and start chatting</h3>
-            <Button appearance="primary" intent="success">
-              <Link className="seamless" to="/connect">
-                Connect
-              </Link>
-            </Button>
-          </div>
-        )}
+        {$conversationContents}
       </div>
     </PageContainer>
   );
