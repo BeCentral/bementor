@@ -33,7 +33,12 @@ exports.findOne = (req, res) => {
 
 exports.create = async (req, res) => {
   const password = await hash(req.body.password);
-  User.create({ ...req.body, password, location: req.body.location.toLowerCase() })
+  const rawUser = {
+    ...req.body,
+    password,
+    location: req.body.location ? req.body.location.toLowerCase() : null
+  };
+  User.create(rawUser)
     .then(async user => {
       user.accountConfirmationToken = await createToken(user, '1 hour');
       return user.save();
