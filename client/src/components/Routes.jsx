@@ -56,7 +56,7 @@ class Routes extends Component {
         <PageTransition location={location}>
           <Switch location={isModal ? this.previousLocation : location}>
             <Route path="/:path(|index|home|start)" component={Home} />
-            <Route path="/inbox" component={Inbox} />
+            <Route exact path="/inbox" component={Inbox} />
             <Route path="/inbox/:userId" component={Inbox} />
             <Route path="/connect" component={Connect} />
             <Route path="/profile/:userId" component={Profile} />

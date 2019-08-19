@@ -12,35 +12,57 @@ import '../../../assets/css/inbox.css';
 import RequestState from '../../../models/RequestState';
 
 const initialState = {
-  inbox: [],
+  inbox: null,
   inboxRequest: new RequestState(true),
+  initiateRequest: new RequestState(),
   currentConversation: null
 };
 
-const GET_INBOX = 'GET_INBOX';
-const GET_INBOX_ERROR = 'GET_INBOX_ERROR';
+const SET_INBOX = 'SET_INBOX';
+const SET_INBOX_ERROR = 'SET_INBOX_ERROR';
+const INITIATE_CONVO = 'INITIATE_CONVO';
 const GET_CONVO_WITH_USER = 'GET_CONVO_WITH_USER';
-const GET_CONVO_WITH_ID = 'GET_CONVO_WITH_ID';
 const GET_MORE_MESSAGES_IN_CONVO = 'GET_MORE_MESSAGES_IN_CONVO';
 const SELECT_CONVO = 'SELECT_CONVO';
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case GET_INBOX: {
+    case SET_INBOX: {
       const conversations = action.payload.sort(
         (a, b) => new Date(a.lastActivity).getTime() - new Date(b.lastActivity).getTime()
       );
-      return { ...state, inbox: conversations, currentConversation: conversations[0] };
+      return {
+        ...state,
+        inbox: conversations,
+        inboxRequest: state.inboxRequest.finish()
+      };
     }
+    case SET_INBOX_ERROR: {
+      return {
+        ...state,
+        inboxRequest: state.inboxRequest.error(
+          `Whoops! An unexpected error occurred while getting your inbox.`
+        )
+      };
+    }
+    case INITIATE_CONVO: {
+      const newConversation = action.payload;
+      if (!newConversation) return { ...state, initiateRequest: state.initiateRequest.start() };
+      if (newConversation.error)
+        return { ...state, initiateRequest: state.initiateRequest.error(newConversation.error) };
+      const inbox = [newConversation, ...state.inbox];
+      return {
+        ...state,
+        initiateRequest: state.initiateRequest.finish(),
+        inbox,
+        currentConversation: newConversation
+      };
+    }
+    case SELECT_CONVO:
+      return { ...state, currentConversation: action.payload };
     case GET_CONVO_WITH_USER:
       return { ...state };
-    case GET_CONVO_WITH_ID:
-      return { ...state };
     case GET_MORE_MESSAGES_IN_CONVO:
-      return { ...state };
-    case SELECT_CONVO:
-      return { ...state };
-    case GET_INBOX_ERROR:
       return { ...state };
     default:
       throw new Error();
@@ -52,18 +74,42 @@ const Inbox = ({ match }) => {
 
   const { userId } = match.params;
 
+  const startConversationWith = async partnerId => {
+    dispatch({ type: INITIATE_CONVO });
+    try {
+      const conversation = await API.message.initiateWith(partnerId);
+      dispatch({ type: INITIATE_CONVO, payload: conversation });
+    } catch (err) {
+      dispatch({ type: INITIATE_CONVO, payload: { error: err } });
+    }
+  };
+
+  const selectConversation = withUserId => {
+    if (!withUserId) return dispatch({ type: SELECT_CONVO, payload: state.inbox.conversations[0] });
+
+    const conversation = state.inbox
+      ? state.inbox.find(convo => convo.with._id === withUserId)
+      : null;
+    if (conversation) dispatch({ type: SELECT_CONVO, payload: conversation });
+    return startConversationWith(withUserId);
+  };
+
   useEffect(() => {
     NProgress.start();
     API.message
       .getAll()
       .then(conversations => {
-        dispatch({ type: GET_INBOX, payload: conversations });
+        dispatch({ type: SET_INBOX, payload: conversations });
+        selectConversation(userId);
       })
-      .catch(err => {
-        dispatch({ type: GET_INBOX_ERROR, payload: err });
-      })
+      .catch(err => dispatch({ type: SET_INBOX_ERROR, payload: err }))
       .finally(() => NProgress.done());
   }, []);
+
+  useEffect(() => {
+    if (!state.inbox) return;
+    selectConversation(userId);
+  }, [userId]);
 
   const handleSelect = conversation => {};
 
@@ -71,7 +117,7 @@ const Inbox = ({ match }) => {
 
   const renderEmptyMessageState = () => (
     <div className="inbox-conversation inbox-conversation__empty">
-      <h3>Find a mentor and start chatting</h3>
+      <h3>Connect and start chatting</h3>
       <Button appearance="primary" intent="success">
         <Link className="seamless" to="/connect">
           Connect
@@ -90,7 +136,7 @@ const Inbox = ({ match }) => {
   );
 
   const $conversations =
-    state.inbox.length > 0 ? (
+    state.inbox && state.inbox.length > 0 ? (
       state.inbox.map(renderMiniConversation)
     ) : (
       <div className="inbox-overview__empty">No active conversations</div>

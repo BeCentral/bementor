@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import NProgress from 'nprogress';
 import { Button } from 'evergreen-ui';
@@ -9,6 +9,7 @@ import UserCard from './UserCard';
 import RequestState from '../../../models/RequestState';
 import { API } from '../../../constants';
 import User from '../../../models/User';
+import AuthContext from '../../../context/auth-context';
 
 import '../../../assets/css/connect.css';
 
@@ -17,6 +18,9 @@ const Users = ({ history }) => {
   const [filtersAreFixed, setFixedFilterState] = useState(false);
   const [mobileFiltersShown, setMobileFilterVisibility] = useState(false);
   const getUserRequest = new RequestState();
+
+  const auth = useContext(AuthContext);
+  const currentUserId = auth.user ? auth.user._id : null;
 
   const handleScroll = () => {
     // 180 is header height
@@ -32,16 +36,15 @@ const Users = ({ history }) => {
     };
   }, []);
 
-  const setUsers = (rawUsers) => {
-    setUserState(rawUsers.map(u => new User(u)));
+  const setUsers = rawUsers => {
+    setUserState(rawUsers.map(u => new User(u)).filter(u => u._id !== currentUserId));
   };
 
-  const connect = async (userId) => {
-    await API.conversation.initiate(userId);
+  const connect = userId => {
     history.push(`/inbox/${userId}`);
   };
 
-  const filter = async (filters) => {
+  const filter = async filters => {
     NProgress.start();
     const rawUsers = await API.user.find(filters);
     setUsers(rawUsers);
@@ -67,9 +70,7 @@ const Users = ({ history }) => {
       />
       <div className={`connect__results ${filtersAreFixed ? 'connect__results--scroll' : ''}`}>
         <h2 className="center">Connect.</h2>
-        <div className="connect__results__wrapper">
-          {$users}
-        </div>
+        <div className="connect__results__wrapper">{$users}</div>
       </div>
     </PageContainer>
   );

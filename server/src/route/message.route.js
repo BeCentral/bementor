@@ -3,5 +3,6 @@ const { requireAuth } = require('../lib/auth');
 
 module.exports = app => {
   app.get('/message', requireAuth, messages.findAll);
+  app.get('/message/:userId', requireAuth, messages.findWithUser);
   app.post('/message', requireAuth, messages.send);
 };
