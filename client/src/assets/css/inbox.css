@@ -1,0 +1,138 @@
+.inbox {
+  display: flex;
+  height: calc(100vh - 26rem - 11rem);
+  border: 5px solid var(--green);
+}
+
+@media only screen and (max-width: 500px) {
+  .inbox {
+    display: flex;
+    height: calc(100vh - 26rem - 20rem);
+  }
+}
+
+.inbox-overview {
+  width: 25%;
+  border-right: 5px solid var(--green);
+  overflow-y: scroll;
+}
+
+.inbox__profile {
+  width: 100%;
+  height: 10%;
+  padding: 1rem;
+  background-color: #00d073;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+}
+
+.inbox__profile__active {
+  background-color: var(--green) !important;
+  color: #fff !important;
+}
+
+.inbox__profile__avatar {
+  margin: 0 10px;
+}
+
+.inbox__profile p {
+  display: block;
+  margin: 0;
+  line-height: 10vh;
+}
+
+.inbox__conversation__partner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0.8rem;
+  width: 100%;
+}
+
+.inbox__conversation__partner h2 a {
+  color: #333;
+}
+
+.inbox__conversation__partner__avatar {
+  margin-right: 1rem;
+}
+
+.inbox__conversation__partner__cta {
+  margin-left: auto;
+  margin-right: 2rem;
+}
+
+.inbox__conversation {
+  flex: 3;
+  background-color: #bde2cf;
+}
+
+.inbox-overview__empty {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.inbox-conversation__empty {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.inbox-conversation__empty h3 {
+  color: var(--green);
+  font-size: 2.6rem;
+}
+
+.inbox-conversation__empty a:visited {
+  color: white;
+}
+
+.inbox__conversation__no-messages {
+  color: #fff;
+}
+
+.inbox__conversation__messages {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--green);
+  box-sizing: border-box;
+  padding: 1em;
+  border-radius: 10px;
+  margin: 1vh;
+  height: 60%;
+  overflow-y: scroll;
+}
+
+.inbox__conversation__message {
+  align-self: flex-start;
+  background-color: white;
+  padding: 1em;
+  border-radius: 10px;
+  margin-bottom: 0.3em;
+}
+
+.inbox__conversation__message p {
+  margin: 0;
+}
+
+.inbox__conversation__message__right {
+  align-self: flex-end;
+}
+
+.inbox__conversation__reply {
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.inbox__conversation__reply textarea {
+  width: 100%;
+}
+
+.inbox__conversation__reply__send {
+  margin-top: 1rem;
+  align-self: flex-end;
+}

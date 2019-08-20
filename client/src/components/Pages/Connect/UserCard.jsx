@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Badge } from 'evergreen-ui';
+import { Badge, IconButton, Tooltip } from 'evergreen-ui';
 import { Link } from 'react-router-dom';
 import User from '../../../models/User';
 
 import '../../../assets/css/user.css';
 
-const UserCard = ({ user }) => {
+const UserCard = ({ user, connect }) => {
   const renderInterests = () => {
     if (!user.interests || user.interests.length === 0) return null;
-    const $interests = user.interests.map(i => <li key={i.name}><Badge>{i.name}</Badge></li>);
+    const $interests = user.interests.map(i => (
+      <li key={i.name}>
+        <Badge>{i.name}</Badge>
+      </li>
+    ));
     return <ul className="user-card__interests">{$interests}</ul>;
   };
 
@@ -19,10 +23,23 @@ const UserCard = ({ user }) => {
       <Link to={`/profile/${user._id}`}>
         <img alt="User vatar" src={user.picture || `https://api.adorable.io/avatars/${user._id}`} />
       </Link>
-      <Link className="seamless" to={`/profile/${user._id}`}>
+      <Link className="user-card__link seamless" to={`/profile/${user._id}`}>
         <p>
           {user.firstName} {user.lastName}
         </p>
+        <Tooltip content={`Connect with ${user.firstName}`}>
+          <IconButton
+            className="user-card__connect"
+            appearance="minimal"
+            height={32}
+            icon="chat"
+            onClick={e => {
+              e.preventDefault();
+              e.stopPropagation();
+              connect(user._id);
+            }}
+          />
+        </Tooltip>
       </Link>
       {$interests}
     </article>
@@ -30,7 +47,8 @@ const UserCard = ({ user }) => {
 };
 
 UserCard.propTypes = {
-  user: PropTypes.instanceOf(User).isRequired
+  user: PropTypes.instanceOf(User).isRequired,
+  connect: PropTypes.func.isRequired
 };
 
 export default UserCard;

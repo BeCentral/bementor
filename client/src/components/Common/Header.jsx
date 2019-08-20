@@ -53,7 +53,9 @@ const Header = ({ history, location }) => {
     return (
       <div className={`${mobileNavShown ? 'nav__avatar--mobile' : 'nav__avatar'}`}>
         <Avatar src={user.picture} size={35} name={`${user.firstName} ${user.lastName}`} />
-        <h3 className="nav__avatar__name">{firstName} {lastName}</h3>
+        <h3 className="nav__avatar__name">
+          {firstName} {lastName}
+        </h3>
       </div>
     );
   };
@@ -64,19 +66,23 @@ const Header = ({ history, location }) => {
     return (
       <>
         <NavItem href="/connect">Connect</NavItem>
-        { isAuthenticated && (
+        {isAuthenticated && (
           <>
-            <NavItem href="#">Inbox</NavItem>
+            <NavItem href="/inbox">Inbox</NavItem>
             <NavItem href={`/profile/${user._id}`}>Profile</NavItem>
             <li className="navigation__items__spacer">-</li>
-            <li><button onClick={doLogout} type="button" className="button--link">Log out</button></li>
+            <li>
+              <button onClick={doLogout} type="button" className="button--link">
+                Log out
+              </button>
+            </li>
           </>
         )}
-        { !isAuthenticated && (
+        {!isAuthenticated && (
           <>
             <li className="navigation__items__spacer">-</li>
             <NavItem href={getModalLink('/login')}>Log in</NavItem>
-            <NavItem href={getModalLink('/login')}>Register</NavItem>
+            <NavItem href={getModalLink('/register')}>Register</NavItem>
           </>
         )}
       </>
@@ -94,13 +100,13 @@ const Header = ({ history, location }) => {
       >
         <header className="mobile-nav__header">
           {$avatar}
-          <ul className="navigation__items--mobile">
-            {$navItems}
-          </ul>
+          <ul className="navigation__items--mobile">{$navItems}</ul>
         </header>
       </SideSheet>
       <header className="app-header">
-        <h1><Link to="/">BeMentor.</Link></h1>
+        <h1>
+          <Link to="/">BeMentor.</Link>
+        </h1>
       </header>
       <nav className={`navigation ${topHeaderShown ? '' : 'navigation--fixed'}`}>
         <h1 className={`navigation__title ${topHeaderShown ? '' : 'navigation__title--active'}`}>

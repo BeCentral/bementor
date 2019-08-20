@@ -80,6 +80,16 @@
   overflow: hidden;
 }
 
+.user-card__link {
+  position: relative;
+}
+
+.user-card__connect {
+  position: absolute;
+  top: 25%;
+  right: -3.5rem;
+}
+
 @media only screen and (max-width: 860px) {
   .connect {
     padding-top: 4rem;
