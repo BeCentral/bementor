@@ -90,6 +90,10 @@
   color: white;
 }
 
+.inbox__conversation__no-messages {
+  color: #fff;
+}
+
 .inbox__conversation__messages {
   display: flex;
   flex-direction: column;

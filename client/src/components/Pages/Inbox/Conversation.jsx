@@ -17,19 +17,25 @@ const Conversation = ({ onMessage, conversation }) => {
     $replyBar.value = '';
   };
 
-  const handleKeyDown = e => {
-    console.log(e);
-  };
-
   const { messages } = conversation;
   const partner = conversation.with;
 
   if (!messages) return <p />;
-  const $messages = messages.map(message => (
-    <div key={message._id} className="inbox__conversation__message">
-      <p>{message.body}</p>
-    </div>
-  ));
+
+  const $messageState =
+    messages.length > 0 ? (
+      messages.map(message => (
+        <div key={message._id} className="inbox__conversation__message">
+          <p>{message.body}</p>
+        </div>
+      ))
+    ) : (
+      <div className="inbox__conversation__no-messages">
+        No messages yet!
+        <br />
+        Send {partner.firstName} a message below
+      </div>
+    );
 
   return (
     <div className="inbox__conversation">
@@ -50,10 +56,9 @@ const Conversation = ({ onMessage, conversation }) => {
           View profile
         </Button>
       </div>
-      <section className="inbox__conversation__messages">{$messages}</section>
+      <section className="inbox__conversation__messages">{$messageState}</section>
       <div className="inbox__conversation__reply">
         <Textarea
-          onKeyDown={handleKeyDown}
           innerRef={c => {
             $replyBar = c;
           }}
