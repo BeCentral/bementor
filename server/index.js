@@ -43,7 +43,6 @@ app.use('/api', router);
 
 require('./src/lib/auth');
 require('./src/route/user.route')(router);
-require('./src/route/conversation.route')(router);
 require('./src/route/message.route')(router);
 require('./src/route/interest.route')(router);
 
