@@ -67,7 +67,6 @@
 
 .inbox__conversation {
   flex: 3;
-  border: 5px solid var(--green);
   background-color: #bde2cf;
 }
 
@@ -102,7 +101,7 @@
   padding: 1em;
   border-radius: 10px;
   margin: 1vh;
-  height: 40vh;
+  height: 60%;
   overflow-y: scroll;
 }
 
@@ -130,7 +129,6 @@
 }
 
 .inbox__conversation__reply textarea {
-  height: 80%;
   width: 100%;
 }
 

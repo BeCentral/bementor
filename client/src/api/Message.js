@@ -7,6 +7,9 @@ class MessageAPI extends API {
 
   initiateWith = userId =>
     fetch(`${this.ENDPOINT}/${userId}`, this.getOptions('get')).then(this.handleResponse);
+
+  send = (to, message) =>
+    fetch(`${this.ENDPOINT}/${to}`, this.getOptions('post', { message })).then(this.handleResponse);
 }
 
 export default MessageAPI;

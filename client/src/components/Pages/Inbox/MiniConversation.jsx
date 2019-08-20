@@ -13,7 +13,7 @@ const MiniConversation = ({ conversation, select, active }) => {
       className={`button--seamless inbox__profile ${active ? 'inbox__profile__active' : ''}`}
     >
       <div className="inbox__profile__avatar ">
-        <Avatar src={partner.picture} size={50} name={`${partner.firstName} ${partner.lastName}`} />
+        <Avatar src={partner.picture} size={40} name={`${partner.firstName} ${partner.lastName}`} />
       </div>
       <p>
         {partner.firstName} {partner.lastName}

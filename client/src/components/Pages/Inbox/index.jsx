@@ -13,36 +13,41 @@ import RequestState from '../../../models/RequestState';
 
 const initialState = {
   inbox: null,
-  inboxRequest: new RequestState(true),
+  inboxRequest: new RequestState(),
   initiateRequest: new RequestState(),
+  sendRequest: new RequestState(),
   currentConversation: null
 };
 
 const SET_INBOX = 'SET_INBOX';
 const SET_INBOX_ERROR = 'SET_INBOX_ERROR';
 const INITIATE_CONVO = 'INITIATE_CONVO';
-const GET_CONVO_WITH_USER = 'GET_CONVO_WITH_USER';
-const GET_MORE_MESSAGES_IN_CONVO = 'GET_MORE_MESSAGES_IN_CONVO';
 const SELECT_CONVO = 'SELECT_CONVO';
+const SEND_MESSAGE = 'SEND_MESSAGE';
 
 const reducer = (state, action) => {
   switch (action.type) {
     case SET_INBOX: {
-      const conversations = action.payload.sort(
+      if (!action.payload) return { ...state, inboxRequest: state.inboxRequest.start() };
+
+      const { conversations, userId } = action.payload;
+      const inbox = conversations.sort(
         (a, b) => new Date(a.lastActivity).getTime() - new Date(b.lastActivity).getTime()
       );
+      const selectedConvo = userId ? inbox.find(convo => convo.with._id === userId) : null;
+      const currentConversation = selectedConvo || inbox[0];
       return {
         ...state,
-        inbox: conversations,
+        inbox,
+        currentConversation,
         inboxRequest: state.inboxRequest.finish()
       };
     }
     case SET_INBOX_ERROR: {
+      const error = `Whoops! An unexpected error occurred while getting your inbox.`;
       return {
         ...state,
-        inboxRequest: state.inboxRequest.error(
-          `Whoops! An unexpected error occurred while getting your inbox.`
-        )
+        inboxRequest: state.inboxRequest.error(error)
       };
     }
     case INITIATE_CONVO: {
@@ -60,10 +65,17 @@ const reducer = (state, action) => {
     }
     case SELECT_CONVO:
       return { ...state, currentConversation: action.payload };
-    case GET_CONVO_WITH_USER:
-      return { ...state };
-    case GET_MORE_MESSAGES_IN_CONVO:
-      return { ...state };
+    case SEND_MESSAGE: {
+      const newMessage = action.payload;
+      if (!newMessage) return { ...state, sendRequest: state.sendRequest.start() };
+      if (newMessage.error)
+        return { ...state, sendRequest: state.sendRequest.error(newMessage.error) };
+      const inbox = [...state.inbox];
+      const i = inbox.findIndex(convo => convo.with._id === state.currentConversation.with._id);
+      inbox[i].messages.push(newMessage);
+      inbox[i].lastActivity = new Date();
+      return { ...state, conversations: inbox };
+    }
     default:
       throw new Error();
   }
@@ -85,7 +97,8 @@ const Inbox = ({ match }) => {
   };
 
   const selectConversation = withUserId => {
-    if (!withUserId) return dispatch({ type: SELECT_CONVO, payload: state.inbox.conversations[0] });
+    if (state.currentConversation && state.currentConversation.with._id === withUserId) return null;
+    if (!withUserId) return dispatch({ type: SELECT_CONVO, payload: state.inbox[0] });
 
     const conversation = state.inbox
       ? state.inbox.find(convo => convo.with._id === withUserId)
@@ -95,12 +108,12 @@ const Inbox = ({ match }) => {
   };
 
   useEffect(() => {
+    dispatch({ type: SET_INBOX });
     NProgress.start();
     API.message
       .getAll()
       .then(conversations => {
-        dispatch({ type: SET_INBOX, payload: conversations });
-        selectConversation(userId);
+        dispatch({ type: SET_INBOX, payload: { conversations, userId } });
       })
       .catch(err => dispatch({ type: SET_INBOX_ERROR, payload: err }))
       .finally(() => NProgress.done());
@@ -109,11 +122,19 @@ const Inbox = ({ match }) => {
   useEffect(() => {
     if (!state.inbox) return;
     selectConversation(userId);
-  }, [userId]);
+  }, [state.inboxRequest.isLoading, userId]);
 
   const handleSelect = conversation => {};
 
-  const handleMessage = message => {};
+  const handleMessage = async message => {
+    dispatch({ type: SEND_MESSAGE });
+    try {
+      const newMessage = await API.message.send(state.currentConversation.with._id, message);
+      dispatch({ type: SEND_MESSAGE, payload: newMessage });
+    } catch (err) {
+      dispatch({ type: SEND_MESSAGE, payload: { error: err } });
+    }
+  };
 
   const renderEmptyMessageState = () => (
     <div className="inbox-conversation inbox-conversation__empty">

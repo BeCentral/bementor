@@ -22,20 +22,22 @@ const Conversation = ({ onMessage, conversation }) => {
 
   if (!messages) return <p />;
 
+  const renderConversation = message => (
+    <div key={message._id} className="inbox__conversation__message">
+      <p>{message.body}</p>
+    </div>
+  );
+
+  const renderEmptyMessageState = () => (
+    <div className="inbox__conversation__no-messages">
+      No messages yet!
+      <br />
+      Send {partner.firstName} a message below
+    </div>
+  );
+
   const $messageState =
-    messages.length > 0 ? (
-      messages.map(message => (
-        <div key={message._id} className="inbox__conversation__message">
-          <p>{message.body}</p>
-        </div>
-      ))
-    ) : (
-      <div className="inbox__conversation__no-messages">
-        No messages yet!
-        <br />
-        Send {partner.firstName} a message below
-      </div>
-    );
+    messages.length > 0 ? messages.map(renderConversation) : renderEmptyMessageState();
 
   return (
     <div className="inbox__conversation">
@@ -52,9 +54,9 @@ const Conversation = ({ onMessage, conversation }) => {
             {partner.firstName} {partner.lastName}
           </Link>
         </h2>
-        <Button className="inbox__conversation__partner__cta" iconBefore="people">
-          View profile
-        </Button>
+        <Link className="inbox__conversation__partner__cta" to={`/profile/${partner._id}`}>
+          <Button iconBefore="people">View profile</Button>
+        </Link>
       </div>
       <section className="inbox__conversation__messages">{$messageState}</section>
       <div className="inbox__conversation__reply">
