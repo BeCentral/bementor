@@ -17,6 +17,7 @@ class RequestState {
 
   error(reason) {
     this.hasErrored = true;
+    this.isLoading = false;
     this.message = reason;
     return this;
   }
