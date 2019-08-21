@@ -31,29 +31,32 @@
 }
 
 .connect__btn-filter {
-  position: absolute;
+  position: absolute !important;
   top: 1rem;
   left: 1rem;
-  display: none;
+  display: none !important;
 }
 
 .connect__filters__group {
   margin: 2rem 0;
 }
 
-.connect__filters__search, .connect__filters__location {
+.connect__filters__search,
+.connect__filters__location {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 2rem;
 }
 
-.connect__filters__search > div, .connect__filters__location > div {
+.connect__filters__search > div,
+.connect__filters__location > div {
   width: 70%;
   margin-bottom: 0;
 }
 
-.connect__filters__search input, .connect__filters__location input {
+.connect__filters__search input,
+.connect__filters__location input {
   width: 100%;
 }
 
@@ -95,7 +98,7 @@
     padding-top: 4rem;
   }
   .connect__btn-filter {
-    display: block;
+    display: block !important;
   }
   .connect__filters {
     display: none;
