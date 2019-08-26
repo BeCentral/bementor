@@ -1,0 +1,35 @@
+.home {
+  display: flex;
+}
+
+.home a,
+.home a:visited,
+.home a:active {
+  color: var(--green);
+}
+
+.home section {
+  width: 70%;
+  margin-right: 4rem;
+}
+.home aside {
+  padding: 4rem 0;
+}
+
+.home aside img {
+  max-width: 100%;
+}
+
+@media only screen and (max-width: 960px) {
+  .home {
+    flex-direction: column;
+  }
+  .home section {
+    width: 80%;
+    margin: 0 auto;
+  }
+  .home aside {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
