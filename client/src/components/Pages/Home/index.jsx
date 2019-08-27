@@ -21,9 +21,9 @@ const Home = () => (
         software development to the attitude to be held in a meeting in a sector dominated by men.
         We are convinced that, at all levels of your career, you can continue to learn from your
         peers. For that reason, on BeMentor, every mentee can be someone&apos;s mentor and vice
-        versa. Mentorship is crucial to make you more successful. As the proverb says &quot;Alone,
-        you go faster. Together you go further.&quot;
+        versa. Mentorship is crucial to make you more successful.
       </p>
+      <p>As the proverb says &quot;Alone, you go faster. Together you go further.&quot;</p>
     </section>
     <aside>
       <img src={imgBeCentral} alt="BeCentral's chill room" />
