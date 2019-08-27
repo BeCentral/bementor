@@ -42,6 +42,14 @@
   width: 10rem;
 }
 
+.app-footer__logos a:last-child {
+  width: 10rem;
+}
+
+.app-footer__logos a:last-child svg {
+  fill: #fff;
+}
+
 .app-footer__logos img {
   width: 100%;
 }
