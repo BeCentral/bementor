@@ -1,5 +1,5 @@
 .profile__edit {
-  position: absolute;
+  position: absolute !important;
   top: 1rem;
   right: 0;
 }
@@ -17,7 +17,7 @@
 .profile__subject__avatar-wrapper img {
   border-radius: 50%;
   width: 100%;
-  border: .6rem solid var(--green);
+  border: 0.6rem solid var(--green);
 }
 
 .profile__subject__title {
@@ -30,19 +30,19 @@
 .profile__subject__title h2 {
   background: var(--green);
   margin: 1rem 0 0;
-  padding: .6rem;
+  padding: 0.6rem;
   color: #fff;
 }
 
 .profile__subject__title h3 {
   background: var(--yellow);
-  padding: .4rem;
+  padding: 0.4rem;
   color: #fff;
   margin-bottom: 0;
 }
 
 .profile__subject__title h4 {
-  padding: .2rem;
+  padding: 0.2rem;
 }
 
 .profile__about {
@@ -70,7 +70,6 @@
 
 .profile__about__socials li {
   list-style-type: none;
-
 }
 
 .profile__about__socials li a {
@@ -95,7 +94,7 @@
 
 .profile-form__label {
   display: block;
-  margin-bottom: .4rem;
+  margin-bottom: 0.4rem;
 }
 
 .profile-form__field {

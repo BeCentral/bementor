@@ -88,7 +88,7 @@
 }
 
 .user-card__connect {
-  position: absolute;
+  position: absolute !important;
   top: 25%;
   right: -3.5rem;
 }
