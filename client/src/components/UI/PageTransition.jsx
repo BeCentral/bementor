@@ -18,23 +18,22 @@ const getTransitionStyles = {
   }
 };
 
-const Transition = ({ children, location }) => (
-  <TransitionGroup>
-    <ReactTransition
-      key={location.pathname}
-      timeout={{
-        enter: timeout,
-        exit: timeout
-      }}
-    >
-      {status => (
-        <div style={{ ...getTransitionStyles[status] }}>
-          {children}
-        </div>
-      )}
-    </ReactTransition>
-  </TransitionGroup>
-);
+const Transition = ({ children, isModal, location }) => {
+  if (isModal) return <>{children}</>;
+  return (
+    <TransitionGroup>
+      <ReactTransition
+        key={location.pathname}
+        timeout={{
+          enter: timeout,
+          exit: timeout
+        }}
+      >
+        {status => <div style={{ ...getTransitionStyles[status] }}>{children}</div>}
+      </ReactTransition>
+    </TransitionGroup>
+  );
+};
 
 Transition.propTypes = {
   children: PropTypes.node.isRequired,

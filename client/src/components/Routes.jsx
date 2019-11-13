@@ -53,7 +53,7 @@ class Routes extends Component {
     return (
       <div className="app-container">
         <Header />
-        <PageTransition location={location}>
+        <PageTransition isModal={isModal} location={location}>
           <Switch location={isModal ? this.previousLocation : location}>
             <Route path="/:path(|index|home|start)" component={Home} />
             <Route exact path="/inbox" component={Inbox} />
