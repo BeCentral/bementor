@@ -10,21 +10,22 @@ import RequestState from '../../../models/RequestState';
 class LoginForm extends Component {
   state = {
     loginRequest: new RequestState()
-  }
+  };
 
-  login = (closeForm) => {
+  login = closeForm => {
     const email = this.emailNode.value;
     const password = this.passwordNode.value;
     const { loginRequest } = this.state;
 
     this.setState({ loginRequest: loginRequest.start() });
-    API.user.login({ email, password })
-      .then(async (rawUser) => {
+    API.user
+      .login({ email, password })
+      .then(async rawUser => {
         const user = new User(rawUser);
         this.context.setAuthenticatedUser(user);
         closeForm();
       })
-      .catch((err) => {
+      .catch(err => {
         // TODO show reason
         this.setState({ loginRequest: loginRequest.error(err) });
       });
@@ -38,7 +39,7 @@ class LoginForm extends Component {
     const redirect = query.get('redirect');
     if (!redirect) this.props.history.goBack();
     else this.props.history.push(redirect);
-  }
+  };
 
   render() {
     const { isLoading } = this.state.loginRequest;
@@ -58,17 +59,23 @@ class LoginForm extends Component {
             name="email"
             type="email"
             required
-            innerRef={(node) => { this.emailNode = node; }}
+            innerRef={node => {
+              this.emailNode = node;
+            }}
           />
           <TextInputField
             label="Password"
             name="password"
             type="password"
             required
-            innerRef={(node) => { this.passwordNode = node; }}
+            innerRef={node => {
+              this.passwordNode = node;
+            }}
           />
         </form>
-        <Link to="/reset-password">Forgot your password?</Link>
+        <Link className="yellow" to="/reset-password">
+          Forgot your password?
+        </Link>
       </Dialog>
     );
   }

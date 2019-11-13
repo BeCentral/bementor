@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 
 :root {
- --green: #00b265;
- --gray: gray;
- --yellow: #d8a928;
- --black: #333;
+  --green: #00b265;
+  --gray: gray;
+  --yellow: #d8a928;
+  --black: #333;
 }
 
 html {
@@ -13,11 +13,14 @@ html {
   height: 100%;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
@@ -35,7 +38,9 @@ body {
 }
 
 @media only screen and (max-width: 500px) {
-  #root { padding-bottom: 20rem }
+  #root {
+    padding-bottom: 20rem;
+  }
 }
 
 p {
@@ -106,4 +111,11 @@ a.seamless:active {
 
 .center {
   text-align: center;
+}
+
+a.yellow,
+a:visited.yellow,
+a:active.yellow,
+a:hover.yellow {
+  color: var(--yellow);
 }

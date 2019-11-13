@@ -11,7 +11,8 @@ class RegistrationForm extends Component {
         label: 'Email',
         name: 'email',
         required: true,
-        description: 'This is purely for account recovery purposes. You will not receive any promotional emails.',
+        description:
+          'This is purely for account recovery purposes. You will not receive any promotional emails.',
         type: 'email'
       },
       firstName: {
@@ -29,7 +30,8 @@ class RegistrationForm extends Component {
         name: 'password',
         required: true,
         type: 'password',
-        description: 'Your password must be at least 8 characters long. Ideally you include numbers, symbols and capital letters. '
+        description:
+          'Your password must be at least 8 characters long. Ideally you include numbers, symbols and capital letters. '
       },
       passwordConfirmation: {
         label: 'Confirm password',
@@ -39,27 +41,32 @@ class RegistrationForm extends Component {
       }
     },
     createUserRequest: new RequestState()
-  }
+  };
 
   quitRegistration = () => {
     this.props.history.goBack();
-  }
+  };
 
   register = () => {
     const { fields, createUserRequest } = this.state;
 
     const user = {};
-    Object.keys(fields).forEach((key) => {
+    Object.keys(fields).forEach(key => {
       user[key] = fields[key].value;
     });
 
     this.setState({ createUserRequest: createUserRequest.start() });
-    API.user.register(user)
+    API.user
+      .register(user)
       .then(() => {
         // TODO show success
-        this.setState({ createUserRequest: createUserRequest.finish('Account registered successfully! You may now log in') });
+        this.setState({
+          createUserRequest: createUserRequest.finish(
+            'Account registered successfully! You may now log in'
+          )
+        });
       })
-      .catch((reason) => {
+      .catch(reason => {
         // TODO show error
         this.setState({ createUserRequest: createUserRequest.error(reason) });
       });
@@ -67,9 +74,9 @@ class RegistrationForm extends Component {
 
   capitalizeFirst = s => s.charAt(0).toUpperCase() + s.slice(1);
 
-  handleFieldChanged = (e) => {
+  handleFieldChanged = e => {
     this.setFieldValue(e.currentTarget.name, e.currentTarget.value);
-  }
+  };
 
   setFieldValue = (fieldName, fieldValue) => {
     this.setState(prevState => ({
@@ -82,13 +89,13 @@ class RegistrationForm extends Component {
         }
       }
     }));
-  }
+  };
 
   validateFields = () => {
     const { fields } = this.state;
 
     let passed = true;
-    Object.keys(fields).forEach((fieldName) => {
+    Object.keys(fields).forEach(fieldName => {
       const validator = `validate${this.capitalizeFirst(fieldName)}`;
       if (!this[validator]) return;
 
@@ -100,38 +107,40 @@ class RegistrationForm extends Component {
 
     if (!passed) return this.setState(fields);
     return this.register();
-  }
+  };
 
-  validateEmail = (email) => {
+  validateEmail = email => {
     if (!email) return 'Email is required';
 
     const regex = new RegExp(/\S+@\S+\.\S+/);
     if (!regex.test(email)) return 'Not a valid email address';
     return null;
-  }
+  };
 
-  validateFirstName = (name) => {
+  validateFirstName = name => {
     if (!name) return 'First name is required';
     return null;
-  }
+  };
 
-  validateLastName = (name) => {
+  validateLastName = name => {
     if (!name) return 'Last name is required';
     return null;
-  }
+  };
 
-  validatePassword = (password) => {
-    if (!password || password.length < 8) return 'Your password should be at least 8 characters long';
+  validatePassword = password => {
+    if (!password || password.length < 8)
+      return 'Your password should be at least 8 characters long';
     return null;
-  }
+  };
 
-  validatePasswordConfirmation = (password) => {
+  validatePasswordConfirmation = password => {
     const passwordToMatch = this.state.fields.password.value;
-    if (!password || !passwordToMatch || (passwordToMatch !== password)) return 'This password does not match the password in the previous field';
+    if (!password || !passwordToMatch || passwordToMatch !== password)
+      return 'This password does not match the password in the previous field';
     return null;
-  }
+  };
 
-  renderField = (fieldName) => {
+  renderField = fieldName => {
     const field = this.state.fields[fieldName];
     return (
       <TextInputField
@@ -147,7 +156,7 @@ class RegistrationForm extends Component {
         description={field.description || null}
       />
     );
-  }
+  };
 
   render() {
     const { isLoading } = this.state.createUserRequest;

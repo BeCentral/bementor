@@ -8,9 +8,9 @@ class PasswordResetForm extends Component {
   state = {
     passwordResetRequest: new RequestState(),
     passwordsMatch: true
-  }
+  };
 
-  resetPassword = (closeForm) => {
+  resetPassword = closeForm => {
     const password = this.passwordNode.value;
     const confirmationPassword = this.confirmationPasswordNode.value;
 
@@ -19,13 +19,14 @@ class PasswordResetForm extends Component {
     const { passwordResetRequest } = this.state;
     const { token } = this.props.match.params;
     this.setState({ passwordResetRequest: passwordResetRequest.start() });
-    return API.user.resetPassword(password, token)
+    return API.user
+      .resetPassword(password, token)
       .then(async () => {
         // show success
         closeForm();
         this.redirectToLogin();
       })
-      .catch((err) => {
+      .catch(err => {
         // TODO show reason
         this.setState({ passwordResetRequest: passwordResetRequest.error(err) });
       });
@@ -33,15 +34,15 @@ class PasswordResetForm extends Component {
 
   updatePasswordMatchState = () => {
     this.setState({ passwordsMatch: true });
-  }
+  };
 
   redirectToLogin = () => {
     this.props.history.push('/login?redirect=home');
-  }
+  };
 
   redirectToHome = () => {
     this.props.history.push('/');
-  }
+  };
 
   render() {
     const { isLoading } = this.state.passwordResetRequest;
@@ -57,12 +58,14 @@ class PasswordResetForm extends Component {
         isConfirmLoading={isLoading}
         onCloseComplete={this.exitForm}
       >
-        <form>
+        <form className="modal-form">
           <TextInputField
             label="Password"
             name="password"
             type="password"
-            innerRef={(node) => { this.passwordNode = node; }}
+            innerRef={node => {
+              this.passwordNode = node;
+            }}
             required
           />
           <TextInputField
@@ -72,7 +75,9 @@ class PasswordResetForm extends Component {
             validationMessage={!passwordsMatch ? "Your passwords don't match" : null}
             isInvalid={!passwordsMatch}
             onChange={this.updatePasswordMatchState}
-            innerRef={(node) => { this.confirmationPasswordNode = node; }}
+            innerRef={node => {
+              this.confirmationPasswordNode = node;
+            }}
             required
           />
         </form>
