@@ -51,7 +51,11 @@ exports.create = async (req, res) => {
       res.send(newUser);
     })
     .catch(err => {
-      res.status(500).send({ message: err.message });
+      if (err.code === 11000) {
+        res.status(400).send({ message: 'A user with this email address has already registered.' });
+        return;
+      }
+      res.status(500).send({ message: 'An unexpected error occurred' });
     });
 };
 

@@ -11,7 +11,13 @@ class API {
 
   handleResponse = async (response) => {
     if (!response.ok) {
-      throw Error(response.statusText);
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.indexOf('application/json') !== -1) {
+        const result = await response.json();
+        throw result;
+      } else {
+        throw response.statusText;
+      }
     }
     const contentType = response.headers.get('content-type');
     if (contentType && contentType.indexOf('application/json') !== -1) return response.json();

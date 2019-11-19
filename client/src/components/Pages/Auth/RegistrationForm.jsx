@@ -64,9 +64,9 @@ class RegistrationForm extends Component {
         this.setState({ createUserRequest: createUserRequest.finish(message) });
         this.props.history.push('/login?redirect=home');
       })
-      .catch(reason => {
-        toaster.danger('Something went wrong while trying to create your account. Please try again later')
-        this.setState({ createUserRequest: createUserRequest.error(reason) });
+      .catch(error => {
+        toaster.danger(error.message);
+        this.setState({ createUserRequest: createUserRequest.error(error.message) });
       });
   };
 
