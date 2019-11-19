@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, TextInputField } from 'evergreen-ui';
+import { Dialog, TextInputField, toaster } from 'evergreen-ui';
 import { API } from '../../../constants';
 import RequestState from '../../../models/RequestState';
 
@@ -59,15 +59,13 @@ class RegistrationForm extends Component {
     API.user
       .register(user)
       .then(() => {
-        // TODO show success
-        this.setState({
-          createUserRequest: createUserRequest.finish(
-            'Account registered successfully! You may now log in'
-          )
-        });
+        const message = 'Account registered successfully! You may now log in';
+        toaster.success(message, { description: 'Please check your email to confirm your account.' })
+        this.setState({ createUserRequest: createUserRequest.finish(message) });
+        this.props.history.push('/login?redirect=home');
       })
       .catch(reason => {
-        // TODO show error
+        toaster.danger('Something went wrong while trying to create your account. Please try again later')
         this.setState({ createUserRequest: createUserRequest.error(reason) });
       });
   };

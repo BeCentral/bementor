@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Dialog, TextInputField } from 'evergreen-ui';
+import { Dialog, TextInputField, toaster } from 'evergreen-ui';
 import { API } from '../../../constants';
 import AuthContext from '../../../context/auth-context';
 import User from '../../../models/User';
@@ -23,10 +23,11 @@ class LoginForm extends Component {
       .then(async rawUser => {
         const user = new User(rawUser);
         this.context.setAuthenticatedUser(user);
+        toaster.success(`Welcome back, ${user.firstName}!`);
         closeForm();
       })
       .catch(err => {
-        // TODO show reason
+        toaster.danger('Incorrect email or password');
         this.setState({ loginRequest: loginRequest.error(err) });
       });
   };
